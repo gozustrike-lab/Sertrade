@@ -1,72 +1,22 @@
 'use client';
 
 import {
-  Store,
-  HeartPulse,
-  Home,
-  LayoutGrid,
-  Eye,
-  Box,
-  Paintbrush,
-  ClipboardList,
-  Lightbulb,
-  MonitorSmartphone,
-  Compass,
-  Layers,
-  ChevronRight,
-  Phone,
-  Mail,
+  Store, HeartPulse, Home, LayoutGrid, Eye, Box,
+  Paintbrush, ClipboardList, Lightbulb, MonitorSmartphone,
+  Compass, Layers, ChevronRight, Phone, Mail,
 } from 'lucide-react';
+import ScrollReveal from '@/components/ScrollReveal';
 
 const serviceCategories = [
-  {
-    icon: Store,
-    title: 'Diseno Comercial',
-    description:
-      'Creamos espacios comerciales estrategicos que potencian la marca y mejoran la experiencia del cliente. Desde boutiques hasta grandes centros comerciales, cada proyecto refleja la identidad unica de tu negocio.',
-    features: ['Retail y Tiendas', 'Oficinas Corporativas', 'Centros Comerciales', 'Restaurantes y Cafes'],
-    color: 'from-[#004691] to-[#0062b8]',
-  },
-  {
-    icon: HeartPulse,
-    title: 'Diseno Salud',
-    description:
-      'Disenamos entornos de salud que combinan funcionalidad clinica con bienestar. Nuestros espacios hospitalarios y clinicos estan optimizados para la eficiencia y el confort de pacientes y profesionales.',
-    features: ['Hospitales', 'Clinicas', 'Centros Medicos', 'Laboratorios'],
-    color: 'from-[#004691] to-[#006d8f]',
-  },
-  {
-    icon: Home,
-    title: 'Diseno Residencial',
-    description:
-      'Transformamos la vision de nuestros clientes en hogares excepcionales. Cada diseno residencial es una fusion de estetica, funcionalidad y personalidad que refleja el estilo de vida unico de sus habitantes.',
-    features: ['Casas Unifamiliares', 'Departamentos', 'Viviendas Multifamiliares', 'Remodelaciones'],
-    color: 'from-[#004691] to-[#003466]',
-  },
+  { icon: Store, title: 'Diseno Comercial', description: 'Creamos espacios comerciales estrategicos que potencian la marca y mejoran la experiencia del cliente. Desde boutiques hasta grandes centros comerciales, cada proyecto refleja la identidad unica de tu negocio.', features: ['Retail y Tiendas', 'Oficinas Corporativas', 'Centros Comerciales', 'Restaurantes y Cafes'], color: 'from-[#004691] to-[#0062b8]' },
+  { icon: HeartPulse, title: 'Diseno Salud', description: 'Disenamos entornos de salud que combinan funcionalidad clinica con bienestar. Nuestros espacios hospitalarios y clinicos estan optimizados para la eficiencia y el confort de pacientes y profesionales.', features: ['Hospitales', 'Clinicas', 'Centros Medicos', 'Laboratorios'], color: 'from-[#004691] to-[#006d8f]' },
+  { icon: Home, title: 'Diseno Residencial', description: 'Transformamos la vision de nuestros clientes en hogares excepcionales. Cada diseno residencial es una fusion de estetica, funcionalidad y personalidad que refleja el estilo de vida unico de sus habitantes.', features: ['Casas Unifamiliares', 'Departamentos', 'Viviendas Multifamiliares', 'Remodelaciones'], color: 'from-[#004691] to-[#003466]' },
 ];
 
 const projectBlocks = [
-  {
-    icon: LayoutGrid,
-    title: 'Infoarquitectura',
-    description:
-      'Organizamos y estructuramos la informacion de tus espacios para maximizar la usabilidad. Definimos flujos de circulacion, zonificaciones y distribuciones optimas.',
-    items: ['Zonificacion funcional', 'Flujos de circulacion', 'Analisis de espacios'],
-  },
-  {
-    icon: Eye,
-    title: 'Recorridos Virtuales',
-    description:
-      'Ofrecemos experiencias inmersivas que permiten a tus clientes explorar cada rincon del proyecto antes de construir. Tecnologia 360 para una visualizacion completa.',
-    items: ['Tours 360 grados', 'Realidad virtual', 'Visualizacion inmersiva'],
-  },
-  {
-    icon: Box,
-    title: 'Modelado 3D',
-    description:
-      'Cada proyecto cobra vida con nuestros renderizados fotorrealistas y modelos tridimensionales de alta precision que permiten anticipar cada detalle del resultado final.',
-    items: ['Render fotorrealista', 'Animaciones 3D', 'Maquetas digitales'],
-  },
+  { icon: LayoutGrid, title: 'Infoarquitectura', description: 'Organizamos y estructuramos la informacion de tus espacios para maximizar la usabilidad. Definimos flujos de circulacion, zonificaciones y distribuciones optimas.', items: ['Zonificacion funcional', 'Flujos de circulacion', 'Analisis de espacios'] },
+  { icon: Eye, title: 'Recorridos Virtuales', description: 'Ofrecemos experiencias inmersivas que permiten a tus clientes explorar cada rincon del proyecto antes de construir. Tecnologia 360 para una visualizacion completa.', items: ['Tours 360 grados', 'Realidad virtual', 'Visualizacion inmersiva'] },
+  { icon: Box, title: 'Modelado 3D', description: 'Cada proyecto cobra vida con nuestros renderizados fotorrealistas y modelos tridimensionales de alta precision que permiten anticipar cada detalle del resultado final.', items: ['Render fotorrealista', 'Animaciones 3D', 'Maquetas digitales'] },
 ];
 
 const additionalServices = [
@@ -81,68 +31,65 @@ const additionalServices = [
 export default function ServicesPage() {
   return (
     <div className="pt-[60px]">
-      {/* HERO HEADER - Blue Block */}
+      {/* HERO HEADER */}
       <section className="relative bg-[#004691] py-24 overflow-hidden">
-        {/* Geometric decorative elements */}
         <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
-
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-6">
-            <Layers size={14} strokeWidth={1.5} className="text-[#d4a017]" />
-            <span className="text-white/80 text-xs tracking-widest uppercase">Nuestros Servicios</span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Alcance de Nuestros Servicios
-          </h1>
-          <p className="text-white/70 max-w-2xl mx-auto text-lg leading-relaxed">
-            Ofrecemos soluciones integrales de arquitectura y diseno que abarcan desde la concepcion
-            hasta la materializacion de cada proyecto, con estandares de calidad internacional.
-          </p>
+          <ScrollReveal animation="fade-down" delay={0.1}>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-6">
+              <Layers size={14} strokeWidth={1.5} className="text-[#d4a017]" />
+              <span className="text-white/80 text-xs tracking-widest uppercase">Nuestros Servicios</span>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal animation="fade-up" delay={0.2}>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">Alcance de Nuestros Servicios</h1>
+          </ScrollReveal>
+          <ScrollReveal animation="fade-up" delay={0.35}>
+            <p className="text-white/70 max-w-2xl mx-auto text-lg leading-relaxed">
+              Ofrecemos soluciones integrales de arquitectura y diseno que abarcan desde la concepcion
+              hasta la materializacion de cada proyecto, con estandares de calidad internacional.
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* SERVICE CATEGORIES */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Especialidades</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">
-              Areas de Diseno
-            </h2>
-            <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
-          </div>
-
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Especialidades</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">Areas de Diseno</h2>
+              <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
+            </div>
+          </ScrollReveal>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {serviceCategories.map((cat, i) => (
-              <div
-                key={i}
-                className="group rounded-[12px] overflow-hidden bg-white border border-gray-100 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-              >
-                {/* Gradient Top */}
-                <div className={`bg-gradient-to-r ${cat.color} p-8 text-center`}>
-                  <div className="w-16 h-16 rounded-[8px] bg-white/15 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500">
-                    <cat.icon size={32} strokeWidth={1.5} className="text-white" />
+              <ScrollReveal key={i} delay={i * 0.15} animation="fade-up">
+                <div className="group rounded-[12px] overflow-hidden bg-white border border-gray-100 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                  <div className={`bg-gradient-to-r ${cat.color} p-8 text-center`}>
+                    <div className="w-16 h-16 rounded-[8px] bg-white/15 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500">
+                      <cat.icon size={32} strokeWidth={1.5} className="text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white">{cat.title}</h3>
                   </div>
-                  <h3 className="text-xl font-bold text-white">{cat.title}</h3>
+                  <div className="p-7">
+                    <p className="text-gray-600 text-sm leading-relaxed mb-5">{cat.description}</p>
+                    <ul className="space-y-2.5">
+                      {cat.features.map((feat, j) => (
+                        <li key={j} className="flex items-center gap-3 text-sm">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#004691] shrink-0" />
+                          <span className="text-gray-700 font-medium">{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <button className="mt-5 text-[#004691] font-semibold text-sm flex items-center gap-2 group-hover:text-[#d4a017] transition-colors">
+                      Conocer mas <ChevronRight size={16} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
                 </div>
-
-                {/* Content */}
-                <div className="p-7">
-                  <p className="text-gray-600 text-sm leading-relaxed mb-5">{cat.description}</p>
-                  <ul className="space-y-2.5">
-                    {cat.features.map((feat, j) => (
-                      <li key={j} className="flex items-center gap-3 text-sm">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#004691] shrink-0" />
-                        <span className="text-gray-700 font-medium">{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="mt-5 text-[#004691] font-semibold text-sm flex items-center gap-2 group-hover:text-[#d4a017] transition-colors">
-                    Conocer mas <ChevronRight size={16} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -151,47 +98,37 @@ export default function ServicesPage() {
       {/* PROJECT PRESENTATION BLOCKS */}
       <section className="py-24 bg-[#f7f8fa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Herramientas</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">
-              Presentacion de Proyectos
-            </h2>
-            <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
-            <p className="text-gray-600 max-w-2xl mx-auto mt-6 leading-relaxed">
-              Utilizamos herramientas de vanguardia para que nuestros clientes visualicen
-              cada detalle de su proyecto antes de la construccion.
-            </p>
-          </div>
-
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Herramientas</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">Presentacion de Proyectos</h2>
+              <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
+              <p className="text-gray-600 max-w-2xl mx-auto mt-6 leading-relaxed">
+                Utilizamos herramientas de vanguardia para que nuestros clientes visualicen cada detalle de su proyecto antes de la construccion.
+              </p>
+            </div>
+          </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {projectBlocks.map((block, i) => (
-              <div
-                key={i}
-                className="group bg-white rounded-[12px] p-7 border border-gray-100 hover:border-[#004691]/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-              >
-                {/* Icon */}
-                <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
-                  <block.icon size={28} strokeWidth={1.5} className="text-white" />
-                </div>
-
-                <h3 className="text-xl font-bold text-[#004691] mb-3">{block.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-5">{block.description}</p>
-
-                {/* Items */}
-                <div className="space-y-2.5">
-                  {block.items.map((item, j) => (
-                    <div
-                      key={j}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 group-hover:border-[#004691]/10"
-                    >
-                      <div className="w-5 h-5 rounded-full bg-[#004691]/10 flex items-center justify-center shrink-0 group-hover:bg-[#d4a017]/20 transition-colors">
-                        <ChevronRight size={12} strokeWidth={1.5} className="text-[#004691] group-hover:text-[#d4a017] transition-colors" />
+              <ScrollReveal key={i} delay={i * 0.15} animation="scale">
+                <div className="group bg-white rounded-[12px] p-7 border border-gray-100 hover:border-[#004691]/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                  <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
+                    <block.icon size={28} strokeWidth={1.5} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#004691] mb-3">{block.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-5">{block.description}</p>
+                  <div className="space-y-2.5">
+                    {block.items.map((item, j) => (
+                      <div key={j} className="flex items-center gap-3 px-4 py-2.5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 group-hover:border-[#004691]/10">
+                        <div className="w-5 h-5 rounded-full bg-[#004691]/10 flex items-center justify-center shrink-0 group-hover:bg-[#d4a017]/20 transition-colors">
+                          <ChevronRight size={12} strokeWidth={1.5} className="text-[#004691] group-hover:text-[#d4a017] transition-colors" />
+                        </div>
+                        <span className="text-sm text-gray-700">{item}</span>
                       </div>
-                      <span className="text-sm text-gray-700">{item}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -200,52 +137,49 @@ export default function ServicesPage() {
       {/* ADDITIONAL SERVICES */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#004691] mb-5">Servicios Adicionales</h2>
-            <p className="text-gray-600 max-w-xl mx-auto leading-relaxed">
-              Complementamos nuestra oferta principal con servicios especializados que garantizan
-              un resultado integral y de maxima calidad.
-            </p>
-          </div>
-
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-[#004691] mb-5">Servicios Adicionales</h2>
+              <p className="text-gray-600 max-w-xl mx-auto leading-relaxed">
+                Complementamos nuestra oferta principal con servicios especializados que garantizan un resultado integral y de maxima calidad.
+              </p>
+            </div>
+          </ScrollReveal>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {additionalServices.map((svc, i) => (
-              <div
-                key={i}
-                className="group flex flex-col items-center text-center p-5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 hover:bg-[#004691] hover:border-[#004691] transition-all duration-500 hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="w-11 h-11 rounded-[8px] bg-[#004691]/10 flex items-center justify-center mb-3.5 group-hover:bg-white/15 transition-all duration-500 group-hover:scale-110">
-                  <svc.icon size={22} strokeWidth={1.5} className="text-[#004691] group-hover:text-[#d4a017] transition-colors" />
+              <ScrollReveal key={i} delay={i * 0.08} animation="fade-up">
+                <div className="group flex flex-col items-center text-center p-5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 hover:bg-[#004691] hover:border-[#004691] transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+                  <div className="w-11 h-11 rounded-[8px] bg-[#004691]/10 flex items-center justify-center mb-3.5 group-hover:bg-white/15 transition-all duration-500 group-hover:scale-110">
+                    <svc.icon size={22} strokeWidth={1.5} className="text-[#004691] group-hover:text-[#d4a017] transition-colors" />
+                  </div>
+                  <span className="text-sm font-semibold text-[#004691] group-hover:text-white transition-colors">{svc.label}</span>
                 </div>
-                <span className="text-sm font-semibold text-[#004691] group-hover:text-white transition-colors">
-                  {svc.label}
-                </span>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA SECTION */}
-      <section className="py-20 bg-[#004691]">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-5">
-            Necesitas un servicio personalizado?
-          </h2>
-          <p className="text-white/70 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Cada proyecto es unico. Contactanos para recibir una propuesta adaptada a tus necesidades
-            especificas y descubre como podemos hacer realidad tu vision.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
-              <Phone size={18} strokeWidth={1.5} /> Solicitar Cotizacion
-            </button>
-            <button className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 inline-flex items-center gap-2">
-              <Mail size={18} strokeWidth={1.5} /> Enviar Correo
-            </button>
+      {/* CTA */}
+      <ScrollReveal animation="fade">
+        <section className="py-20 bg-[#004691]">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-5">Necesitas un servicio personalizado?</h2>
+            <p className="text-white/70 mb-8 max-w-2xl mx-auto leading-relaxed">
+              Cada proyecto es unico. Contactanos para recibir una propuesta adaptada a tus necesidades
+              especificas y descubre como podemos hacer realidad tu vision.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
+                <Phone size={18} strokeWidth={1.5} /> Solicitar Cotizacion
+              </button>
+              <button className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 inline-flex items-center gap-2">
+                <Mail size={18} strokeWidth={1.5} /> Enviar Correo
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

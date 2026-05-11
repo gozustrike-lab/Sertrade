@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,11 +15,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = "https://sertradedesign.com";
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://sertradedesign.com"),
-  title: "Sertrade Design | Arquitectura Comercial e Innovacion",
+  title: {
+    default: "Sertrade Design | Arquitectura Comercial e Innovacion",
+    template: "%s | Sertrade Design",
+  },
   description:
     "Especialistas en diseno retail, corporativo y residencial. Transformamos espacios con eficiencia y estetica. Mas de 200 proyectos entregados en Lima y Latinoamerica.",
   keywords: [
@@ -46,7 +50,6 @@ export const metadata: Metadata = {
       "Especialistas en diseno retail, corporativo y residencial. Transformamos espacios con eficiencia y estetica.",
     siteName: "Sertrade Design",
     type: "website",
-    url: siteUrl,
     locale: "es_PE",
     images: [
       {
@@ -63,7 +66,6 @@ export const metadata: Metadata = {
     description:
       "Especialistas en diseno retail, corporativo y residencial. Transformamos espacios con eficiencia y estetica.",
     images: ["/og-home-final.png"],
-    site: "@sertradedesign",
   },
   robots: {
     index: true,
@@ -79,26 +81,21 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
-        {/* Standard Favicon */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
-        {/* Apple Touch Icon */}
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        {/* Microsoft Tiles */}
         <meta name="msapplication-TileColor" content="#004691" />
         <meta name="theme-color" content="#004691" />
-
-        {/* OG Image per page - injected by client-side for SPA */}
-        <meta property="og:image" content="/og-home-final.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Sertrade Design - Arquitectura Comercial e Innovacion" />
-        <meta name="twitter:image" content="/og-home-final.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        {children}
+        <div className="min-h-screen flex flex-col bg-white">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <WhatsAppButton />
+        </div>
       </body>
     </html>
   );
