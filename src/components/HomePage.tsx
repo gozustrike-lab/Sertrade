@@ -94,7 +94,7 @@ export default function HomePage() {
               className="absolute inset-0 bg-cover bg-center"
               style={{ backgroundImage: `url(${slide.image})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#003366]/90 via-[#003366]/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#004691]/90 via-[#004691]/70 to-transparent" />
             <div className="absolute inset-0 flex items-center">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div className="max-w-2xl">
@@ -103,8 +103,8 @@ export default function HomePage() {
                       index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                     }`}
                   >
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6">
-                      <Building2 size={14} strokeWidth={1.5} className="text-[#c8a951]" />
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/20 mb-6">
+                      <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
                       <span className="text-white/80 text-xs tracking-widest uppercase">{slide.subtitle}</span>
                     </div>
                   </div>
@@ -127,10 +127,10 @@ export default function HomePage() {
                       index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                     }`}
                   >
-                    <button className="px-8 py-3.5 bg-[#c8a951] text-[#003366] rounded-full font-semibold hover:bg-[#d4b862] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2">
+                    <button className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] flex items-center gap-2">
                       Explorar Proyectos <ArrowRight size={18} strokeWidth={1.5} />
                     </button>
-                    <button className="px-8 py-3.5 border border-white/30 text-white rounded-full font-medium hover:bg-white/10 transition-all duration-300">
+                    <button className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300">
                       Contactanos
                     </button>
                   </div>
@@ -146,8 +146,8 @@ export default function HomePage() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`h-2 rounded-full transition-all duration-500 ${
-                index === currentSlide ? 'w-10 bg-[#c8a951]' : 'w-2 bg-white/40 hover:bg-white/60'
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'
               }`}
               aria-label={`Ir a slide ${index + 1}`}
             />
@@ -167,20 +167,20 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <span className="text-[#c8a951] text-sm font-semibold tracking-[0.2em] uppercase">Quienes Somos</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#003366] mt-3 mb-5">
+            <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Quienes Somos</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">
               Nosotros
             </h2>
-            <div className="w-16 h-1 bg-[#c8a951] mx-auto rounded-full" />
+            <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
             <p className="text-gray-600 max-w-2xl mx-auto mt-6 leading-relaxed">
-              SERTRADE DESIGN es un estudio de arquitectura especializado en el diseno de espacios comerciales,
+              Sertrade Design es un estudio de arquitectura especializado en el diseno de espacios comerciales,
               de salud y residenciales. Nuestro enfoque combina creatividad, funcionalidad y sostenibilidad
               para crear entornos que transforman la experiencia de quienes los habitan.
             </p>
           </div>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
             {[
               { number: '200+', label: 'Proyectos Entregados', icon: Building2 },
               { number: '14+', label: 'Anos de Experiencia', icon: Award },
@@ -189,10 +189,10 @@ export default function HomePage() {
             ].map((stat, i) => (
               <div
                 key={i}
-                className="text-center p-6 rounded-2xl bg-[#f7f8fa] hover:bg-[#003366] group transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+                className="text-center p-6 rounded-[8px] bg-[#f7f8fa] hover:bg-[#004691] group transition-all duration-500 hover:shadow-lg hover:-translate-y-1 border border-gray-100 hover:border-[#004691]"
               >
-                <stat.icon size={28} strokeWidth={1.5} className="mx-auto mb-3 text-[#003366] group-hover:text-[#c8a951] transition-colors" />
-                <div className="text-3xl font-bold text-[#003366] group-hover:text-white transition-colors">{stat.number}</div>
+                <stat.icon size={26} strokeWidth={1.5} className="mx-auto mb-3 text-[#004691] group-hover:text-[#d4a017] transition-colors" />
+                <div className="text-3xl font-bold text-[#004691] group-hover:text-white transition-colors">{stat.number}</div>
                 <div className="text-sm text-gray-500 group-hover:text-white/70 transition-colors mt-1">{stat.label}</div>
               </div>
             ))}
@@ -200,7 +200,7 @@ export default function HomePage() {
 
           {/* TIMELINE */}
           <div className="mb-20">
-            <h3 className="text-2xl font-bold text-[#003366] mb-12 text-center">Nuestra Trayectoria</h3>
+            <h3 className="text-2xl font-bold text-[#004691] mb-12 text-center">Nuestra Trayectoria</h3>
             <div className="relative">
               {/* Center Line */}
               <div className="hidden md:block timeline-line" />
@@ -212,26 +212,26 @@ export default function HomePage() {
                     <div key={index} className="relative md:flex md:items-center md:min-h-[120px]">
                       {/* Mobile Layout */}
                       <div className="md:hidden flex items-start gap-4 pl-12">
-                        <div className="absolute left-0 top-1 w-10 h-10 rounded-full bg-[#003366] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                        <div className="absolute left-0 top-1 w-10 h-10 rounded-full bg-[#004691] flex items-center justify-center text-white text-xs font-bold shrink-0">
                           {item.year}
                         </div>
-                        <div className="flex-1 p-4 rounded-xl bg-[#f7f8fa] border border-gray-100">
-                          <h4 className="font-semibold text-[#003366]">{item.title}</h4>
+                        <div className="flex-1 p-4 rounded-[8px] bg-[#f7f8fa] border border-gray-100">
+                          <h4 className="font-semibold text-[#004691]">{item.title}</h4>
                           <p className="text-sm text-gray-600 mt-1">{item.description}</p>
                         </div>
                       </div>
 
                       {/* Desktop Layout */}
                       <div className={`hidden md:flex md:w-1/2 ${isLeft ? 'justify-end pr-12' : 'justify-start pl-12 order-3'}`}>
-                        <div className="p-6 rounded-2xl bg-[#f7f8fa] border border-gray-100 max-w-sm hover:shadow-lg transition-all duration-300">
-                          <span className="text-[#c8a951] font-bold text-sm">{item.year}</span>
-                          <h4 className="font-semibold text-[#003366] mt-1">{item.title}</h4>
+                        <div className="p-6 rounded-[8px] bg-[#f7f8fa] border border-gray-100 max-w-sm hover:shadow-lg transition-all duration-300">
+                          <span className="text-[#d4a017] font-bold text-sm">{item.year}</span>
+                          <h4 className="font-semibold text-[#004691] mt-1">{item.title}</h4>
                           <p className="text-sm text-gray-600 mt-2 leading-relaxed">{item.description}</p>
                         </div>
                       </div>
 
                       {/* Center Dot */}
-                      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#c8a951] border-4 border-white shadow-md z-10" />
+                      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#d4a017] border-4 border-white shadow-md z-10" />
 
                       {/* Empty space for other side */}
                       <div className={`hidden md:block md:w-1/2 ${isLeft ? 'order-3' : ''}`} />
@@ -244,17 +244,17 @@ export default function HomePage() {
 
           {/* 4 PILLARS */}
           <div>
-            <h3 className="text-2xl font-bold text-[#003366] mb-12 text-center">Nuestros Pilares</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <h3 className="text-2xl font-bold text-[#004691] mb-12 text-center">Nuestros Pilares</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {pillars.map((pillar, i) => (
                 <div
                   key={i}
-                  className="group text-center p-8 rounded-2xl bg-white border border-gray-100 hover:border-[#003366]/20 hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
+                  className="group text-center p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
                 >
-                  <div className="w-16 h-16 rounded-full bg-[#003366] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#c8a951] transition-all duration-500 group-hover:scale-110 shadow-lg">
-                    <pillar.icon size={28} strokeWidth={1.5} className="text-white" />
+                  <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
+                    <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
                   </div>
-                  <h4 className="font-semibold text-[#003366] text-lg mb-3">{pillar.title}</h4>
+                  <h4 className="font-semibold text-[#004691] text-lg mb-3">{pillar.title}</h4>
                   <p className="text-gray-500 text-sm leading-relaxed">{pillar.description}</p>
                 </div>
               ))}
@@ -271,7 +271,7 @@ export default function HomePage() {
             backgroundImage: 'url(https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80)',
           }}
         />
-        <div className="absolute inset-0 bg-[#003366]/90" />
+        <div className="absolute inset-0 bg-[#004691]/90" />
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-5">
             Comienza tu proximo proyecto con nosotros
@@ -280,7 +280,7 @@ export default function HomePage() {
             Cada espacio tiene una historia. Permitemos escribir la tuya con diseno, innovacion y excelencia.
             Agenda una consulta gratuita hoy.
           </p>
-          <button className="px-8 py-4 bg-[#c8a951] text-[#003366] rounded-full font-semibold hover:bg-[#d4b862] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center gap-2">
+          <button className="px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
             Solicitar Consulta Gratuita <ChevronRight size={18} strokeWidth={1.5} />
           </button>
         </div>

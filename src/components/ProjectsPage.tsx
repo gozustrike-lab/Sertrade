@@ -128,15 +128,16 @@ export default function ProjectsPage() {
       : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="pt-20">
+    <div className="pt-[60px]">
       {/* HERO HEADER */}
-      <section className="relative bg-[#003366] py-24 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#c8a951]/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+      <section className="relative bg-[#004691] py-24 overflow-hidden">
+        {/* Geometric decorative elements */}
+        <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6">
-            <Building2 size={14} strokeWidth={1.5} className="text-[#c8a951]" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-6">
+            <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
             <span className="text-white/80 text-xs tracking-widest uppercase">Portafolio</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
@@ -154,15 +155,15 @@ export default function ProjectsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Category Filter */}
           <div className="flex items-center justify-center gap-3 mb-16 flex-wrap">
-            <Filter size={18} strokeWidth={1.5} className="text-gray-400 mr-1" />
+            <Filter size={16} strokeWidth={1.5} className="text-gray-400 mr-1" />
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-6 py-2.5 rounded-[8px] text-sm font-medium transition-all duration-300 ${
                   activeCategory === cat
-                    ? 'bg-[#003366] text-white shadow-lg'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:border-[#003366]/30 hover:text-[#003366]'
+                    ? 'bg-[#004691] text-white shadow-lg'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:border-[#004691]/30 hover:text-[#004691]'
                 }`}
               >
                 {cat}
@@ -171,11 +172,11 @@ export default function ProjectsPage() {
           </div>
 
           {/* Projects Grid */}
-          <div className="space-y-16">
+          <div className="space-y-14">
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500"
+                className="group bg-white rounded-[12px] overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500"
                 onMouseEnter={() => setHoveredProject(project.id)}
                 onMouseLeave={() => setHoveredProject(null)}
               >
@@ -192,14 +193,14 @@ export default function ProjectsPage() {
                     />
                     {/* Category Badge */}
                     <div className="absolute top-4 left-4">
-                      <span className="px-4 py-1.5 bg-[#003366] text-white text-xs font-semibold rounded-full tracking-wider uppercase">
+                      <span className="px-4 py-1.5 bg-[#004691] text-white text-xs font-semibold rounded-[8px] tracking-wider uppercase">
                         {project.category}
                       </span>
                     </div>
                     {/* Status Badge */}
                     <div className="absolute top-4 right-4">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        className={`px-3 py-1 rounded-[8px] text-xs font-semibold ${
                           project.status === 'Completado'
                             ? 'bg-green-500/90 text-white'
                             : 'bg-amber-500/90 text-white'
@@ -210,11 +211,11 @@ export default function ProjectsPage() {
                     </div>
                     {/* Hover Overlay */}
                     <div
-                      className={`absolute inset-0 bg-[#003366]/60 flex items-center justify-center transition-opacity duration-500 ${
+                      className={`absolute inset-0 bg-[#004691]/60 flex items-center justify-center transition-opacity duration-500 ${
                         hoveredProject === project.id ? 'opacity-100' : 'opacity-0'
                       }`}
                     >
-                      <button className="flex items-center gap-2 px-6 py-3 bg-white text-[#003366] rounded-full font-semibold hover:bg-[#c8a951] transition-colors">
+                      <button className="flex items-center gap-2 px-6 py-3 bg-white text-[#004691] rounded-[8px] font-semibold hover:bg-[#d4a017] hover:text-[#003466] transition-colors">
                         <Eye size={18} strokeWidth={1.5} /> Ver Detalle
                       </button>
                     </div>
@@ -237,33 +238,33 @@ export default function ProjectsPage() {
                 </div>
 
                 {/* Description & Data Section */}
-                <div className="p-8">
-                  <div className="flex flex-col lg:flex-row lg:items-start gap-8">
+                <div className="p-7">
+                  <div className="flex flex-col lg:flex-row lg:items-start gap-7">
                     {/* Left: Description */}
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-[#003366] mb-3 group-hover:text-[#004d99] transition-colors">
+                      <h3 className="text-xl font-bold text-[#004691] mb-3 group-hover:text-[#0062b8] transition-colors">
                         {project.title}
                       </h3>
                       <p className="text-gray-600 text-sm leading-relaxed mb-4">{project.description}</p>
-                      <button className="text-[#003366] font-semibold text-sm flex items-center gap-2 hover:text-[#c8a951] transition-colors group/btn">
+                      <button className="text-[#004691] font-semibold text-sm flex items-center gap-2 hover:text-[#d4a017] transition-colors group/btn">
                         Ver proyecto completo <ArrowRight size={16} strokeWidth={1.5} className="group-hover/btn:translate-x-1 transition-transform" />
                       </button>
                     </div>
 
                     {/* Right: Data Columns */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 gap-4 lg:min-w-[380px]">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 gap-3 lg:min-w-[360px]">
                       {[
                         { icon: MapPin, label: 'Ubicacion', value: project.location },
                         { icon: Maximize2, label: 'Area', value: project.area },
                         { icon: Calendar, label: 'Ano', value: project.year },
                         { icon: Building2, label: 'Cliente', value: project.client },
                       ].map((data, j) => (
-                        <div key={j} className="p-4 rounded-xl bg-[#f7f8fa] border border-gray-100">
+                        <div key={j} className="p-3.5 rounded-[8px] bg-[#f7f8fa] border border-gray-100">
                           <div className="flex items-center gap-2 mb-1.5">
-                            <data.icon size={14} strokeWidth={1.5} className="text-[#c8a951]" />
-                            <span className="text-xs text-gray-500 uppercase tracking-wider font-medium">{data.label}</span>
+                            <data.icon size={13} strokeWidth={1.5} className="text-[#d4a017]" />
+                            <span className="text-[11px] text-gray-500 uppercase tracking-wider font-medium">{data.label}</span>
                           </div>
-                          <span className="text-sm font-semibold text-[#003366]">{data.value}</span>
+                          <span className="text-sm font-semibold text-[#004691]">{data.value}</span>
                         </div>
                       ))}
                     </div>
@@ -275,7 +276,7 @@ export default function ProjectsPage() {
 
           {/* Load More */}
           <div className="text-center mt-16">
-            <button className="px-10 py-4 bg-[#003366] text-white rounded-full font-semibold hover:bg-[#004d99] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center gap-2">
+            <button className="px-10 py-4 bg-[#004691] text-white rounded-[8px] font-semibold hover:bg-[#0062b8] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
               Cargar Mas Proyectos <ArrowRight size={18} strokeWidth={1.5} />
             </button>
           </div>

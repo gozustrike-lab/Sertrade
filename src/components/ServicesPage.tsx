@@ -25,7 +25,7 @@ const serviceCategories = [
     description:
       'Creamos espacios comerciales estrategicos que potencian la marca y mejoran la experiencia del cliente. Desde boutiques hasta grandes centros comerciales, cada proyecto refleja la identidad unica de tu negocio.',
     features: ['Retail y Tiendas', 'Oficinas Corporativas', 'Centros Comerciales', 'Restaurantes y Cafes'],
-    color: 'from-[#003366] to-[#004d99]',
+    color: 'from-[#004691] to-[#0062b8]',
   },
   {
     icon: HeartPulse,
@@ -33,7 +33,7 @@ const serviceCategories = [
     description:
       'Disenamos entornos de salud que combinan funcionalidad clinica con bienestar. Nuestros espacios hospitalarios y clinicos estan optimizados para la eficiencia y el confort de pacientes y profesionales.',
     features: ['Hospitales', 'Clinicas', 'Centros Medicos', 'Laboratorios'],
-    color: 'from-[#003366] to-[#005577]',
+    color: 'from-[#004691] to-[#006d8f]',
   },
   {
     icon: Home,
@@ -41,7 +41,7 @@ const serviceCategories = [
     description:
       'Transformamos la vision de nuestros clientes en hogares excepcionales. Cada diseno residencial es una fusion de estetica, funcionalidad y personalidad que refleja el estilo de vida unico de sus habitantes.',
     features: ['Casas Unifamiliares', 'Departamentos', 'Viviendas Multifamiliares', 'Remodelaciones'],
-    color: 'from-[#003366] to-[#003d66]',
+    color: 'from-[#004691] to-[#003466]',
   },
 ];
 
@@ -80,16 +80,16 @@ const additionalServices = [
 
 export default function ServicesPage() {
   return (
-    <div className="pt-20">
+    <div className="pt-[60px]">
       {/* HERO HEADER - Blue Block */}
-      <section className="relative bg-[#003366] py-24 overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#c8a951]/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+      <section className="relative bg-[#004691] py-24 overflow-hidden">
+        {/* Geometric decorative elements */}
+        <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6">
-            <Layers size={14} strokeWidth={1.5} className="text-[#c8a951]" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-6">
+            <Layers size={14} strokeWidth={1.5} className="text-[#d4a017]" />
             <span className="text-white/80 text-xs tracking-widest uppercase">Nuestros Servicios</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
@@ -106,39 +106,39 @@ export default function ServicesPage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-[#c8a951] text-sm font-semibold tracking-[0.2em] uppercase">Especialidades</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#003366] mt-3 mb-5">
+            <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Especialidades</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">
               Areas de Diseno
             </h2>
-            <div className="w-16 h-1 bg-[#c8a951] mx-auto rounded-full" />
+            <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {serviceCategories.map((cat, i) => (
               <div
                 key={i}
-                className="group rounded-2xl overflow-hidden bg-white border border-gray-100 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                className="group rounded-[12px] overflow-hidden bg-white border border-gray-100 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
               >
                 {/* Gradient Top */}
                 <div className={`bg-gradient-to-r ${cat.color} p-8 text-center`}>
-                  <div className="w-20 h-20 rounded-full bg-white/15 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500">
-                    <cat.icon size={36} strokeWidth={1.5} className="text-white" />
+                  <div className="w-16 h-16 rounded-[8px] bg-white/15 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500">
+                    <cat.icon size={32} strokeWidth={1.5} className="text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white">{cat.title}</h3>
+                  <h3 className="text-xl font-bold text-white">{cat.title}</h3>
                 </div>
 
                 {/* Content */}
-                <div className="p-8">
-                  <p className="text-gray-600 text-sm leading-relaxed mb-6">{cat.description}</p>
-                  <ul className="space-y-3">
+                <div className="p-7">
+                  <p className="text-gray-600 text-sm leading-relaxed mb-5">{cat.description}</p>
+                  <ul className="space-y-2.5">
                     {cat.features.map((feat, j) => (
                       <li key={j} className="flex items-center gap-3 text-sm">
-                        <div className="w-2 h-2 rounded-full bg-[#c8a951] shrink-0" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#004691] shrink-0" />
                         <span className="text-gray-700 font-medium">{feat}</span>
                       </li>
                     ))}
                   </ul>
-                  <button className="mt-6 text-[#003366] font-semibold text-sm flex items-center gap-2 group-hover:text-[#c8a951] transition-colors">
+                  <button className="mt-5 text-[#004691] font-semibold text-sm flex items-center gap-2 group-hover:text-[#d4a017] transition-colors">
                     Conocer mas <ChevronRight size={16} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -152,40 +152,40 @@ export default function ServicesPage() {
       <section className="py-24 bg-[#f7f8fa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-[#c8a951] text-sm font-semibold tracking-[0.2em] uppercase">Herramientas</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#003366] mt-3 mb-5">
+            <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Herramientas</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">
               Presentacion de Proyectos
             </h2>
-            <div className="w-16 h-1 bg-[#c8a951] mx-auto rounded-full" />
+            <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
             <p className="text-gray-600 max-w-2xl mx-auto mt-6 leading-relaxed">
               Utilizamos herramientas de vanguardia para que nuestros clientes visualicen
               cada detalle de su proyecto antes de la construccion.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {projectBlocks.map((block, i) => (
               <div
                 key={i}
-                className="group bg-white rounded-2xl p-8 border border-gray-100 hover:border-[#003366]/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                className="group bg-white rounded-[12px] p-7 border border-gray-100 hover:border-[#004691]/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
               >
                 {/* Icon */}
-                <div className="w-16 h-16 rounded-2xl bg-[#003366] flex items-center justify-center mb-6 group-hover:bg-[#c8a951] transition-all duration-500 group-hover:scale-110 shadow-lg">
-                  <block.icon size={30} strokeWidth={1.5} className="text-white" />
+                <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
+                  <block.icon size={28} strokeWidth={1.5} className="text-white" />
                 </div>
 
-                <h3 className="text-xl font-bold text-[#003366] mb-3">{block.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6">{block.description}</p>
+                <h3 className="text-xl font-bold text-[#004691] mb-3">{block.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed mb-5">{block.description}</p>
 
                 {/* Items */}
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {block.items.map((item, j) => (
                     <div
                       key={j}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-[#f7f8fa] border border-gray-100 group-hover:border-[#003366]/10"
+                      className="flex items-center gap-3 px-4 py-2.5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 group-hover:border-[#004691]/10"
                     >
-                      <div className="w-6 h-6 rounded-full bg-[#003366]/10 flex items-center justify-center shrink-0 group-hover:bg-[#c8a951]/20 transition-colors">
-                        <ChevronRight size={12} strokeWidth={1.5} className="text-[#003366] group-hover:text-[#c8a951] transition-colors" />
+                      <div className="w-5 h-5 rounded-full bg-[#004691]/10 flex items-center justify-center shrink-0 group-hover:bg-[#d4a017]/20 transition-colors">
+                        <ChevronRight size={12} strokeWidth={1.5} className="text-[#004691] group-hover:text-[#d4a017] transition-colors" />
                       </div>
                       <span className="text-sm text-gray-700">{item}</span>
                     </div>
@@ -201,7 +201,7 @@ export default function ServicesPage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#003366] mb-5">Servicios Adicionales</h2>
+            <h2 className="text-3xl font-bold text-[#004691] mb-5">Servicios Adicionales</h2>
             <p className="text-gray-600 max-w-xl mx-auto leading-relaxed">
               Complementamos nuestra oferta principal con servicios especializados que garantizan
               un resultado integral y de maxima calidad.
@@ -212,12 +212,12 @@ export default function ServicesPage() {
             {additionalServices.map((svc, i) => (
               <div
                 key={i}
-                className="group flex flex-col items-center text-center p-6 rounded-2xl bg-[#f7f8fa] border border-gray-100 hover:bg-[#003366] hover:border-[#003366] transition-all duration-500 hover:-translate-y-1 hover:shadow-lg"
+                className="group flex flex-col items-center text-center p-5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 hover:bg-[#004691] hover:border-[#004691] transition-all duration-500 hover:-translate-y-1 hover:shadow-lg"
               >
-                <div className="w-12 h-12 rounded-xl bg-[#003366]/10 flex items-center justify-center mb-4 group-hover:bg-white/15 transition-all duration-500 group-hover:scale-110">
-                  <svc.icon size={24} strokeWidth={1.5} className="text-[#003366] group-hover:text-[#c8a951] transition-colors" />
+                <div className="w-11 h-11 rounded-[8px] bg-[#004691]/10 flex items-center justify-center mb-3.5 group-hover:bg-white/15 transition-all duration-500 group-hover:scale-110">
+                  <svc.icon size={22} strokeWidth={1.5} className="text-[#004691] group-hover:text-[#d4a017] transition-colors" />
                 </div>
-                <span className="text-sm font-semibold text-[#003366] group-hover:text-white transition-colors">
+                <span className="text-sm font-semibold text-[#004691] group-hover:text-white transition-colors">
                   {svc.label}
                 </span>
               </div>
@@ -227,7 +227,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA SECTION */}
-      <section className="py-20 bg-[#003366]">
+      <section className="py-20 bg-[#004691]">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-5">
             Necesitas un servicio personalizado?
@@ -237,10 +237,10 @@ export default function ServicesPage() {
             especificas y descubre como podemos hacer realidad tu vision.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-8 py-3.5 bg-[#c8a951] text-[#003366] rounded-full font-semibold hover:bg-[#d4b862] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center gap-2">
+            <button className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
               <Phone size={18} strokeWidth={1.5} /> Solicitar Cotizacion
             </button>
-            <button className="px-8 py-3.5 border border-white/30 text-white rounded-full font-medium hover:bg-white/10 transition-all duration-300 inline-flex items-center gap-2">
+            <button className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 inline-flex items-center gap-2">
               <Mail size={18} strokeWidth={1.5} /> Enviar Correo
             </button>
           </div>
