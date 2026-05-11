@@ -15,13 +15,33 @@ const navItems = [
 const slideEasing = [0.4, 0, 0.2, 1] as const;
 
 export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isFirstRender = useRef(true);
 
+  // Is the user on the home page?
+  const isHome = pathname === '/';
+
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
   }, []);
+
+  // Scroll listener — only relevant on home page for transparent→solid transition
+  useEffect(() => {
+    if (!isHome) {
+      setScrolled(true); // Force solid on subpages
+      return;
+    }
+
+    setScrolled(window.scrollY > 50);
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isHome]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -48,10 +68,17 @@ export default function Header() {
     return pathname.startsWith(href);
   };
 
+  // Dynamic header styles
+  const headerBg = scrolled || !isHome
+    ? 'bg-[#004691]/95 backdrop-blur-xl shadow-lg shadow-[#004691]/15'
+    : 'bg-transparent';
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#004691] shadow-lg shadow-[#004691]/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between h-[64px]">
+      <header
+        className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 ${headerBg}`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between h-[72px]">
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
@@ -127,7 +154,7 @@ export default function Header() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: slideEasing }}
               onClick={closeMobileMenu}
-              className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-[8px] md:hidden"
+              className="fixed inset-0 z-[1001] bg-black/50 backdrop-blur-[8px] md:hidden"
             />
 
             {/* Menu Panel — slides from right */}
@@ -136,7 +163,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.4, ease: slideEasing }}
-              className="fixed top-0 right-0 z-[70] w-[85vw] max-w-[360px] h-full md:hidden flex flex-col"
+              className="fixed top-0 right-0 z-[1002] w-[85vw] max-w-[360px] h-full md:hidden flex flex-col"
             >
               {/* Panel Background */}
               <div className="relative flex flex-col h-full bg-gradient-to-b from-[#0a1628] via-[#0d1f3c] to-[#0a1628]">
@@ -188,7 +215,7 @@ export default function Header() {
                         }`}
                       >
                         <span>{item.label}</span>
-                        <ArrowRight size={18} strokeWidth={1.5} className={`transition-transform duration-200 ${isActive(item.href) ? 'translate-x-1 text-[#d4a017]' : 'opacity-0 group-hover:opacity-100'}`} />
+                        <ArrowRight size={18} strokeWidth={1.5} className="transition-transform duration-200" />
                       </Link>
                     </motion.div>
                   ))}
@@ -196,7 +223,6 @@ export default function Header() {
 
                 {/* Bottom CTA Section */}
                 <div className="px-6 pb-8 space-y-4">
-                  {/* CTA Button — pill shaped */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -212,7 +238,6 @@ export default function Header() {
                     </Link>
                   </motion.div>
 
-                  {/* Contact Info */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
