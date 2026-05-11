@@ -62,12 +62,14 @@ const stats = [
 
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % sliderData.length);
   }, []);
 
   useEffect(() => {
+    setMounted(true);
     const interval = setInterval(nextSlide, 4000);
     return () => clearInterval(interval);
   }, [nextSlide]);
@@ -83,28 +85,50 @@ export default function HomePage() {
               index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
             }`}
           >
+            {/* Background Image */}
             <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${slide.image})` }} />
+            {/* Primary brand gradient */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#004691]/90 via-[#004691]/70 to-transparent" />
+            {/* Extra dark overlay for text readability (opacity 0.4) */}
+            <div className="hero-overlay-dark absolute inset-0" />
+
             <div className="absolute inset-0 flex items-center">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div className="max-w-2xl">
-                  <div className={`transition-all duration-700 delay-200 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                  {/* Subtitle badge */}
+                  <div className={`transition-all duration-700 delay-200 ${mounted && index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/20 mb-6">
                       <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
                       <span className="text-white/80 text-xs tracking-widest uppercase">{slide.subtitle}</span>
                     </div>
                   </div>
-                  <h2 className={`text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight tracking-tight transition-all duration-700 delay-300 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+
+                  {/* Title - Blur Reveal effect */}
+                  <h2 className={`text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight tracking-tight transition-all duration-700 ${
+                    mounted && index === currentSlide ? 'animate-blur-reveal' : 'opacity-0 translate-y-8'
+                  }`} style={{ animationDelay: '0.2s' }}>
                     {slide.title}
                   </h2>
-                  <p className={`text-lg sm:text-xl text-white/80 mb-8 max-w-lg leading-relaxed transition-all duration-700 delay-400 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+
+                  {/* Description */}
+                  <p className={`text-base sm:text-lg lg:text-xl text-white/80 mb-8 max-w-lg leading-relaxed transition-all duration-700 delay-400 ${mounted && index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     {slide.description}
                   </p>
-                  <div className={`flex items-center gap-4 transition-all duration-700 delay-500 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <Link href="/proyectos" className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] flex items-center gap-2">
+
+                  {/* CTA Buttons - stack vertically on mobile < 480px */}
+                  <div className={`hero-btn-stack flex items-center gap-4 transition-all duration-700 delay-500 ${mounted && index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                    <Link
+                      href="/proyectos"
+                      className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] flex items-center gap-2 justify-center animate-scale-entry"
+                      style={{ animationDelay: '0.5s' }}
+                    >
                       Explorar Proyectos <ArrowRight size={18} strokeWidth={1.5} />
                     </Link>
-                    <Link href="/servicios" className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300">
+                    <Link
+                      href="/servicios"
+                      className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center animate-scale-entry"
+                      style={{ animationDelay: '0.6s' }}
+                    >
                       Contactanos
                     </Link>
                   </div>
@@ -113,11 +137,15 @@ export default function HomePage() {
             </div>
           </div>
         ))}
+
+        {/* Slider Dots */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3">
           {sliderData.map((_, index) => (
             <button key={index} onClick={() => setCurrentSlide(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'}`} aria-label={`Ir a slide ${index + 1}`} />
           ))}
         </div>
+
+        {/* Slide Counter */}
         <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block">
           <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
           <span className="mx-2">/</span>
@@ -126,8 +154,8 @@ export default function HomePage() {
       </section>
 
       {/* NOSOTROS */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-16">
               <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Quienes Somos</span>
@@ -145,10 +173,10 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
             {stats.map((stat, i) => (
               <ScrollReveal key={i} delay={i * 0.1} animation="scale">
-                <div className="text-center p-6 rounded-[8px] bg-[#f7f8fa] hover:bg-[#004691] group transition-all duration-500 hover:shadow-lg hover:-translate-y-1 border border-gray-100 hover:border-[#004691]">
-                  <stat.icon size={26} strokeWidth={1.5} className="mx-auto mb-3 text-[#004691] group-hover:text-[#d4a017] transition-colors" />
-                  <div className="text-3xl font-bold text-[#004691] group-hover:text-white transition-colors">{stat.number}</div>
-                  <div className="text-sm text-gray-500 group-hover:text-white/70 transition-colors mt-1">{stat.label}</div>
+                <div className="text-center p-5 sm:p-6 rounded-[8px] bg-[#f7f8fa] hover:bg-[#004691] group transition-all duration-500 hover:shadow-lg hover:-translate-y-1 border border-gray-100 hover:border-[#004691]">
+                  <stat.icon size={24} strokeWidth={1.5} className="mx-auto mb-3 text-[#004691] group-hover:text-[#d4a017] transition-colors" />
+                  <div className="text-2xl sm:text-3xl font-bold text-[#004691] group-hover:text-white transition-colors">{stat.number}</div>
+                  <div className="text-xs sm:text-sm text-gray-500 group-hover:text-white/70 transition-colors mt-1">{stat.label}</div>
                 </div>
               </ScrollReveal>
             ))}
@@ -166,6 +194,7 @@ export default function HomePage() {
                 return (
                   <ScrollReveal key={index} animation={isLeft ? 'fade-right' : 'fade-left'} delay={0.15}>
                     <div className="relative md:flex md:items-center md:min-h-[120px]">
+                      {/* Mobile Timeline */}
                       <div className="md:hidden flex items-start gap-4 pl-12">
                         <div className="absolute left-0 top-1 w-10 h-10 rounded-full bg-[#004691] flex items-center justify-center text-white text-xs font-bold shrink-0">{item.year}</div>
                         <div className="flex-1 p-4 rounded-[8px] bg-[#f7f8fa] border border-gray-100">
@@ -173,6 +202,7 @@ export default function HomePage() {
                           <p className="text-sm text-gray-600 mt-1">{item.description}</p>
                         </div>
                       </div>
+                      {/* Desktop Timeline */}
                       <div className={`hidden md:flex md:w-1/2 ${isLeft ? 'justify-end pr-12' : 'justify-start pl-12 order-3'}`}>
                         <div className="p-6 rounded-[8px] bg-[#f7f8fa] border border-gray-100 max-w-sm hover:shadow-lg transition-all duration-300">
                           <span className="text-[#d4a017] font-bold text-sm">{item.year}</span>
@@ -197,7 +227,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {pillars.map((pillar, i) => (
                 <ScrollReveal key={i} delay={i * 0.12} animation="fade-up">
-                  <div className="group text-center p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                  <div className="group text-center p-6 sm:p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
                     <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
                       <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
                     </div>
@@ -213,7 +243,7 @@ export default function HomePage() {
 
       {/* CTA */}
       <ScrollReveal animation="fade">
-        <section className="relative py-24 overflow-hidden">
+        <section className="relative py-20 md:py-24 overflow-hidden">
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80)' }} />
           <div className="absolute inset-0 bg-[#004691]/90" />
           <div className="relative max-w-4xl mx-auto px-4 text-center">
