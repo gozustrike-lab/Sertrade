@@ -302,13 +302,17 @@
 }
 
 /* ========================================
-   Subpage Hero: Seamless Header Connection
-   Pulls hero gradient behind the fixed header
-   for a zero-gap, single-piece visual.
+   Subpage Hero: Content spacing below header
+   Only applies to Services & Projects pages.
+   Desktop: 120px  |  Mobile: 100px
    ======================================== */
-.subpage-hero-seamless {
-  margin-top: -5rem; /* -80px = h-20 header height */
-  padding-top: 5rem; /* restore content offset */
+.subpage-hero {
+  padding-top: 120px;
+}
+@media (max-width: 768px) {
+  .subpage-hero {
+    padding-top: 100px;
+  }
 }
 
 /* ========================================
