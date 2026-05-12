@@ -13,7 +13,7 @@ interface CounterProps {
 
 export default function Counter({
   target,
-  duration = 2,
+  duration = 3.5,
   prefix = '',
   suffix = '',
   className = '',
@@ -21,22 +21,22 @@ export default function Counter({
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   useEffect(() => {
     if (!isInView || hasAnimated) return;
     setHasAnimated(true);
 
-    /* Simple spring-like interpolation using requestAnimationFrame */
+    /* Smooth spring interpolation — cinematic pace */
     const startTime = performance.now();
-    const stiffness = 100;
-    const damping = 30;
+    const stiffness = 60;
+    const damping = 22;
 
     const springTick = (currentTime: number) => {
-      const elapsed = (currentTime - startTime) / 1000; // seconds
+      const elapsed = (currentTime - startTime) / 1000;
       const t = Math.min(elapsed / duration, 1);
 
-      /* Damped spring approximation: (1 - e^(-ζωt)) * (1 + e^(-ζωt) * cos(ωd*t)) */
+      /* Under-damped spring: elegant deceleration with subtle overshoot */
       const zeta = damping / (2 * Math.sqrt(stiffness));
       const omega = Math.sqrt(stiffness);
       const omegaD = omega * Math.sqrt(Math.abs(1 - zeta * zeta));
@@ -45,10 +45,10 @@ export default function Counter({
 
       const currentValue = Math.round(springValue * target);
 
-      /* Clamp to avoid overshoot past target */
-      setCount(Math.min(currentValue, target));
+      /* Soft clamp: allow tiny overshoot for organic feel, then settle */
+      setCount(currentValue);
 
-      if (t < 1) {
+      if (t < 1 || currentValue < target) {
         requestAnimationFrame(springTick);
       } else {
         setCount(target);

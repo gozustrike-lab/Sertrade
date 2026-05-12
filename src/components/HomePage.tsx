@@ -258,7 +258,7 @@ export default function HomePage() {
                 prefix={stat.prefix}
                 suffix={stat.suffix}
                 label={stat.label}
-                delay={i * 0.15}
+                delay={i * 0.3}
               />
             ))}
           </div>
