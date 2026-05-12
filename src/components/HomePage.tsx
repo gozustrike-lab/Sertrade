@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   BookOpen,
   Briefcase,
@@ -63,6 +64,8 @@ const stats = [
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
+  const router = useRouter();
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % sliderData.length);
@@ -74,79 +77,127 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [nextSlide]);
 
+  /* Smooth page transition: fade-out then navigate */
+  const navigateWithTransition = (href: string) => {
+    if (transitioning) return;
+    setTransitioning(true);
+    const overlay = document.getElementById('page-transition-overlay');
+    if (overlay) {
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
+    }
+    setTimeout(() => {
+      router.push(href);
+    }, 400);
+  };
+
+  const slide = sliderData[currentSlide];
+
   return (
     <div>
+      {/* Page Transition Overlay */}
+      <div
+        id="page-transition-overlay"
+        className="fixed inset-0 z-[9999] bg-[#004691] pointer-events-none"
+        style={{ opacity: 0, transition: 'opacity 0.4s ease-in-out' }}
+      />
+
       {/* HERO SLIDER */}
       <section className="relative h-screen w-full overflow-hidden">
-        {sliderData.map((slide, index) => (
+        {/* Background Slides (pointer-events locked to active only) */}
+        {sliderData.map((s, index) => (
           <div
             key={index}
             className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+              index === currentSlide
+                ? 'opacity-100 scale-100 pointer-events-auto z-[2]'
+                : 'opacity-0 scale-105 pointer-events-none z-[1]'
             }`}
           >
             {/* Background Image */}
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${slide.image})` }} />
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${s.image})` }} />
             {/* Primary brand gradient */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#004691]/90 via-[#004691]/70 to-transparent" />
-            {/* Extra dark overlay for text readability (opacity 0.4) */}
+            {/* Extra dark overlay */}
             <div className="hero-overlay-dark absolute inset-0" />
-
-            <div className="absolute inset-0 flex items-center">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <div className="max-w-2xl">
-                  {/* Subtitle badge */}
-                  <div className={`transition-all duration-700 delay-200 ${mounted && index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/20 mb-6">
-                      <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
-                      <span className="text-white/80 text-xs tracking-widest uppercase">{slide.subtitle}</span>
-                    </div>
-                  </div>
-
-                  {/* Title - Blur Reveal effect */}
-                  <h2 className={`text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight tracking-tight transition-all duration-700 ${
-                    mounted && index === currentSlide ? 'animate-blur-reveal' : 'opacity-0 translate-y-8'
-                  }`} style={{ animationDelay: '0.2s' }}>
-                    {slide.title}
-                  </h2>
-
-                  {/* Description */}
-                  <p className={`text-base sm:text-lg lg:text-xl text-white/80 mb-8 max-w-lg leading-[1.7] transition-all duration-700 delay-400 ${mounted && index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    {slide.description}
-                  </p>
-
-                  {/* CTA Buttons - stack vertically on mobile < 480px */}
-                  <div className={`hero-btn-stack flex items-center gap-4 transition-all duration-700 delay-500 ${mounted && index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <Link
-                      href="/proyectos"
-                      className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] flex items-center gap-2 justify-center animate-scale-entry"
-                      style={{ animationDelay: '0.5s' }}
-                    >
-                      Explorar Proyectos <ArrowRight size={18} strokeWidth={1.5} />
-                    </Link>
-                    <Link
-                      href="/servicios"
-                      className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center animate-scale-entry"
-                      style={{ animationDelay: '0.6s' }}
-                    >
-                      Contáctanos
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         ))}
 
+        {/* Content Layer — ALWAYS on top, always clickable (z-100) */}
+        <div className="absolute inset-0 z-[100] flex items-center pointer-events-none">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="max-w-2xl">
+              {/* Subtitle badge */}
+              <div className={`transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/20 mb-6">
+                  <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
+                  <span className="text-white/80 text-xs tracking-widest uppercase">{slide.subtitle}</span>
+                </div>
+              </div>
+
+              {/* Title */}
+              <h2
+                key={`title-${currentSlide}`}
+                className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight tracking-tight animate-blur-reveal"
+                style={{ animationDelay: '0.15s' }}
+              >
+                {slide.title}
+              </h2>
+
+              {/* Description */}
+              <p
+                key={`desc-${currentSlide}`}
+                className="text-base sm:text-lg lg:text-xl text-white/80 mb-8 max-w-lg leading-[1.7] animate-fade-in-up"
+                style={{ animationDelay: '0.3s' }}
+              >
+                {slide.description}
+              </p>
+
+              {/* ===== CTA BUTTONS — Always interactive ===== */}
+              <div
+                key={`cta-${currentSlide}`}
+                className="hero-btn-stack flex items-center gap-4 animate-fade-in-up pointer-events-auto"
+                style={{ animationDelay: '0.45s' }}
+              >
+                {/* PRIMARY CTA — VER PROYECTOS with shimmer */}
+                <button
+                  onClick={() => navigateWithTransition('/proyectos')}
+                  className="cta-shimmer-btn group relative px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[15px] hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.05] flex items-center gap-2.5 justify-center overflow-hidden"
+                >
+                  <span className="relative z-10 flex items-center gap-2.5">
+                    VER PROYECTOS
+                    <ArrowRight
+                      size={18}
+                      strokeWidth={2}
+                      className="transition-transform duration-300 group-hover:translate-x-1.5"
+                    />
+                  </span>
+                  {/* Shimmer light sweep */}
+                  <span className="cta-shimmer-sweep absolute inset-0 pointer-events-none" />
+                </button>
+
+                {/* SECONDARY CTA — Contáctanos */}
+                <Link
+                  href="/servicios"
+                  onClick={() => navigateWithTransition('/servicios')}
+                  className="pointer-events-auto px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
+                >
+                  Contáctanos
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Slider Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-[100]">
           {sliderData.map((_, index) => (
             <button key={index} onClick={() => setCurrentSlide(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'}`} aria-label={`Ir a slide ${index + 1}`} />
           ))}
         </div>
 
         {/* Slide Counter */}
-        <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block">
+        <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block z-[100]">
           <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
           <span className="mx-2">/</span>
           <span>{String(sliderData.length).padStart(2, '0')}</span>
@@ -252,9 +303,15 @@ export default function HomePage() {
               Cada espacio tiene una historia. Permítenos escribir la tuya con diseño, innovación y excelencia.
               Agenda una consulta gratuita hoy.
             </p>
-            <Link href="/servicios" className="px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
-              Solicitar Consulta Gratuita <ChevronRight size={18} strokeWidth={1.5} />
-            </Link>
+            <button
+              onClick={() => navigateWithTransition('/servicios')}
+              className="cta-shimmer-btn group relative px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.05] inline-flex items-center gap-2 overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                Solicitar Consulta Gratuita <ChevronRight size={18} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1.5" />
+              </span>
+              <span className="cta-shimmer-sweep absolute inset-0 pointer-events-none" />
+            </button>
           </div>
         </section>
       </ScrollReveal>

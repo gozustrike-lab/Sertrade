@@ -320,6 +320,25 @@
 }
 
 /* ========================================
+   CTA Shimmer Effect — light sweep every 3s
+   Subtle attention-grab for primary buttons
+   ======================================== */
+@keyframes shimmerSweep {
+  0% { transform: translateX(-100%); }
+  50%, 100% { transform: translateX(200%); }
+}
+.cta-shimmer-sweep {
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%
+  );
+  animation: shimmerSweep 3s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* ========================================
    Mobile Responsive Fixes
    ======================================== */
 @media (max-width: 480px) {
