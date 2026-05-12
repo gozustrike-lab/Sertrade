@@ -98,8 +98,6 @@ export default function HomePage() {
     }, 400);
   };
 
-  const slide = sliderData[currentSlide];
-
   return (
     <div>
       {/* Page Transition Overlay */}
@@ -109,64 +107,100 @@ export default function HomePage() {
         style={{ opacity: 0, transition: 'opacity 0.4s ease-in-out' }}
       />
 
-      {/* HERO SLIDER */}
+      {/* =============================================
+          HERO SLIDER — Two independent layers:
+            LAYER 1 (z-10): Background images — opacity fade only
+            LAYER 2 (z-20): Text content — 100% STATIC, renders once
+          ============================================= */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* Background Slides (pointer-events locked to active only) */}
+
+        {/* ===== LAYER 1: BACKGROUND IMAGES (z-10) ===== */}
         {sliderData.map((s, index) => (
           <div
-            key={index}
-            className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-              index === currentSlide
-                ? 'opacity-100 scale-100 pointer-events-auto z-[2]'
-                : 'opacity-0 scale-105 pointer-events-none z-[1]'
-            }`}
+            key={`bg-${index}`}
+            className="absolute inset-0"
+            style={{
+              opacity: index === currentSlide ? 1 : 0,
+              zIndex: index === currentSlide ? 10 : 1,
+              transition: 'opacity 0.8s ease-in-out',
+            }}
           >
-            {/* Background Image */}
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${s.image})` }} />
-            {/* Primary brand gradient */}
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${s.image})`,
+                transform: index === currentSlide ? 'scale(1)' : 'scale(1.05)',
+                transition: 'transform 8s ease-out',
+              }}
+            />
             <div className="absolute inset-0 bg-gradient-to-r from-[#004691]/90 via-[#004691]/70 to-transparent" />
-            {/* Extra dark overlay */}
             <div className="hero-overlay-dark absolute inset-0" />
           </div>
         ))}
 
-        {/* Content Layer — ALWAYS on top, always clickable (z-100) */}
-        <div className="absolute inset-0 z-[100] flex items-center pointer-events-none">
+        {/* ===== LAYER 2: STATIC TEXT (z-20) — never re-renders ===== */}
+        <div
+          className="absolute inset-0 flex items-center pointer-events-none"
+          style={{ zIndex: 20 }}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="max-w-2xl">
-              {/* Subtitle badge */}
-              <div className={`transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/20 mb-6">
+            <div
+              className="max-w-2xl"
+              style={{ minHeight: '320px' }}
+            >
+              {/* Subtitle badge — animates once on mount, never again */}
+              <div
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+                  transitionDelay: '0.2s',
+                }}
+                className="mb-6"
+              >
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/20">
                   <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
-                  <span className="text-white/80 text-xs tracking-widest uppercase">{slide.subtitle}</span>
+                  <span className="text-white/80 text-xs tracking-widest uppercase">Arquitectura Comercial</span>
                 </div>
               </div>
 
-              {/* Title */}
+              {/* Title — STATIC, no key, no blur, renders once */}
               <h2
-                key={`title-${currentSlide}`}
-                className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight tracking-tight animate-blur-reveal"
-                style={{ animationDelay: '0.15s' }}
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(24px)',
+                  transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                  transitionDelay: '0.35s',
+                }}
+                className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight tracking-tight"
               >
-                {slide.title}
+                DISEÑO INNOVADOR
               </h2>
 
-              {/* Description */}
+              {/* Description — STATIC */}
               <p
-                key={`desc-${currentSlide}`}
-                className="text-base sm:text-lg lg:text-xl text-white/80 mb-8 max-w-lg leading-[1.7] animate-fade-in-up"
-                style={{ animationDelay: '0.3s' }}
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+                  transitionDelay: '0.5s',
+                }}
+                className="text-base sm:text-lg lg:text-xl text-white/80 mb-8 max-w-lg leading-[1.7]"
               >
-                {slide.description}
+                Transformamos espacios en experiencias memorables con soluciones arquitectónicas a la medida de tu marca.
               </p>
 
-              {/* ===== CTA BUTTONS — Always interactive with WOW effect ===== */}
+              {/* CTA BUTTONS — STATIC, no key, no re-render */}
               <div
-                key={`cta-${currentSlide}`}
-                className="hero-btn-stack flex items-center gap-4 animate-fade-in-up pointer-events-auto"
-                style={{ animationDelay: '0.45s' }}
+                className="hero-btn-stack flex items-center gap-4 pointer-events-auto"
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+                  transitionDelay: '0.65s',
+                }}
               >
-                {/* PRIMARY CTA — VER PROYECTOS with Framer Motion WOW effect */}
+                {/* PRIMARY CTA — VER PROYECTOS */}
                 <motion.button
                   onClick={() => navigateWithTransition('/proyectos')}
                   className="cta-shimmer-btn group relative px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[15px] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden"
@@ -174,7 +208,6 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 >
-                  {/* Animated gradient background sweep */}
                   <motion.span
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
                     initial={{ x: '-100%' }}
@@ -189,21 +222,13 @@ export default function HomePage() {
                   />
                   <span className="relative z-10 flex items-center gap-2.5 transition-colors duration-300 group-hover:text-[#002244]">
                     VER PROYECTOS
-                    <motion.span
-                      className="inline-block"
-                      whileHover={{ x: 5 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    >
-                      <ArrowRight
-                        size={18}
-                        strokeWidth={2}
-                        className="transition-transform duration-300 group-hover:translate-x-1"
-                      />
-                    </motion.span>
+                    <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+                      <ArrowRight size={18} strokeWidth={2} />
+                    </span>
                   </span>
                 </motion.button>
 
-                {/* SECONDARY CTA — Contáctanos */}
+                {/* SECONDARY CTA */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -223,15 +248,15 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Slider Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-[100]">
+        {/* Slider Dots (z-30, above everything) */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ zIndex: 30 }}>
           {sliderData.map((_, index) => (
             <button key={index} onClick={() => setCurrentSlide(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'}`} aria-label={`Ir a slide ${index + 1}`} />
           ))}
         </div>
 
-        {/* Slide Counter */}
-        <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block z-[100]">
+        {/* Slide Counter (z-30) */}
+        <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block" style={{ zIndex: 30 }}>
           <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
           <span className="mx-2">/</span>
           <span>{String(sliderData.length).padStart(2, '0')}</span>
