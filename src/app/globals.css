@@ -101,6 +101,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  ul, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
   html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;

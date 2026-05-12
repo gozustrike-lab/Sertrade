@@ -24,40 +24,40 @@ const sliderData = [
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80',
   },
   {
-    title: 'DISENO INNOVADOR',
+    title: 'DISEÑO INNOVADOR',
     subtitle: 'Espacios que Inspiran',
-    description: 'Soluciones arquitectonicas a la medida de tu marca',
+    description: 'Soluciones arquitectónicas a la medida de tu marca',
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80',
   },
   {
     title: 'EXCELENCIA CREATIVA',
-    subtitle: 'Mas de 10 Anos de Experiencia',
+    subtitle: 'Más de 10 Años de Experiencia',
     description: 'Proyectos que superan expectativas en cada detalle',
     image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&q=80',
   },
 ];
 
 const timelineData = [
-  { year: '2010', title: 'Fundacion', description: 'Nace SERTRADE DESIGN con la vision de transformar la arquitectura comercial en Peru.' },
-  { year: '2013', title: 'Primer Gran Proyecto', description: 'Diseno del centro comercial Plaza Central, marcando nuestro inicio en gran escala.' },
-  { year: '2016', title: 'Expansion Sector Salud', description: 'Incorporamos el diseno de espacios de salud, abriendo una nueva linea de servicio.' },
-  { year: '2019', title: 'Internacionalizacion', description: 'Primeros proyectos en Colombia y Ecuador, expandiendo nuestra presencia regional.' },
-  { year: '2022', title: 'Innovacion Digital', description: 'Implementacion de recorridos virtuales y modelado 3D como servicio estandar.' },
-  { year: '2024', title: 'Mas de 200 Proyectos', description: 'Alcanzamos el hito de 200 proyectos entregados con exito en toda Latinoamerica.' },
+  { year: '2010', title: 'Fundación', description: 'Nace SERTRADE DESIGN con la visión de transformar la arquitectura comercial en Perú.' },
+  { year: '2013', title: 'Primer Gran Proyecto', description: 'Diseño del centro comercial Plaza Central, marcando nuestro inicio en gran escala.' },
+  { year: '2016', title: 'Expansión Sector Salud', description: 'Incorporamos el diseño de espacios de salud, abriendo una nueva línea de servicio.' },
+  { year: '2019', title: 'Internacionalización', description: 'Primeros proyectos en Colombia y Ecuador, expandiendo nuestra presencia regional.' },
+  { year: '2022', title: 'Innovación Digital', description: 'Implementación de recorridos virtuales y modelado 3D como servicio estándar.' },
+  { year: '2024', title: 'Más de 200 Proyectos', description: 'Alcanzamos el hito de 200 proyectos entregados con éxito en toda Latinoamérica.' },
 ];
 
 const pillars = [
-  { icon: BookOpen, title: 'Conocimiento', description: 'Equipo multidisciplinario con formacion continua en tendencias globales de arquitectura comercial.' },
-  { icon: Briefcase, title: 'Experiencia', description: 'Mas de una decada construyendo proyectos exitosos para las principales marcas del mercado.' },
+  { icon: BookOpen, title: 'Conocimiento', description: 'Equipo multidisciplinario con formación continua en tendencias globales de arquitectura comercial.' },
+  { icon: Briefcase, title: 'Experiencia', description: 'Más de una década construyendo proyectos exitosos para las principales marcas del mercado.' },
   { icon: RefreshCw, title: 'Flexibilidad', description: 'Capacidad de adaptarnos a cada requerimiento, entregando soluciones personalizadas y efectivas.' },
-  { icon: ThumbsUp, title: 'Referencias', description: 'Mas de 200 clientes satisfechos avalan nuestro compromiso con la excelencia y la calidad.' },
+  { icon: ThumbsUp, title: 'Referencias', description: 'Más de 200 clientes satisfechos avalan nuestro compromiso con la excelencia y la calidad.' },
 ];
 
 const stats = [
   { number: '200+', label: 'Proyectos Entregados', icon: Building2 },
-  { number: '14+', label: 'Anos de Experiencia', icon: Award },
+  { number: '14+', label: 'Años de Experiencia', icon: Award },
   { number: '50+', label: 'Profesionales', icon: Users },
-  { number: '3', label: 'Paises', icon: Ruler },
+  { number: '3', label: 'Países', icon: Ruler },
 ];
 
 export default function HomePage() {
@@ -111,7 +111,7 @@ export default function HomePage() {
                   </h2>
 
                   {/* Description */}
-                  <p className={`text-base sm:text-lg lg:text-xl text-white/80 mb-8 max-w-lg leading-relaxed transition-all duration-700 delay-400 ${mounted && index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                  <p className={`text-base sm:text-lg lg:text-xl text-white/80 mb-8 max-w-lg leading-[1.7] transition-all duration-700 delay-400 ${mounted && index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     {slide.description}
                   </p>
 
@@ -129,7 +129,7 @@ export default function HomePage() {
                       className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center animate-scale-entry"
                       style={{ animationDelay: '0.6s' }}
                     >
-                      Contactanos
+                      Contáctanos
                     </Link>
                   </div>
                 </div>
@@ -158,11 +158,11 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Quienes Somos</span>
+              <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Quiénes Somos</span>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">Nosotros</h2>
               <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
-              <p className="text-gray-600 max-w-2xl mx-auto mt-6 leading-relaxed">
-                Sertrade Design es un estudio de arquitectura especializado en el diseno de espacios comerciales,
+              <p className="text-[#4A4A4A] max-w-2xl mx-auto mt-6 leading-[1.7]">
+                Sertrade Design es un estudio de arquitectura especializado en el diseño de espacios comerciales,
                 de salud y residenciales. Nuestro enfoque combina creatividad, funcionalidad y sostenibilidad
                 para crear entornos que transforman la experiencia de quienes los habitan.
               </p>
@@ -176,7 +176,7 @@ export default function HomePage() {
                 <div className="text-center p-5 sm:p-6 rounded-[8px] bg-[#f7f8fa] hover:bg-[#004691] group transition-all duration-500 hover:shadow-lg hover:-translate-y-1 border border-gray-100 hover:border-[#004691]">
                   <stat.icon size={24} strokeWidth={1.5} className="mx-auto mb-3 text-[#004691] group-hover:text-[#d4a017] transition-colors" />
                   <div className="text-2xl sm:text-3xl font-bold text-[#004691] group-hover:text-white transition-colors">{stat.number}</div>
-                  <div className="text-xs sm:text-sm text-gray-500 group-hover:text-white/70 transition-colors mt-1">{stat.label}</div>
+                  <div className="text-xs sm:text-sm text-[#4A4A4A] group-hover:text-white/70 transition-colors mt-1">{stat.label}</div>
                 </div>
               </ScrollReveal>
             ))}
@@ -199,7 +199,7 @@ export default function HomePage() {
                         <div className="absolute left-0 top-1 w-10 h-10 rounded-full bg-[#004691] flex items-center justify-center text-white text-xs font-bold shrink-0">{item.year}</div>
                         <div className="flex-1 p-4 rounded-[8px] bg-[#f7f8fa] border border-gray-100">
                           <h4 className="font-semibold text-[#004691]">{item.title}</h4>
-                          <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                          <p className="text-sm text-[#4A4A4A] mt-1 leading-[1.7]">{item.description}</p>
                         </div>
                       </div>
                       {/* Desktop Timeline */}
@@ -207,7 +207,7 @@ export default function HomePage() {
                         <div className="p-6 rounded-[8px] bg-[#f7f8fa] border border-gray-100 max-w-sm hover:shadow-lg transition-all duration-300">
                           <span className="text-[#d4a017] font-bold text-sm">{item.year}</span>
                           <h4 className="font-semibold text-[#004691] mt-1">{item.title}</h4>
-                          <p className="text-sm text-gray-600 mt-2 leading-relaxed">{item.description}</p>
+                          <p className="text-sm text-[#4A4A4A] mt-2 leading-[1.7]">{item.description}</p>
                         </div>
                       </div>
                       <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#d4a017] border-4 border-white shadow-md z-10" />
@@ -232,7 +232,7 @@ export default function HomePage() {
                       <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
                     </div>
                     <h4 className="font-semibold text-[#004691] text-lg mb-3">{pillar.title}</h4>
-                    <p className="text-gray-500 text-sm leading-relaxed">{pillar.description}</p>
+                    <p className="text-[#4A4A4A] text-sm leading-[1.7]">{pillar.description}</p>
                   </div>
                 </ScrollReveal>
               ))}
@@ -247,9 +247,9 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80)' }} />
           <div className="absolute inset-0 bg-[#004691]/90" />
           <div className="relative max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-5">Comienza tu proximo proyecto con nosotros</h2>
-            <p className="text-white/70 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Cada espacio tiene una historia. Permitemos escribir la tuya con diseno, innovacion y excelencia.
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-5">Comienza tu próximo proyecto con nosotros</h2>
+            <p className="text-white/70 mb-8 max-w-2xl mx-auto leading-[1.7]">
+              Cada espacio tiene una historia. Permítenos escribir la tuya con diseño, innovación y excelencia.
               Agenda una consulta gratuita hoy.
             </p>
             <Link href="/servicios" className="px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">

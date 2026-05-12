@@ -18,22 +18,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sertradedesign.com"),
   title: {
-    default: "Sertrade Design | Arquitectura Comercial e Innovacion",
+    default: "Sertrade Design | Arquitectura Comercial e Innovación",
     template: "%s | Sertrade Design",
   },
   description:
-    "Especialistas en diseno retail, corporativo y residencial. Transformamos espacios con eficiencia y estetica. Mas de 200 proyectos entregados en Lima y Latinoamerica.",
+    "Especialistas en diseño retail, corporativo y residencial. Transformamos espacios con eficiencia y estética. Más de 200 proyectos entregados en Lima y Latinoamérica.",
   keywords: [
     "arquitectura comercial",
-    "diseno comercial",
+    "diseño comercial",
     "Sertrade Design",
-    "arquitectura Peru",
-    "diseno de espacios",
+    "arquitectura Perú",
+    "diseño de espacios",
     "modelado 3D",
     "recorridos virtuales",
     "EPCM",
-    "diseno salud",
-    "diseno residencial",
+    "diseño salud",
+    "diseño residencial",
   ],
   icons: {
     icon: [
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Sertrade Design | Arquitectura Comercial e Innovacion",
+    title: "Sertrade Design | Arquitectura Comercial e Innovación",
     description:
-      "Especialistas en diseno retail, corporativo y residencial. Transformamos espacios con eficiencia y estetica.",
+      "Especialistas en diseño retail, corporativo y residencial. Transformamos espacios con eficiencia y estética.",
     siteName: "Sertrade Design",
     type: "website",
     locale: "es_PE",
@@ -56,15 +56,15 @@ export const metadata: Metadata = {
         url: "/og-home-final.png",
         width: 1200,
         height: 630,
-        alt: "Sertrade Design - Arquitectura Comercial e Innovacion",
+        alt: "Sertrade Design - Arquitectura Comercial e Innovación",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sertrade Design | Arquitectura Comercial e Innovacion",
+    title: "Sertrade Design | Arquitectura Comercial e Innovación",
     description:
-      "Especialistas en diseno retail, corporativo y residencial. Transformamos espacios con eficiencia y estetica.",
+      "Especialistas en diseño retail, corporativo y residencial. Transformamos espacios con eficiencia y estética.",
     images: ["/og-home-final.png"],
   },
   robots: {

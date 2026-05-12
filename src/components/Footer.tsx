@@ -34,21 +34,21 @@ export default function Footer() {
                 <p className="text-white/40 text-[9px] tracking-[0.2em] uppercase">Design & Arquitectura</p>
               </div>
             </Link>
-            <p className="text-white/60 text-sm leading-relaxed">
-              Transformamos espacios comerciales en experiencias memorables. Con mas de una decada de experiencia,
-              ofrecemos soluciones integrales de diseno arquitectonico con los mas altos estandares de calidad e
-              innovacion.
+            <p className="text-white/60 text-sm leading-[1.7]">
+              Transformamos espacios comerciales en experiencias memorables. Con más de una década de experiencia,
+              ofrecemos soluciones integrales de diseño arquitectónico con los más altos estándares de calidad e
+              innovación.
             </p>
           </div>
 
           {/* Column 2: Contact */}
           <div>
             <h4 className="font-semibold text-sm mb-6 text-white tracking-wide uppercase">Contacto</h4>
-            <ul className="space-y-4">
+            <ul className="space-y-4 list-none m-0 p-0">
               <li className="flex items-start gap-3">
                 <MapPin size={16} strokeWidth={1.5} className="text-[#d4a017] mt-0.5 shrink-0" />
-                <span className="text-white/60 text-sm leading-relaxed">
-                  Av. Javier Prado Este 4600<br />La Molina, Lima, Peru
+                <span className="text-white/60 text-sm leading-[1.7]">
+                  Av. Javier Prado Este 4600<br />La Molina, Lima, Perú
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -64,8 +64,8 @@ export default function Footer() {
 
           {/* Column 3: Quick Links */}
           <div>
-            <h4 className="font-semibold text-sm mb-6 text-white tracking-wide uppercase">Enlaces Rapidos</h4>
-            <ul className="space-y-3">
+            <h4 className="font-semibold text-sm mb-6 text-white tracking-wide uppercase">Enlaces Rápidos</h4>
+            <ul className="space-y-3 list-none m-0 p-0">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -81,7 +81,7 @@ export default function Footer() {
 
           {/* Column 4: Social & Map */}
           <div>
-            <h4 className="font-semibold text-sm mb-6 text-white tracking-wide uppercase">Siguenos</h4>
+            <h4 className="font-semibold text-sm mb-6 text-white tracking-wide uppercase">Síguenos</h4>
             <div className="flex items-center gap-2.5 mb-8">
               {[Facebook, Instagram, Linkedin].map((Icon, i) => (
                 <button
@@ -102,25 +102,39 @@ export default function Footer() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Ubicacion Sertrade Design"
+                title="Ubicación Sertrade Design"
               />
             </div>
           </div>
         </div>
       </div>
 
+      {/* Sub-footer — Credits */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-white/40 text-xs">
             &copy; {new Date().getFullYear()} Sertrade Design. Todos los derechos reservados.
           </p>
-          <button
-            onClick={scrollToTop}
-            className="w-8 h-8 rounded-[8px] bg-white/10 border border-white/10 flex items-center justify-center hover:bg-[#d4a017] hover:border-[#d4a017] hover:text-[#003466] text-white transition-all duration-300 hover:scale-110"
-            aria-label="Back to top"
-          >
-            <ArrowUp size={14} strokeWidth={1.5} />
-          </button>
+          <div className="flex items-center gap-4">
+            <p className="text-white/40 text-[11px]">
+              Diseñado y desarrollado por{' '}
+              <a
+                href="https://www.fastpagepro.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#d4a017] hover:text-[#e0b030] transition-colors font-medium"
+              >
+                FastPagePro
+              </a>
+            </p>
+            <button
+              onClick={scrollToTop}
+              className="w-8 h-8 rounded-[8px] bg-white/10 border border-white/10 flex items-center justify-center hover:bg-[#d4a017] hover:border-[#d4a017] hover:text-[#003466] text-white transition-all duration-300 hover:scale-110"
+              aria-label="Back to top"
+            >
+              <ArrowUp size={14} strokeWidth={1.5} />
+            </button>
+          </div>
         </div>
       </div>
     </footer>
