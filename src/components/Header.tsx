@@ -6,13 +6,41 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight, Phone, Mail } from 'lucide-react';
 
+/* =============================================
+   NAV ITEMS — primary (always visible) vs
+   secondary (hidden on tablet)
+   ============================================= */
 const navItems = [
-  { href: '/', label: 'Inicio', id: 'home' },
-  { href: '/servicios', label: 'Servicios', id: 'servicios' },
-  { href: '/proyectos', label: 'Proyectos', id: 'proyectos' },
+  { href: '/', label: 'Inicio', id: 'home', primary: true },
+  { href: '/servicios', label: 'Servicios', id: 'servicios', primary: true },
+  { href: '/proyectos', label: 'Proyectos', id: 'proyectos', primary: true },
 ];
 
 const slideEasing = [0.4, 0, 0.2, 1] as const;
+
+/* =============================================
+   HEXAGONAL LOGO SVG (reusable)
+   ============================================= */
+function HexLogo({ size = 40 }: { size?: number }) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      width={size}
+      height={size}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="shrink-0"
+    >
+      <polygon points="32,4 56.6,18 56.6,46 32,60 7.4,46 7.4,18" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinejoin="round" />
+      <line x1="19" y1="11" x2="45" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+      <line x1="45" y1="11" x2="19" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+      <line x1="19" y1="53" x2="45" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+      <line x1="45" y1="53" x2="19" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+      <line x1="13" y1="32" x2="51" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+      <polygon points="32,22 40.4,26.5 40.4,37.5 32,42 23.6,37.5 23.6,26.5" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,17 +48,20 @@ export default function Header() {
   const pathname = usePathname();
   const isFirstRender = useRef(true);
 
-  // Is the user on the home page?
   const isHome = pathname === '/';
 
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
   }, []);
 
-  // Scroll listener — only relevant on home page for transparent→solid transition
+  /* =============================================
+     SCROLL LISTENER
+     - Home: transparent (top) → solid (scrolled)
+     - Subpages: always solid
+     ============================================= */
   useEffect(() => {
     if (!isHome) {
-      setScrolled(true); // Force solid on subpages
+      setScrolled(true);
       return;
     }
 
@@ -68,32 +99,46 @@ export default function Header() {
     return pathname.startsWith(href);
   };
 
-  // Dynamic header styles
+  /* =============================================
+     DYNAMIC STYLES
+     ============================================= */
+  // Background: transparent on home top, solid everywhere else
   const headerBg = scrolled || !isHome
-    ? 'bg-[#004691]/95 backdrop-blur-xl shadow-lg shadow-[#004691]/15'
-    : 'bg-transparent';
+    ? 'bg-[#004691]/95 backdrop-blur-[10px] shadow-[0_4px_30px_rgba(0,70,145,0.15)]'
+    : 'bg-transparent shadow-none';
+
+  // Logo size: shrinks on scroll (PC/Tablet: 40→36, Mobile: 36→30)
+  const logoSizePC = scrolled ? 36 : 40;
+  const logoSizeMobile = scrolled ? 30 : 36;
+
+  // Header height: PC/Tablet 80px, Mobile 80→65 on scroll
+  const headerHeightClass = 'h-20 md:h-20';
+  const headerHeightMobileScrolled = scrolled ? '!h-[65px]' : '';
+
+  // Logo scale effect
+  const logoScale = scrolled ? 'scale-[0.9]' : 'scale-100';
 
   return (
     <>
+      {/* =============================================
+          MAIN NAVBAR
+          ============================================= */}
       <header
-        className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 ${headerBg}`}
+        className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-[400ms] ease-in-out ${headerBg} ${headerHeightClass} ${headerHeightMobileScrolled}`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between h-[72px]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="relative w-10 h-10 flex items-center justify-center">
-              <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="32,4 56.6,18 56.6,46 32,60 7.4,46 7.4,18" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinejoin="round" />
-                <line x1="19" y1="11" x2="45" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                <line x1="45" y1="11" x2="19" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                <line x1="19" y1="53" x2="45" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                <line x1="45" y1="53" x2="19" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                <line x1="13" y1="32" x2="51" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                <polygon points="32,22 40.4,26.5 40.4,37.5 32,42 23.6,37.5 23.6,26.5" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinejoin="round" />
-              </svg>
+          {/* ====== LOGO ====== */}
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0 transition-transform duration-[400ms] ease-in-out">
+            {/* Mobile logo (36→30px) */}
+            <div className="md:hidden transition-all duration-[400ms] ease-in-out" style={{ transform: `scale(${scrolled ? 0.83 : 1})` }}>
+              <HexLogo size={logoSizeMobile} />
             </div>
-            <div className="hidden sm:block">
+            {/* Desktop logo (40→36px) */}
+            <div className="hidden md:block transition-all duration-[400ms] ease-in-out" style={{ transform: `scale(${scrolled ? 0.9 : 1})` }}>
+              <HexLogo size={logoSizePC} />
+            </div>
+            <div className="hidden sm:block transition-all duration-[400ms] ease-in-out">
               <span className="text-white font-bold text-[17px] tracking-wide leading-none group-hover:text-[#d4a017] transition-colors duration-300">
                 Sertrade
               </span>
@@ -103,13 +148,30 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* ====== PC NAV (>1024px) ====== */}
+          <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
               <Link
                 key={item.id}
                 href={item.href}
-                className={`px-5 py-2 rounded-[8px] text-[13px] font-medium tracking-wide transition-all duration-300 ${
+                className={`relative px-1 py-2 text-[13px] font-medium tracking-wide transition-all duration-[400ms] ease-in-out after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#d4a017] after:transition-all after:duration-[400ms] after:ease-in-out ${
+                  isActive(item.href)
+                    ? 'text-white after:w-full'
+                    : 'text-white/90 hover:text-white hover:after:w-full'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* ====== TABLET NAV (768px-1024px): limited links ====== */}
+          <nav className="hidden md:flex lg:hidden items-center gap-6">
+            {navItems.filter(item => item.primary).map((item) => (
+              <Link
+                key={item.id}
+                href={item.href}
+                className={`px-4 py-2 rounded-[8px] text-[13px] font-medium tracking-wide transition-all duration-[400ms] ease-in-out ${
                   isActive(item.href)
                     ? 'bg-white text-[#004691] shadow-md'
                     : 'text-white/90 hover:text-white hover:bg-white/15'
@@ -120,20 +182,30 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:block">
+          {/* ====== PC CTA (>1024px): gold border ====== */}
+          <div className="hidden lg:flex items-center">
             <Link
               href="/proyectos"
-              className="px-5 py-2 bg-[#d4a017] text-[#003466] rounded-[8px] text-[13px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03]"
+              className="px-6 py-2.5 border-2 border-[#d4a017] text-[#d4a017] rounded-[8px] text-[13px] font-semibold hover:bg-[#d4a017] hover:text-[#003466] transition-all duration-[400ms] ease-in-out shadow-md hover:shadow-lg hover:scale-[1.03]"
             >
-              Ver Proyectos
+              Cotizar Ahora
             </Link>
           </div>
 
-          {/* Mobile Hamburger */}
+          {/* ====== TABLET CTA (768px-1024px) ====== */}
+          <div className="hidden md:flex lg:hidden items-center">
+            <Link
+              href="/proyectos"
+              className="px-5 py-2 bg-[#d4a017] text-[#003466] rounded-[8px] text-[13px] font-semibold hover:bg-[#e0b030] transition-all duration-[400ms] ease-in-out shadow-md hover:shadow-lg hover:scale-[1.03]"
+            >
+              Cotizar
+            </Link>
+          </div>
+
+          {/* ====== MOBILE HAMBURGER (<768px) ====== */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden text-white p-2 rounded-[8px] hover:bg-white/15 transition-colors"
+            className="lg:hidden md:hidden text-white p-2 rounded-[8px] hover:bg-white/15 transition-all duration-[400ms] ease-in-out"
             aria-label="Abrir menu"
           >
             <Menu size={24} strokeWidth={1.5} />
@@ -141,9 +213,9 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ============================================
-          OFF-CANVAS MOBILE MENU (Slide-in from Right)
-          ============================================ */}
+      {/* =============================================
+          OFF-CANVAS MOBILE DRAWER (Full-screen panel)
+          ============================================= */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -154,34 +226,24 @@ export default function Header() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: slideEasing }}
               onClick={closeMobileMenu}
-              className="fixed inset-0 z-[1001] bg-black/50 backdrop-blur-[8px] md:hidden"
+              className="fixed inset-0 z-[1001] bg-black/50 backdrop-blur-[8px] lg:hidden"
             />
 
-            {/* Menu Panel — slides from right */}
+            {/* Menu Panel — slides from right, full height */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.4, ease: slideEasing }}
-              className="fixed top-0 right-0 z-[1002] w-[85vw] max-w-[360px] h-full md:hidden flex flex-col"
+              className="fixed top-0 right-0 z-[1002] w-[85vw] max-w-[360px] h-full lg:hidden flex flex-col"
             >
-              {/* Panel Background */}
+              {/* Panel Background — solid dark gradient */}
               <div className="relative flex flex-col h-full bg-gradient-to-b from-[#0a1628] via-[#0d1f3c] to-[#0a1628]">
 
                 {/* Close Button */}
                 <div className="flex items-center justify-between px-6 pt-5 pb-4">
                   <div className="flex items-center gap-2.5">
-                    <div className="relative w-9 h-9 flex items-center justify-center">
-                      <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="32,4 56.6,18 56.6,46 32,60 7.4,46 7.4,18" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinejoin="round" />
-                        <line x1="19" y1="11" x2="45" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                        <line x1="45" y1="11" x2="19" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                        <line x1="19" y1="53" x2="45" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                        <line x1="45" y1="53" x2="19" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                        <line x1="13" y1="32" x2="51" y2="32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                        <polygon points="32,22 40.4,26.5 40.4,37.5 32,42 23.6,37.5 23.6,26.5" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinejoin="round" />
-                      </svg>
-                    </div>
+                    <HexLogo size={36} />
                     <span className="text-white font-bold text-base tracking-wide">Sertrade</span>
                   </div>
                   <button
@@ -233,7 +295,7 @@ export default function Header() {
                       onClick={closeMobileMenu}
                       className="flex items-center justify-center gap-2.5 w-full py-[15px] bg-[#d4a017] text-[#003466] rounded-full text-[15px] font-bold tracking-wide hover:bg-[#e0b030] transition-all duration-300 shadow-lg shadow-[#d4a017]/20 hover:shadow-xl hover:scale-[1.02]"
                     >
-                      Ver Proyectos
+                      Cotizar Ahora
                       <ArrowRight size={18} strokeWidth={2} />
                     </Link>
                   </motion.div>

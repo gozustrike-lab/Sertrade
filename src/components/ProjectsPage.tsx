@@ -40,7 +40,7 @@ export default function ProjectsPage() {
   };
 
   return (
-    <div className="pt-[72px]">
+    <div className="pt-20">
       {/* HERO HEADER — Premium gradient */}
       <section className="relative py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #002B5B 0%, #004691 60%, #0062b8 100%)' }}>
         <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
