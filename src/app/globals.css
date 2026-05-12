@@ -95,6 +95,7 @@
   }
   html, body {
     overflow-x: hidden;
+    overflow-y: auto;
     width: 100%;
     max-width: 100vw;
   }
@@ -113,20 +114,14 @@
 }
 
 /* ========================================
-   Custom Scrollbar
+   Hide Scrollbar (keep scroll functionality)
    ======================================== */
-::-webkit-scrollbar {
-  width: 6px;
+html, body {
+  scrollbar-width: none; /* Firefox */
 }
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #004691;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #0062b8;
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 /* ========================================
