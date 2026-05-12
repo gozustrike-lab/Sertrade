@@ -30,9 +30,9 @@ const additionalServices = [
 
 export default function ServicesPage() {
   return (
-    <div className="pt-20">
-      {/* HERO HEADER — Premium gradient */}
-      <section className="relative py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #002B5B 0%, #004691 60%, #0062b8 100%)' }}>
+    <div>
+      {/* HERO HEADER — Seamless gradient behind fixed header */}
+      <section className="subpage-hero-seamless relative pb-24 overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 40%, #002B5B 100%)' }}>
         <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

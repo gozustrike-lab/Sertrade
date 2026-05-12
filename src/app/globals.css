@@ -89,9 +89,13 @@
    MOBILE FIRST: Overflow & Base
    ======================================== */
 @layer base {
-  * {
+  *,
+  *::before,
+  *::after {
     @apply border-border outline-ring/50;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
   html, body {
     overflow-x: hidden;
@@ -109,6 +113,10 @@
   html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
+  }
+  /* Ensure no browser defaults push header down */
+  header, nav, main, section, footer, div {
+    margin: 0;
   }
 }
 
@@ -291,6 +299,34 @@
     rgba(0, 70, 145, 0.45) 50%,
     rgba(0, 30, 66, 0.35) 100%
   );
+}
+
+/* ========================================
+   Subpage Hero: Seamless Header Connection
+   Pulls hero gradient behind the fixed header
+   for a zero-gap, single-piece visual.
+   ======================================== */
+.subpage-hero-seamless {
+  margin-top: -5rem; /* -80px = h-20 header height */
+  padding-top: 5rem; /* restore content offset */
+}
+
+/* ========================================
+   Lazy Load Zoom-In Animation
+   for project gallery images
+   ======================================== */
+@keyframes lazyZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.img-lazy-zoom {
+  animation: lazyZoomIn 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* ========================================
