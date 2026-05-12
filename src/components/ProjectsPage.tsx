@@ -41,11 +41,13 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      {/* HERO HEADER — Spaced below fixed header, gradient matches nav */}
-      <section className="subpage-hero relative pb-24 overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 40%, #002B5B 100%)' }}>
+      {/* HERO HEADER — Full bleed behind transparent header */}
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 40%, #002B5B 100%)' }}>
+        {/* Decorative geometric accents */}
         <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {/* Content with top padding to clear the transparent header */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-[120px] md:pt-[130px] pb-24 md:pb-28">
           <ScrollReveal animation="fade-down" delay={0.1}>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-6">
               <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />

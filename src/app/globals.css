@@ -302,20 +302,6 @@
 }
 
 /* ========================================
-   Subpage Hero: Content spacing below header
-   Only applies to Services & Projects pages.
-   Desktop: 120px  |  Mobile: 100px
-   ======================================== */
-.subpage-hero {
-  padding-top: 120px;
-}
-@media (max-width: 768px) {
-  .subpage-hero {
-    padding-top: 100px;
-  }
-}
-
-/* ========================================
    Lazy Load Zoom-In Animation
    for project gallery images
    ======================================== */

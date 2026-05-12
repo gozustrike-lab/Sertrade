@@ -48,23 +48,15 @@ export default function Header() {
   const pathname = usePathname();
   const isFirstRender = useRef(true);
 
-  const isHome = pathname === '/';
-
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
   }, []);
 
   /* =============================================
      SCROLL LISTENER
-     - Home: transparent (top) → solid (scrolled)
-     - Subpages: always solid
+     - ALL pages: transparent (top) → glassmorphism (scrolled)
      ============================================= */
   useEffect(() => {
-    if (!isHome) {
-      setScrolled(true);
-      return;
-    }
-
     setScrolled(window.scrollY > 50);
 
     const handleScroll = () => {
@@ -72,7 +64,7 @@ export default function Header() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isHome]);
+  }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -102,9 +94,9 @@ export default function Header() {
   /* =============================================
      DYNAMIC STYLES
      ============================================= */
-  // Background: transparent on home top, solid everywhere else
-  const headerBg = scrolled || !isHome
-    ? 'bg-[#004691]/95 backdrop-blur-[10px] shadow-[0_4px_30px_rgba(0,70,145,0.15)]'
+  // Background: transparent on top → glassmorphism on scroll (ALL pages)
+  const headerBg = scrolled
+    ? 'bg-[rgba(0,70,145,0.8)] backdrop-blur-[12px] shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
     : 'bg-transparent shadow-none';
 
   // Logo size: shrinks on scroll (PC/Tablet: 40→36, Mobile: 36→30)
@@ -114,9 +106,6 @@ export default function Header() {
   // Header height: PC/Tablet 80px, Mobile 80→65 on scroll
   const headerHeightClass = 'h-20 md:h-20';
   const headerHeightMobileScrolled = scrolled ? '!h-[65px]' : '';
-
-  // Logo scale effect
-  const logoScale = scrolled ? 'scale-[0.9]' : 'scale-100';
 
   return (
     <>
