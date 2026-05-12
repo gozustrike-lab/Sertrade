@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import {
   Store, HeartPulse, Home, LayoutGrid, Eye, Box,
   Paintbrush, ClipboardList, Lightbulb, MonitorSmartphone,
@@ -56,7 +57,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* SERVICE CATEGORIES */}
+      {/* SERVICE CATEGORIES — with stagger + spring hover */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
@@ -66,10 +67,13 @@ export default function ServicesPage() {
               <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <ScrollReveal animation="fade-up" staggerDelay={0.12} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {serviceCategories.map((cat, i) => (
-              <ScrollReveal key={i} delay={i * 0.15} animation="fade-up">
-                <div className="group rounded-[12px] overflow-hidden bg-white border border-gray-100 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <motion.div
+                key={i}
+                whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+              >
+                <div className="group rounded-[12px] overflow-hidden bg-white border border-gray-100 hover:shadow-2xl transition-all duration-500">
                   <div className={`bg-gradient-to-r ${cat.color} p-8 text-center`}>
                     <div className="w-16 h-16 rounded-[8px] bg-white/15 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500">
                       <cat.icon size={32} strokeWidth={1.5} className="text-white" />
@@ -91,13 +95,13 @@ export default function ServicesPage() {
                     </button>
                   </div>
                 </div>
-              </ScrollReveal>
+              </motion.div>
             ))}
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* PROJECT PRESENTATION BLOCKS */}
+      {/* PROJECT PRESENTATION BLOCKS — with stagger + spring hover */}
       <section className="py-24 bg-[#f7f8fa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
@@ -110,10 +114,13 @@ export default function ServicesPage() {
               </p>
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <ScrollReveal animation="scale" staggerDelay={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {projectBlocks.map((block, i) => (
-              <ScrollReveal key={i} delay={i * 0.15} animation="scale">
-                <div className="group bg-white rounded-[12px] p-7 border border-gray-100 hover:border-[#004691]/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <motion.div
+                key={i}
+                whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+              >
+                <div className="group bg-white rounded-[12px] p-7 border border-gray-100 hover:border-[#004691]/20 hover:shadow-2xl transition-all duration-500">
                   <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
                     <block.icon size={28} strokeWidth={1.5} className="text-white" />
                   </div>
@@ -130,13 +137,13 @@ export default function ServicesPage() {
                     ))}
                   </div>
                 </div>
-              </ScrollReveal>
+              </motion.div>
             ))}
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* ADDITIONAL SERVICES */}
+      {/* ADDITIONAL SERVICES — with stagger + spring hover */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
@@ -147,18 +154,21 @@ export default function ServicesPage() {
               </p>
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <ScrollReveal animation="fade-up" staggerDelay={0.08} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {additionalServices.map((svc, i) => (
-              <ScrollReveal key={i} delay={i * 0.08} animation="fade-up">
-                <div className="group flex flex-col items-center text-center p-5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 hover:bg-[#004691] hover:border-[#004691] transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+              <motion.div
+                key={i}
+                whileHover={{ y: -4, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+              >
+                <div className="group flex flex-col items-center text-center p-5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 hover:bg-[#004691] hover:border-[#004691] transition-all duration-500 hover:shadow-lg">
                   <div className="w-11 h-11 rounded-[8px] bg-[#004691]/10 flex items-center justify-center mb-3.5 group-hover:bg-white/15 transition-all duration-500 group-hover:scale-110">
                     <svc.icon size={22} strokeWidth={1.5} className="text-[#004691] group-hover:text-[#d4a017] transition-colors" />
                   </div>
                   <span className="text-sm font-semibold text-[#004691] group-hover:text-white transition-colors">{svc.label}</span>
                 </div>
-              </ScrollReveal>
+              </motion.div>
             ))}
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -172,12 +182,22 @@ export default function ServicesPage() {
               específicas y descubre cómo podemos hacer realidad tu visión.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
+              <motion.button
+                className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold shadow-lg inline-flex items-center gap-2"
+                whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              >
                 <Phone size={18} strokeWidth={1.5} /> Solicitar Cotización
-              </button>
-              <button className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 inline-flex items-center gap-2">
+              </motion.button>
+              <motion.button
+                className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium inline-flex items-center gap-2"
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              >
                 <Mail size={18} strokeWidth={1.5} /> Enviar Correo
-              </button>
+              </motion.button>
             </div>
           </div>
         </section>

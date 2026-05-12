@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
   MapPin, Maximize2, Calendar, Building2, Filter, Eye, ArrowRight,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
 
@@ -88,15 +89,19 @@ export default function ProjectsPage() {
             </div>
           </ScrollReveal>
 
-          {/* Projects — Full-Width Gallery Layout */}
-          <div className="space-y-20">
+          {/* Projects — Full-Width Gallery Layout with Stagger */}
+          <ScrollReveal animation="fade-up" staggerDelay={0.12} className="space-y-20">
             {filteredProjects.map((project) => (
-              <ScrollReveal key={project.id} animation="fade-up">
                 <article
                   className="group"
                   onMouseEnter={() => setHoveredProject(project.id)}
                   onMouseLeave={() => setHoveredProject(null)}
                 >
+                  <motion.div
+                    whileHover={{ scale: 1.01 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+                    className="contents"
+                  >
                   {/* TITLE — Above image, large with tracking */}
                   <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
                     <div>
@@ -194,10 +199,10 @@ export default function ProjectsPage() {
 
                   {/* Thin separator between projects */}
                   <div className="mt-20 h-px bg-gray-200" />
+                  </motion.div>
                 </article>
-              </ScrollReveal>
             ))}
-          </div>
+          </ScrollReveal>
 
           {/* Load More CTA */}
           <div className="text-center mt-16">

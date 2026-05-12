@@ -213,17 +213,17 @@ export default function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: slideEasing }}
+              transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
               onClick={closeMobileMenu}
               className="fixed inset-0 z-[1001] bg-black/50 backdrop-blur-[8px] lg:hidden"
             />
 
-            {/* Menu Panel — slides from right, full height */}
+            {/* Menu Panel — slides from right with spring bounce: 0 */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ duration: 0.4, ease: slideEasing }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30, bounce: 0 }}
               className="fixed top-0 right-0 z-[1002] w-[85vw] max-w-[360px] h-full lg:hidden flex flex-col"
             >
               {/* Panel Background — solid dark gradient */}
@@ -252,9 +252,9 @@ export default function Header() {
                   {navItems.map((item, i) => (
                     <motion.div
                       key={item.id}
-                      initial={{ opacity: 0, x: 30 }}
+                      initial={{ opacity: 0, x: 40 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.35, ease: slideEasing, delay: 0.1 + i * 0.07 }}
+                      transition={{ type: 'spring', stiffness: 200, damping: 25, delay: 0.08 + i * 0.06 }}
                     >
                       <Link
                         href={item.href}
@@ -277,7 +277,7 @@ export default function Header() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease: slideEasing, delay: 0.35 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 25, delay: 0.3 }}
                   >
                     <Link
                       href="/proyectos"
@@ -292,7 +292,7 @@ export default function Header() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease: slideEasing, delay: 0.42 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 25, delay: 0.38 }}
                     className="space-y-2.5 pt-2"
                   >
                     <a href="tel:+51123456789" className="flex items-center gap-3 text-white/50 hover:text-white/80 text-sm transition-colors">

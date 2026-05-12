@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import {
   BookOpen,
   Briefcase,
@@ -14,8 +15,12 @@ import {
   Ruler,
   Users,
   Award,
+  HardHat,
+  PencilRuler,
+  History,
 } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
+import StatCard from '@/components/StatCard';
 
 const sliderData = [
   {
@@ -54,11 +59,13 @@ const pillars = [
   { icon: ThumbsUp, title: 'Referencias', description: 'Más de 200 clientes satisfechos avalan nuestro compromiso con la excelencia y la calidad.' },
 ];
 
-const stats = [
-  { number: '200+', label: 'Proyectos Entregados', icon: Building2 },
-  { number: '14+', label: 'Años de Experiencia', icon: Award },
-  { number: '50+', label: 'Profesionales', icon: Users },
-  { number: '3', label: 'Países', icon: Ruler },
+/* =============================================
+   ANIMATED PRO STATS — with spring counters
+   ============================================= */
+const proStats = [
+  { icon: HardHat, value: 5000, prefix: '+', suffix: ' m²', label: 'Construidos' },
+  { icon: PencilRuler, value: 8000, prefix: '+', suffix: ' m²', label: 'Diseñados' },
+  { icon: History, value: 10, prefix: '+', suffix: ' Años', label: 'Experiencia' },
 ];
 
 export default function HomePage() {
@@ -153,37 +160,64 @@ export default function HomePage() {
                 {slide.description}
               </p>
 
-              {/* ===== CTA BUTTONS — Always interactive ===== */}
+              {/* ===== CTA BUTTONS — Always interactive with WOW effect ===== */}
               <div
                 key={`cta-${currentSlide}`}
                 className="hero-btn-stack flex items-center gap-4 animate-fade-in-up pointer-events-auto"
                 style={{ animationDelay: '0.45s' }}
               >
-                {/* PRIMARY CTA — VER PROYECTOS with shimmer */}
-                <button
+                {/* PRIMARY CTA — VER PROYECTOS with Framer Motion WOW effect */}
+                <motion.button
                   onClick={() => navigateWithTransition('/proyectos')}
-                  className="cta-shimmer-btn group relative px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[15px] hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.05] flex items-center gap-2.5 justify-center overflow-hidden"
+                  className="cta-shimmer-btn group relative px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[15px] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden"
+                  whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 >
-                  <span className="relative z-10 flex items-center gap-2.5">
+                  {/* Animated gradient background sweep */}
+                  <motion.span
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
+                    initial={{ x: '-100%' }}
+                    animate={{ x: ['100%', '-100%'] }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      repeatDelay: 1,
+                      ease: 'easeInOut',
+                    }}
+                    style={{ backgroundSize: '200% 100%' }}
+                  />
+                  <span className="relative z-10 flex items-center gap-2.5 transition-colors duration-300 group-hover:text-[#002244]">
                     VER PROYECTOS
-                    <ArrowRight
-                      size={18}
-                      strokeWidth={2}
-                      className="transition-transform duration-300 group-hover:translate-x-1.5"
-                    />
+                    <motion.span
+                      className="inline-block"
+                      whileHover={{ x: 5 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    >
+                      <ArrowRight
+                        size={18}
+                        strokeWidth={2}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </motion.span>
                   </span>
-                  {/* Shimmer light sweep */}
-                  <span className="cta-shimmer-sweep absolute inset-0 pointer-events-none" />
-                </button>
+                </motion.button>
 
                 {/* SECONDARY CTA — Contáctanos */}
-                <Link
-                  href="/servicios"
-                  onClick={() => navigateWithTransition('/servicios')}
-                  className="pointer-events-auto px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                  className="pointer-events-auto"
                 >
-                  Contáctanos
-                </Link>
+                  <Link
+                    href="/servicios"
+                    onClick={() => navigateWithTransition('/servicios')}
+                    className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
+                  >
+                    Contáctanos
+                  </Link>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -201,6 +235,33 @@ export default function HomePage() {
           <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
           <span className="mx-2">/</span>
           <span>{String(sliderData.length).padStart(2, '0')}</span>
+        </div>
+      </section>
+
+      {/* PRO STATS — Animated Counters with Spring Physics */}
+      <section className="py-16 md:py-20 bg-[#f7f8fa]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4">Resultados que Hablan</h2>
+              <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {proStats.map((stat, i) => (
+              <StatCard
+                key={i}
+                icon={stat.icon}
+                value={stat.value}
+                prefix={stat.prefix}
+                suffix={stat.suffix}
+                label={stat.label}
+                delay={i * 0.15}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -222,7 +283,12 @@ export default function HomePage() {
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
-            {stats.map((stat, i) => (
+            {[
+              { number: '200+', label: 'Proyectos Entregados', icon: Building2 },
+              { number: '14+', label: 'Años de Experiencia', icon: Award },
+              { number: '50+', label: 'Profesionales', icon: Users },
+              { number: '3', label: 'Países', icon: Ruler },
+            ].map((stat, i) => (
               <ScrollReveal key={i} delay={i * 0.1} animation="scale">
                 <div className="text-center p-5 sm:p-6 rounded-[8px] bg-[#f7f8fa] hover:bg-[#004691] group transition-all duration-500 hover:shadow-lg hover:-translate-y-1 border border-gray-100 hover:border-[#004691]">
                   <stat.icon size={24} strokeWidth={1.5} className="mx-auto mb-3 text-[#004691] group-hover:text-[#d4a017] transition-colors" />
@@ -270,24 +336,28 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Pillars */}
+          {/* Pillars — with stagger */}
           <div className="mt-20">
             <ScrollReveal>
               <h3 className="text-2xl font-bold text-[#004691] mb-12 text-center">Nuestros Pilares</h3>
             </ScrollReveal>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {pillars.map((pillar, i) => (
-                <ScrollReveal key={i} delay={i * 0.12} animation="fade-up">
-                  <div className="group text-center p-6 sm:p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+            <ScrollReveal animation="fade-up" staggerDelay={0.12}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                {pillars.map((pillar, i) => (
+                  <motion.div
+                    key={i}
+                    whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                    className="group text-center p-6 sm:p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 hover:shadow-xl transition-all duration-500"
+                  >
                     <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
                       <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
                     </div>
                     <h4 className="font-semibold text-[#004691] text-lg mb-3">{pillar.title}</h4>
                     <p className="text-[#4A4A4A] text-sm leading-[1.7]">{pillar.description}</p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
+                  </motion.div>
+                ))}
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -303,15 +373,30 @@ export default function HomePage() {
               Cada espacio tiene una historia. Permítenos escribir la tuya con diseño, innovación y excelencia.
               Agenda una consulta gratuita hoy.
             </p>
-            <button
+            <motion.button
               onClick={() => navigateWithTransition('/servicios')}
-              className="cta-shimmer-btn group relative px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold hover:bg-[#e0b030] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.05] inline-flex items-center gap-2 overflow-hidden"
+              className="cta-shimmer-btn group relative px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold shadow-lg inline-flex items-center gap-2 overflow-hidden"
+              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
-              <span className="relative z-10 flex items-center gap-2">
+              {/* Animated gradient background sweep */}
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
+                initial={{ x: '-100%' }}
+                animate={{ x: ['100%', '-100%'] }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  repeatDelay: 1,
+                  ease: 'easeInOut',
+                }}
+                style={{ backgroundSize: '200% 100%' }}
+              />
+              <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover:text-[#002244]">
                 Solicitar Consulta Gratuita <ChevronRight size={18} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1.5" />
               </span>
-              <span className="cta-shimmer-sweep absolute inset-0 pointer-events-none" />
-            </button>
+            </motion.button>
           </div>
         </section>
       </ScrollReveal>
