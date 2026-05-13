@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -228,20 +227,21 @@ export default function HomePage() {
                   </span>
                 </motion.button>
 
-                {/* SECONDARY CTA */}
+                {/* SECONDARY CTA — WhatsApp */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   className="pointer-events-auto"
                 >
-                  <Link
-                    href="/servicios"
-                    onClick={() => navigateWithTransition('/servicios')}
+                  <a
+                    href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estoy en la página de inicio de Sertrade y quiero agendar una reunión para presentarles mi proyecto.')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
                   >
                     Contáctanos
-                  </Link>
+                  </a>
                 </motion.div>
               </div>
             </div>
@@ -291,8 +291,8 @@ export default function HomePage() {
       </section>
 
       {/* NOSOTROS */}
-      <section className="py-20 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <section className="py-20 md:py-24 bg-white" style={{ overflow: 'visible', height: 'auto' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ overflow: 'visible' }}>
           <ScrollReveal>
             <div className="text-center mb-16">
               <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Quiénes Somos</span>
@@ -398,8 +398,10 @@ export default function HomePage() {
               Cada espacio tiene una historia. Permítenos escribir la tuya con diseño, innovación y excelencia.
               Agenda una consulta gratuita hoy.
             </p>
-            <motion.button
-              onClick={() => navigateWithTransition('/servicios')}
+            <motion.a
+              href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, vi su página web y me gustaría recibir asesoría sobre sus servicios de arquitectura.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="cta-shimmer-btn group relative px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold shadow-lg inline-flex items-center gap-2 overflow-hidden"
               whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
               whileTap={{ scale: 0.95 }}
@@ -421,7 +423,7 @@ export default function HomePage() {
               <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover:text-[#002244]">
                 Solicitar Consulta Gratuita <ChevronRight size={18} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1.5" />
               </span>
-            </motion.button>
+            </motion.a>
           </div>
         </section>
       </ScrollReveal>

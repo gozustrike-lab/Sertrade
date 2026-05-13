@@ -295,9 +295,9 @@ export default function Header() {
                     transition={{ type: 'spring', stiffness: 200, damping: 25, delay: 0.38 }}
                     className="space-y-2.5 pt-2"
                   >
-                    <a href="tel:+51123456789" className="flex items-center gap-3 text-white/50 hover:text-white/80 text-sm transition-colors">
+                    <a href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, vi su página web y me gustaría recibir asesoría sobre sus servicios de arquitectura.')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/50 hover:text-white/80 text-sm transition-colors">
                       <Phone size={14} strokeWidth={1.5} />
-                      <span>+51 (01) 234-5678</span>
+                      <span>+51 944 106 163</span>
                     </a>
                     <a href="mailto:info@sertradedesign.com" className="flex items-center gap-3 text-white/50 hover:text-white/80 text-sm transition-colors">
                       <Mail size={14} strokeWidth={1.5} />

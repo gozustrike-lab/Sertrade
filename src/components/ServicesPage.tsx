@@ -9,9 +9,9 @@ import {
 import ScrollReveal from '@/components/ScrollReveal';
 
 const serviceCategories = [
-  { icon: Store, title: 'Diseño Comercial', description: 'Creamos espacios comerciales estratégicos que potencian la marca y mejoran la experiencia del cliente. Desde boutiques hasta grandes centros comerciales, cada proyecto refleja la identidad única de tu negocio.', features: ['Retail y Tiendas', 'Oficinas Corporativas', 'Centros Comerciales', 'Restaurantes y Cafés'], color: 'from-[#004691] to-[#0062b8]' },
-  { icon: HeartPulse, title: 'Diseño Salud', description: 'Diseñamos entornos de salud que combinan funcionalidad clínica con bienestar. Nuestros espacios hospitalarios y clínicos están optimizados para la eficiencia y el confort de pacientes y profesionales.', features: ['Hospitales', 'Clínicas', 'Centros Médicos', 'Laboratorios'], color: 'from-[#004691] to-[#006d8f]' },
-  { icon: Home, title: 'Diseño Residencial', description: 'Transformamos la visión de nuestros clientes en hogares excepcionales. Cada diseño residencial es una fusión de estética, funcionalidad y personalidad que refleja el estilo de vida único de sus habitantes.', features: ['Casas Unifamiliares', 'Departamentos', 'Viviendas Multifamiliares', 'Remodelaciones'], color: 'from-[#004691] to-[#003466]' },
+  { icon: Store, title: 'Diseño Comercial', description: 'Creamos espacios comerciales estratégicos que potencian la marca y mejoran la experiencia del cliente. Desde boutiques hasta grandes centros comerciales, cada proyecto refleja la identidad única de tu negocio.', features: ['Retail y Tiendas', 'Oficinas Corporativas', 'Centros Comerciales', 'Restaurantes y Cafés'], color: 'from-[#004691] to-[#0062b8]', waMsg: 'Hola, me interesa el servicio de Diseño Comercial para mi negocio. Deseo más información.' },
+  { icon: HeartPulse, title: 'Diseño Salud', description: 'Diseñamos entornos de salud que combinan funcionalidad clínica con bienestar. Nuestros espacios hospitalarios y clínicos están optimizados para la eficiencia y el confort de pacientes y profesionales.', features: ['Hospitales', 'Clínicas', 'Centros Médicos', 'Laboratorios'], color: 'from-[#004691] to-[#006d8f]', waMsg: 'Hola, necesito información y asesoría sobre el diseño técnico para el sector Salud / Clínicas.' },
+  { icon: Home, title: 'Diseño Residencial', description: 'Transformamos la visión de nuestros clientes en hogares excepcionales. Cada diseño residencial es una fusión de estética, funcionalidad y personalidad que refleja el estilo de vida único de sus habitantes.', features: ['Casas Unifamiliares', 'Departamentos', 'Viviendas Multifamiliares', 'Remodelaciones'], color: 'from-[#004691] to-[#003466]', waMsg: 'Hola, me gustaría cotizar el diseño arquitectónico de un proyecto Residencial.' },
 ];
 
 const projectBlocks = [
@@ -90,9 +90,14 @@ export default function ServicesPage() {
                         </li>
                       ))}
                     </ul>
-                    <button className="mt-5 text-[#004691] font-semibold text-sm flex items-center gap-2 group-hover:text-[#d4a017] transition-colors">
-                      Conocer más <ChevronRight size={16} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
-                    </button>
+                    <a
+                      href={`https://wa.me/51944106163?text=${encodeURIComponent(cat.waMsg)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-5 text-[#004691] font-semibold text-sm flex items-center gap-2 group-hover:text-[#d4a017] transition-colors"
+                    >
+                      Cotizar Servicio <ChevronRight size={16} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
+                    </a>
                   </div>
                 </div>
               </motion.div>
@@ -182,22 +187,28 @@ export default function ServicesPage() {
               específicas y descubre cómo podemos hacer realidad tu visión.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <motion.button
+              <motion.a
+                href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, necesito un servicio personalizado de arquitectura. ¿Podrían asesorarme?')}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold shadow-lg inline-flex items-center gap-2"
                 whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               >
                 <Phone size={18} strokeWidth={1.5} /> Solicitar Cotización
-              </motion.button>
-              <motion.button
+              </motion.a>
+              <motion.a
+                href="mailto:info@sertradedesign.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium inline-flex items-center gap-2"
                 whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               >
                 <Mail size={18} strokeWidth={1.5} /> Enviar Correo
-              </motion.button>
+              </motion.a>
             </div>
           </div>
         </section>

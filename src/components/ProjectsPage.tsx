@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import {
-  MapPin, Maximize2, Calendar, Building2, Filter, Eye, ArrowRight,
+  MapPin, Maximize2, Calendar, Building2, Filter, Eye, ArrowRight, MessageCircle,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -210,6 +210,21 @@ export default function ProjectsPage() {
               <button className="px-10 py-4 bg-[#004691] text-white rounded-[8px] font-semibold hover:bg-[#0062b8] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
                 Cargar Más Proyectos <ArrowRight size={18} strokeWidth={1.5} />
               </button>
+            </ScrollReveal>
+          </div>
+
+          {/* WhatsApp CTA — Cotizar Proyecto Similar */}
+          <div className="text-center mt-12">
+            <ScrollReveal animation="fade-up" delay={0.15}>
+              <a
+                href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estuve revisando su portafolio de proyectos y me interesa cotizar un desarrollo arquitectónico similar.')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-[8px] font-semibold shadow-lg hover:shadow-xl hover:scale-[1.03] transition-all duration-300"
+              >
+                <MessageCircle size={20} strokeWidth={1.5} />
+                Cotizar Proyecto Similar
+              </a>
             </ScrollReveal>
           </div>
         </div>

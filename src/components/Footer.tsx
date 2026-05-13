@@ -53,7 +53,9 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={16} strokeWidth={1.5} className="text-[#d4a017] shrink-0" />
-                <span className="text-white/60 text-sm">+51 (01) 234-5678</span>
+                <a href="https://wa.me/51944106163?text=Hola%20Sertrade%20Design%2C%20vi%20su%20página%20web%20y%20me%20gustaría%20recibir%20asesoría%20sobre%20sus%20servicios%20de%20arquitectura." target="_blank" rel="noopener noreferrer" className="text-white/60 text-sm hover:text-[#d4a017] transition-colors">
+                  +51 944 106 163
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={16} strokeWidth={1.5} className="text-[#d4a017] shrink-0" />
