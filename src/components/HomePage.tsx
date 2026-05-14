@@ -387,7 +387,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* ===== 3D FLIP CARDS — SERVICIOS ===== */}
+          {/* ===== 3D FLIP CARDS — SERVICIOS (IMMERSIVE FULL-BLEED) ===== */}
           <div className="mt-20">
             <ScrollReveal>
               <div className="text-center mb-12">
@@ -396,7 +396,7 @@ export default function HomePage() {
                 <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
               </div>
             </ScrollReveal>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-1 mx-auto w-[95vw] max-w-none">
               {serviceCards.map((card, i) => (
                 <FlipCard
                   key={i}

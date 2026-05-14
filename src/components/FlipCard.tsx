@@ -117,31 +117,31 @@ export default function FlipCard({
             <div className="absolute inset-0 bg-[rgba(0,20,50,0.82)]" />
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 py-8 text-center">
-              {/* Icon small */}
+            <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 py-8">
+              {/* Icon small — centered */}
               <div className="w-10 h-10 rounded-full bg-[#d4a017] flex items-center justify-center mb-5">
                 <Icon size={20} strokeWidth={1.5} className="text-white" />
               </div>
 
-              {/* Title */}
-              <h3 className="text-lg sm:text-xl font-bold text-white uppercase tracking-[0.08em] mb-6">
+              {/* Title — centered */}
+              <h3 className="text-lg sm:text-xl font-bold text-white uppercase tracking-[0.08em] mb-6 text-center">
                 {title}
               </h3>
 
-              {/* Service List */}
-              <ul className="space-y-2.5 mb-8 w-full max-w-[260px]">
+              {/* Service List — LEFT aligned, centered via mx-auto + w-fit */}
+              <ul className="space-y-2.5 mb-8 text-left mx-auto w-fit max-w-[85%]">
                 {services.map((service, i) => (
                   <li
                     key={i}
                     className="text-white/90 text-[13px] sm:text-sm leading-snug flex items-start gap-2.5"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#d4a017] mt-1.5 shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#d4a017] mt-[7px] shrink-0" />
                     <span>{service}</span>
                   </li>
                 ))}
               </ul>
 
-              {/* CTA Button */}
+              {/* CTA Button — centered */}
               <a
                 href={`https://wa.me/51944106163?text=${encodeURIComponent(`Hola Sertrade Design, estoy interesado en cotizar el servicio de ${title}.`)}`}
                 target="_blank"

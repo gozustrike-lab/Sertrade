@@ -693,7 +693,7 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 4px;
 }
 
 .flip-card-front {
