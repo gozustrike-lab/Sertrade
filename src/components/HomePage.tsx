@@ -134,28 +134,13 @@ export default function HomePage() {
           </div>
         ))}
 
-        {/* ===== LAYER 2: STATIC TEXT — FULLY CENTERED (z-20) ===== */}
+        {/* ===== LAYER 2: STATIC TEXT — LOWER THIRD (z-20) ===== */}
         <div
-          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+          className="absolute inset-0 flex flex-col items-center justify-end pointer-events-none pb-[10vh]"
           style={{ zIndex: 20 }}
         >
           <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
             <div className="flex flex-col items-center justify-center">
-
-              {/* Top subtitle — small uppercase */}
-              <div
-                style={{
-                  opacity: mounted ? 1 : 0,
-                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
-                  transitionDelay: '0.3s',
-                }}
-                className="mb-5"
-              >
-                <span className="text-white/70 text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
-                  Servicios de Arquitectura y Servicios Generales
-                </span>
-              </div>
 
               {/* Main Title — SERTRADE PROYECTOS */}
               <h2
@@ -163,26 +148,26 @@ export default function HomePage() {
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(30px)',
                   transition: 'opacity 0.9s ease-out, transform 0.9s ease-out',
-                  transitionDelay: '0.5s',
+                  transitionDelay: '0.3s',
                 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-extrabold text-white mb-4 leading-[1.05] tracking-tight uppercase"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-3 leading-[1.02] tracking-tight uppercase"
               >
                 SERTRADE
-                <span className="block mt-1">PROYECTOS</span>
+                <span className="block mt-0.5">PROYECTOS</span>
               </h2>
 
-              {/* Bottom subtitle — DISEÑO Y EJECUCIÓN */}
+              {/* Subtitle — SERVICIOS ARQUITECTURA Y SERVICIOS GENERALES */}
               <div
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
                   transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
-                  transitionDelay: '0.7s',
+                  transitionDelay: '0.55s',
                 }}
-                className="mb-10"
+                className="mb-8"
               >
-                <span className="text-white/60 text-sm sm:text-base tracking-[0.25em] uppercase font-light">
-                  Diseño y Ejecución
+                <span className="text-white/70 text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
+                  Servicios de Arquitectura y Servicios Generales
                 </span>
               </div>
 
@@ -193,7 +178,7 @@ export default function HomePage() {
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
                   transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
-                  transitionDelay: '0.9s',
+                  transitionDelay: '0.75s',
                 }}
               >
                 {/* PRIMARY CTA — VER PROYECTOS (Yellow) */}
@@ -222,7 +207,7 @@ export default function HomePage() {
                   </span>
                 </motion.button>
 
-                {/* SECONDARY CTA — CONTACTO (Transparent border) */}
+                {/* SECONDARY CTA — CONTACTO (Solid) */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -233,7 +218,7 @@ export default function HomePage() {
                     href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estoy en la página de inicio de Sertrade y quiero agendar una reunión para presentarles mi proyecto.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-8 py-3.5 border-2 border-white/30 text-white rounded-[8px] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] hover:bg-white/10 hover:border-white/50 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
+                    className="px-8 py-3.5 bg-[#4682B4] text-white rounded-[8px] font-bold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] hover:bg-[#5a94bf] transition-all duration-300 flex items-center justify-center shadow-lg"
                   >
                     CONTACTO
                   </a>
