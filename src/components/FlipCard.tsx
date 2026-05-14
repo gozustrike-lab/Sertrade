@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { type LucideIcon } from 'lucide-react';
 
@@ -20,11 +20,32 @@ export default function FlipCard({
   delay = 0,
 }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const handleFlip = () => {
-    setIsFlipped((prev) => !prev);
-  };
+  /* Detect touch device on mount */
+  useEffect(() => {
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    setIsTouchDevice(isTouchDevice);
+  }, []);
+
+  const handleTap = useCallback(() => {
+    if (isTouchDevice) {
+      setIsFlipped((prev) => !prev);
+    }
+  }, [isTouchDevice]);
+
+  const handleMouseEnter = useCallback(() => {
+    if (!isTouchDevice) {
+      setIsFlipped(true);
+    }
+  }, [isTouchDevice]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (!isTouchDevice) {
+      setIsFlipped(false);
+    }
+  }, [isTouchDevice]);
 
   return (
     <motion.div
@@ -34,11 +55,12 @@ export default function FlipCard({
       viewport={{ once: true, margin: '-60px' }}
       transition={{ type: 'spring', stiffness: 120, damping: 18, delay }}
     >
-      {/* Clickable overlay for tap-to-flip on mobile */}
       <div
         className="flip-card-perspective"
         style={{ perspective: '1000px' }}
-        onClick={handleFlip}
+        onClick={handleTap}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         ref={cardRef}
       >
         <motion.div
@@ -51,8 +73,8 @@ export default function FlipCard({
           <div className="flip-card-face flip-card-front">
             {/* Background Image */}
             <div
-              className="absolute inset-0 bg-cover bg-center transition-[filter] duration-500"
-              style={{ backgroundImage: `url(${image})` }}
+              className="absolute inset-0 bg-cover transition-[filter] duration-500"
+              style={{ backgroundImage: `url(${image})`, backgroundPosition: 'center center' }}
             />
             {/* Dark gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,20,50,0.75)] via-[rgba(0,20,50,0.35)] to-[rgba(0,20,50,0.25)]" />
@@ -69,10 +91,10 @@ export default function FlipCard({
                 {title}
               </h3>
 
-              {/* Hint */}
+              {/* Hint — contextual: desktop shows hover hint, mobile shows tap hint */}
               <div className="mt-6 flex items-center gap-2 text-white/40 text-xs tracking-[0.15em] uppercase">
-                <span className="hidden sm:inline">Pasa el cursor</span>
-                <span className="sm:hidden">Toca para ver</span>
+                <span className="hidden md:inline">Pasa el cursor</span>
+                <span className="md:hidden">Toca para ver</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M17 7H7M17 7V17" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

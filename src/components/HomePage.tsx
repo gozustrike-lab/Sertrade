@@ -28,15 +28,19 @@ import FlipCard from '@/components/FlipCard';
 const sliderData = [
   {
     image: '/images/hero/hero-construction.jpg',
+    position: 'center center',
   },
   {
     image: '/images/hero/hero-electrical.jpg',
+    position: 'center center',
   },
   {
     image: '/images/hero/hero-paseo-antara.jpg',
+    position: 'center center',
   },
   {
     image: '/images/hero/hero-northpark.jpg',
+    position: 'left center',
   },
 ];
 
@@ -161,9 +165,10 @@ export default function HomePage() {
             }}
           >
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover"
               style={{
                 backgroundImage: `url(${s.image})`,
+                backgroundPosition: s.position || 'center center',
                 transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
                 transition: 'transform 10s ease-out',
               }}
