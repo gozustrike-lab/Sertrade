@@ -134,6 +134,7 @@ export default function Header() {
                     ? 'text-white after:w-full'
                     : 'text-white/80 hover:text-white hover:after:w-full'
                 }`}
+                style={{ textShadow: '0 1px 6px rgba(0,0,0,0.35), 0 0 12px rgba(0,0,0,0.15)' }}
               >
                 {item.label}
               </Link>

@@ -420,7 +420,7 @@ export default function HomePage() {
               Agenda una consulta gratuita hoy.
             </p>
             <motion.a
-              href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, vi su página web y me gustaría recibir asesoría sobre sus servicios de arquitectura.')}`}
+              href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, quiero solicitar una consulta gratuita para evaluar mi próximo proyecto.')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="cta-shimmer-btn group relative px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold shadow-lg inline-flex items-center gap-2 overflow-hidden"
