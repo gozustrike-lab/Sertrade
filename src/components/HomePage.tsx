@@ -272,10 +272,20 @@ export default function HomePage() {
           <span className="mx-2">/</span>
           <span>{String(sliderData.length).padStart(2, '0')}</span>
         </div>
+
+        {/* ===== BOTTOM FADE: Hero → White (z-45) ===== */}
+        <div
+          className="absolute bottom-0 left-0 right-0 pointer-events-none"
+          style={{
+            zIndex: 45,
+            height: '180px',
+            background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
+          }}
+        />
       </section>
 
       {/* PRO STATS — Animated Counters with Spring Physics */}
-      <section className="py-16 md:py-20 bg-[#f7f8fa]">
+      <section className="pt-4 pb-14 md:pt-4 md:pb-16 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-12">
@@ -302,7 +312,7 @@ export default function HomePage() {
       </section>
 
       {/* NOSOTROS */}
-      <section className="py-20 md:py-24 bg-white" style={{ overflow: 'visible', height: 'auto' }}>
+      <section className="pt-10 pb-20 md:pt-10 md:pb-24 bg-white" style={{ overflow: 'visible', height: 'auto' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ overflow: 'visible' }}>
           <ScrollReveal>
             <div className="text-center mb-16">

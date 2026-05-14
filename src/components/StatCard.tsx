@@ -23,18 +23,16 @@ export default function StatCard({
 }: StatCardProps) {
   return (
     <ScrollReveal animation="fade-up" delay={delay} duration={1.2}>
-      <div className="text-center p-6 sm:p-8 rounded-[12px] bg-[#f7f8fa] hover:bg-[#004691] group transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100 hover:border-[#004691]">
-        {/* Icon */}
-        <div className="w-14 h-14 rounded-[10px] bg-[#004691]/8 flex items-center justify-center mx-auto mb-4 group-hover:bg-white/15 transition-all duration-500">
-          <Icon
-            size={40}
-            strokeWidth={1.5}
-            className="text-[#004691] group-hover:text-[#d4a017] transition-colors duration-500"
-          />
-        </div>
+      <div className="text-center p-6 sm:p-7 rounded-[8px] bg-[#004691] group cursor-pointer border border-transparent shadow-[0_4px_15px_rgba(0,70,145,0.2)] transition-all duration-[300ms] ease-in-out hover:bg-white hover:shadow-[0_10px_25px_rgba(0,0,0,0.1)] hover:-translate-y-1 hover:border-[#e8eaed] active:bg-white active:shadow-[0_10px_25px_rgba(0,0,0,0.1)] active:-translate-y-1">
+        {/* Icon — Gold, no container */}
+        <Icon
+          size={36}
+          strokeWidth={1.5}
+          className="mx-auto mb-4 text-[#D4AF37] group-hover:text-[#004691] transition-colors duration-[300ms]"
+        />
 
-        {/* Animated Counter */}
-        <div className="text-3xl sm:text-4xl font-bold text-[#004691] group-hover:text-white transition-colors duration-500 mb-2 tabular-nums">
+        {/* Animated Counter — White → Blue on hover */}
+        <div className="text-2xl sm:text-3xl font-bold text-white group-hover:text-[#004691] transition-colors duration-[300ms] mb-1.5 tabular-nums">
           <Counter
             target={value}
             prefix={prefix}
@@ -43,8 +41,8 @@ export default function StatCard({
           />
         </div>
 
-        {/* Label */}
-        <div className="text-xs sm:text-sm text-[#4A4A4A] group-hover:text-white/70 transition-colors duration-500 font-medium tracking-wide uppercase">
+        {/* Label — Light gray → Dark gray on hover */}
+        <div className="text-xs sm:text-[13px] text-[#F3F4F6] group-hover:text-[#4A4A4A] transition-colors duration-[300ms] font-medium tracking-wide uppercase">
           {label}
         </div>
       </div>
