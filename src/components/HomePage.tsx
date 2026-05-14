@@ -550,6 +550,52 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* NUESTROS CLIENTES COMERCIALES */}
+      <section className="py-16 md:py-20 bg-[#F4F7FA]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <ScrollReveal>
+            <div className="text-center mb-14">
+              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Confianza Comercial</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Nuestros Clientes</h2>
+              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+              <p className="text-[#2D3748]/70 max-w-xl mx-auto mt-5 leading-[1.7]">
+                Empresas líderes confían en Sertrade Design para materializar sus espacios comerciales.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* Client logos grid */}
+          <ScrollReveal animation="fade-up" staggerDelay={0.1}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 items-center justify-items-center">
+              {[
+                { name: 'Lima Kombo', img: '/img/clients/lima-kombo.png', alt: 'Lima Kombo - Cocina al Fuego' },
+                { name: 'Mitsubishi Motors', img: '/img/clients/mitsubishi-motors.png', alt: 'Mitsubishi Motors' },
+                { name: 'REDRILSA', img: '/img/clients/redrilsa.png', alt: 'REDRILSA - Remicsa Drilling S.A.' },
+              ].map((client, i) => (
+                <motion.div
+                  key={i}
+                  className="flex flex-col items-center gap-4 group"
+                  whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                >
+                  <div className="w-32 h-32 md:w-36 md:h-36 rounded-2xl bg-white border border-gray-100 shadow-md flex items-center justify-center p-6 group-hover:shadow-xl group-hover:border-[#004691]/20 transition-all duration-500">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={client.img}
+                      alt={client.alt}
+                      className="w-full h-full object-contain transition-all duration-500 group-hover:opacity-100 opacity-60"
+                      loading="lazy"
+                    />
+                  </div>
+                  <span className="text-[#2D3748]/50 text-xs font-medium uppercase tracking-[0.15em] group-hover:text-[#004691] transition-colors duration-500">
+                    {client.name}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* CTA */}
       <ScrollReveal animation="fade">
         <section className="relative py-20 md:py-24 overflow-hidden">
