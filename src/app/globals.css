@@ -447,45 +447,29 @@
 }
 
 /* ========================================
-   Hero Slider Navigation Arrows
+   Hero Slider Navigation Arrows (desktop)
    ======================================== */
 .hero-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 35;
-  width: 32px;
-  height: 32px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.55);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 .hero-arrow:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.85);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
 }
-.hero-arrow-left { left: 10px; }
-.hero-arrow-right { right: 10px; }
-@media (min-width: 640px) {
-  .hero-arrow {
-    width: 42px;
-    height: 42px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    color: rgba(255, 255, 255, 0.55);
-  }
-  .hero-arrow:hover {
-    background: rgba(255, 255, 255, 0.18);
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-  .hero-arrow-left { left: 20px; }
-  .hero-arrow-right { right: 20px; }
-}
+.hero-arrow-left { left: 20px; }
+.hero-arrow-right { right: 20px; }

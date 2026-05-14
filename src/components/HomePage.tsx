@@ -166,7 +166,7 @@ export default function HomePage() {
                 }}
                 className="mb-2"
               >
-                <span className="text-white/70 text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
+                <span className="text-[#E5E7EB] text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
                   Servicios de Arquitectura y Servicios Generales
                 </span>
               </div>
@@ -181,14 +181,14 @@ export default function HomePage() {
                 }}
                 className="mb-8"
               >
-                <span className="text-white/50 text-[10px] sm:text-[11px] tracking-[0.35em] uppercase font-light">
+                <span className="text-[#E5E7EB] text-[10px] sm:text-[11px] tracking-[0.35em] uppercase font-light">
                   Diseño y Ejecución
                 </span>
               </div>
 
               {/* CTA BUTTONS — Centered, side by side on desktop */}
               <div
-                className="hero-btn-stack flex items-center gap-4 sm:gap-5 pointer-events-auto"
+                className="hero-btn-stack flex items-center gap-3 sm:gap-5 pointer-events-auto"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
@@ -199,7 +199,7 @@ export default function HomePage() {
                 {/* PRIMARY CTA — VER PROYECTOS (Yellow) */}
                 <motion.button
                   onClick={() => navigateWithTransition('/proyectos')}
-                  className="cta-shimmer-btn group relative px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden"
+                  className="cta-shimmer-btn group relative px-8 py-3 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden"
                   whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -233,7 +233,7 @@ export default function HomePage() {
                     href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estoy en la página de inicio de Sertrade y quiero agendar una reunión para presentarles mi proyecto.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-8 py-3.5 bg-[#4682B4] text-white rounded-[8px] font-bold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] hover:bg-[#5a94bf] transition-all duration-300 flex items-center justify-center shadow-lg"
+                    className="px-8 py-3 bg-transparent border border-white/40 text-white rounded-[8px] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] hover:bg-white/10 hover:border-white/60 transition-all duration-300 flex items-center justify-center"
                   >
                     CONTACTO
                   </a>
@@ -246,19 +246,17 @@ export default function HomePage() {
         {/* ===== LAYER 3: NAVIGATION ARROWS (z-35) ===== */}
         <button
           onClick={prevSlide}
-          className="hero-arrow hero-arrow-left"
+          className="hero-arrow hero-arrow-left hidden sm:flex"
           aria-label="Anterior"
         >
-          <ChevronLeft size={16} strokeWidth={1.5} className="sm:hidden" />
-          <ChevronLeft size={24} strokeWidth={1.5} className="hidden sm:block" />
+          <ChevronLeft size={24} strokeWidth={1.5} />
         </button>
         <button
           onClick={nextSlide}
-          className="hero-arrow hero-arrow-right"
+          className="hero-arrow hero-arrow-right hidden sm:flex"
           aria-label="Siguiente"
         >
-          <ChevronRight size={16} strokeWidth={1.5} className="sm:hidden" />
-          <ChevronRight size={24} strokeWidth={1.5} className="hidden sm:block" />
+          <ChevronRight size={24} strokeWidth={1.5} />
         </button>
 
         {/* Slider Dots (z-40, bottom center) */}
