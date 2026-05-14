@@ -279,13 +279,12 @@ export default function HomePage() {
       <section
         className="py-14 md:py-16"
         style={{
-          background: 'linear-gradient(to bottom, #001C3D 0%, #F4F7FA 150px), #F4F7FA 150px',
-          backgroundColor: '#F4F7FA',
+          background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 10px, #F4F7FA 30px, #F4F7FA 100%)',
         }}
       >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
-            <div className="text-center mb-12">
+            <div className="text-center mt-4 mb-12">
               <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4">Resultados que Hablan</h2>
               <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
