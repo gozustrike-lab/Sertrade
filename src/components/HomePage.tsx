@@ -16,11 +16,13 @@ import {
   Award,
   HardHat,
   PencilRuler,
-  History,
   ChevronLeft,
+  Wrench,
+  Zap,
 } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 import StatCard from '@/components/StatCard';
+import FlipCard from '@/components/FlipCard';
 
 const sliderData = [
   {
@@ -37,13 +39,46 @@ const sliderData = [
   },
 ];
 
-const timelineData = [
-  { year: '2010', title: 'Fundación', description: 'Nace SERTRADE DESIGN con la visión de transformar la arquitectura comercial en Perú.' },
-  { year: '2013', title: 'Primer Gran Proyecto', description: 'Diseño del centro comercial Plaza Central, marcando nuestro inicio en gran escala.' },
-  { year: '2016', title: 'Expansión Sector Salud', description: 'Incorporamos el diseño de espacios de salud, abriendo una nueva línea de servicio.' },
-  { year: '2019', title: 'Internacionalización', description: 'Primeros proyectos en Colombia y Ecuador, expandiendo nuestra presencia regional.' },
-  { year: '2022', title: 'Innovación Digital', description: 'Implementación de recorridos virtuales y modelado 3D como servicio estándar.' },
-  { year: '2024', title: 'Más de 200 Proyectos', description: 'Alcanzamos el hito de 200 proyectos entregados con éxito en toda Latinoamérica.' },
+/* =============================================
+   SERVICE FLIP CARDS DATA
+   ============================================= */
+const serviceCards = [
+  {
+    icon: PencilRuler,
+    title: 'DISEÑO',
+    image: '/images/services/diseno.jpg',
+    services: [
+      'Expediente Técnico',
+      'Diseño Residencial',
+      'Diseño Comercial',
+      'Diseño Corporativo',
+      'Diseño Salud / Clínicas',
+    ],
+  },
+  {
+    icon: Wrench,
+    title: 'SERVICIOS GENERALES',
+    image: '/images/services/servicios-generales.jpg',
+    services: [
+      'Drywall',
+      'Pintura',
+      'Diseños de Plantas Industriales',
+      'Albañilería',
+      'Trabajos en Policarbonato y Techos',
+      'Estructuras Metálicas',
+      'Ampliaciones y Obras Civiles Totales',
+    ],
+  },
+  {
+    icon: Zap,
+    title: 'IMPLEMENTACIÓN',
+    image: '/images/services/implementacion.jpg',
+    services: [
+      'Sub-estaciones',
+      'Instalaciones Eléctricas',
+      'Instalaciones Sanitarias',
+    ],
+  },
 ];
 
 const pillars = [
@@ -346,40 +381,26 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Timeline */}
-          <ScrollReveal>
-            <h3 className="text-2xl font-bold text-[#004691] mb-12 text-center">Nuestra Trayectoria</h3>
-          </ScrollReveal>
-          <div className="relative">
-            <div className="hidden md:block timeline-line" />
-            <div className="space-y-8 md:space-y-0">
-              {timelineData.map((item, index) => {
-                const isLeft = index % 2 === 0;
-                return (
-                  <ScrollReveal key={index} animation={isLeft ? 'fade-right' : 'fade-left'} delay={0.15}>
-                    <div className="relative md:flex md:items-center md:min-h-[120px]">
-                      {/* Mobile Timeline */}
-                      <div className="md:hidden flex items-start gap-4 pl-12">
-                        <div className="absolute left-0 top-1 w-10 h-10 rounded-full bg-[#004691] flex items-center justify-center text-white text-xs font-bold shrink-0">{item.year}</div>
-                        <div className="flex-1 p-4 rounded-[8px] bg-[#f7f8fa] border border-gray-100">
-                          <h4 className="font-semibold text-[#004691]">{item.title}</h4>
-                          <p className="text-sm text-[#4A4A4A] mt-1 leading-[1.7]">{item.description}</p>
-                        </div>
-                      </div>
-                      {/* Desktop Timeline */}
-                      <div className={`hidden md:flex md:w-1/2 ${isLeft ? 'justify-end pr-12' : 'justify-start pl-12 order-3'}`}>
-                        <div className="p-6 rounded-[8px] bg-[#f7f8fa] border border-gray-100 max-w-sm hover:shadow-lg transition-all duration-300">
-                          <span className="text-[#d4a017] font-bold text-sm">{item.year}</span>
-                          <h4 className="font-semibold text-[#004691] mt-1">{item.title}</h4>
-                          <p className="text-sm text-[#4A4A4A] mt-2 leading-[1.7]">{item.description}</p>
-                        </div>
-                      </div>
-                      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#d4a017] border-4 border-white shadow-md z-10" />
-                      <div className={`hidden md:block md:w-1/2 ${isLeft ? 'order-3' : ''}`} />
-                    </div>
-                  </ScrollReveal>
-                );
-              })}
+          {/* ===== 3D FLIP CARDS — SERVICIOS ===== */}
+          <div className="mt-20">
+            <ScrollReveal>
+              <div className="text-center mb-12">
+                <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Servicios</span>
+                <h3 className="text-2xl sm:text-3xl font-bold text-[#004691] mt-3 mb-4">Lo Que Hacemos</h3>
+                <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
+              </div>
+            </ScrollReveal>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+              {serviceCards.map((card, i) => (
+                <FlipCard
+                  key={i}
+                  icon={card.icon}
+                  title={card.title}
+                  image={card.image}
+                  services={card.services}
+                  delay={i * 0.15}
+                />
+              ))}
             </div>
           </div>
 

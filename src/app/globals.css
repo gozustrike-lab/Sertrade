@@ -657,3 +657,50 @@
   outline: 2px solid #D4AF37;
   outline-offset: 2px;
 }
+
+/* ========================================
+   3D FLIP CARDS — Service cards
+   ======================================== */
+.flip-card-wrapper {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.flip-card-perspective {
+  position: relative;
+  width: 100%;
+  height: 480px;
+}
+
+@media (min-width: 768px) {
+  .flip-card-perspective {
+    height: 500px;
+  }
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.flip-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.flip-card-front {
+  z-index: 2;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+  z-index: 1;
+}
