@@ -17,13 +17,11 @@ import {
   HardHat,
   PencilRuler,
   ChevronLeft,
-  Wrench,
-  Zap,
   Clock,
 } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 import StatCard from '@/components/StatCard';
-import FlipCard from '@/components/FlipCard';
+import ServiciosSection from '@/components/ServiciosSection';
 
 const sliderData = [
   {
@@ -45,46 +43,8 @@ const sliderData = [
 ];
 
 /* =============================================
-   SERVICE FLIP CARDS DATA
+   SERVICE DATA (moved to ServiciosSection)
    ============================================= */
-const serviceCards = [
-  {
-    icon: PencilRuler,
-    title: 'DISEÑO',
-    image: '/images/services/diseno.jpg',
-    services: [
-      'Expediente Técnico',
-      'Diseño Residencial',
-      'Diseño Comercial',
-      'Diseño Corporativo',
-      'Diseño Salud / Clínicas',
-    ],
-  },
-  {
-    icon: Wrench,
-    title: 'SERVICIOS GENERALES',
-    image: '/images/services/servicios-generales.jpg',
-    services: [
-      'Drywall',
-      'Pintura',
-      'Diseños de Plantas Industriales',
-      'Albañilería',
-      'Trabajos en Policarbonato y Techos',
-      'Estructuras Metálicas',
-      'Ampliaciones y Obras Civiles Totales',
-    ],
-  },
-  {
-    icon: Zap,
-    title: 'IMPLEMENTACIÓN',
-    image: '/images/services/implementacion.jpg',
-    services: [
-      'Sub-estaciones',
-      'Instalaciones Eléctricas',
-      'Instalaciones Sanitarias',
-    ],
-  },
-];
 
 const pillars = [
   { icon: BookOpen, title: 'Conocimiento', description: 'Equipo multidisciplinario con formación continua en tendencias globales de arquitectura comercial.' },
@@ -419,27 +379,9 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* ===== 3D FLIP CARDS — SERVICIOS (IMMERSIVE FULL-BLEED) ===== */}
+          {/* ===== SERVICIOS SECTION (standalone component) ===== */}
           <div className="mt-20">
-            <ScrollReveal>
-              <div className="text-center mb-12">
-                <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Servicios</span>
-                <h3 className="text-2xl sm:text-3xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Lo Que Hacemos</h3>
-                <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
-              </div>
-            </ScrollReveal>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-1 mx-auto w-[95vw] max-w-none">
-              {serviceCards.map((card, i) => (
-                <FlipCard
-                  key={i}
-                  icon={card.icon}
-                  title={card.title}
-                  image={card.image}
-                  services={card.services}
-                  delay={i * 0.15}
-                />
-              ))}
-            </div>
+            <ServiciosSection />
           </div>
 
           {/* Pillars — with stagger */}
