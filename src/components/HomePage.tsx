@@ -279,56 +279,15 @@ export default function HomePage() {
 
       </section>
 
-      {/* PRO STATS — Animated Counters with Spring Physics */}
+      {/* QUIÉNES SOMOS */}
       <section
-        className="py-14 md:py-16 hex-pattern-bg"
+        className="pt-10 pb-20 md:pt-10 md:pb-24 hex-pattern-bg"
         style={{
+          overflow: 'visible',
+          height: 'auto',
           background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 10px, #F4F7FA 30px, #F4F7FA 100%)',
         }}
       >
-        {/* Animated hex pattern overlay — slow float */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{ zIndex: 1 }}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
-        >
-          <div className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
-            style={{
-              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
-              backgroundRepeat: 'repeat',
-              opacity: 0.04,
-            }}
-          />
-        </motion.div>
-
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 2 }}>
-          <ScrollReveal>
-            <div className="text-center mt-4 mb-12">
-              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Resultados que Hablan</h2>
-              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
-            </div>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {proStats.map((stat, i) => (
-              <StatCard
-                key={i}
-                icon={stat.icon}
-                value={stat.value}
-                prefix={stat.prefix}
-                suffix={stat.suffix}
-                label={stat.label}
-                delay={i * 0.3}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* NOSOTROS */}
-      <section className="pt-10 pb-20 md:pt-10 md:pb-24 bg-white hex-pattern-bg" style={{ overflow: 'visible', height: 'auto' }}>
         {/* Animated hex pattern overlay — slow float */}
         <motion.div
           className="absolute inset-0 pointer-events-none"
@@ -379,34 +338,174 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* ===== SERVICIOS SECTION (standalone component) ===== */}
-          <div className="mt-20">
-            <ServiciosSection />
+        </div>
+      </section>
+
+      {/* NUESTROS SERVICIOS */}
+      <section className="py-14 md:py-16 bg-white">
+        <ServiciosSection />
+      </section>
+
+      {/* NUESTROS NÚMEROS — Animated Counters with Spring Physics */}
+      <section
+        className="py-14 md:py-16 hex-pattern-bg"
+        style={{
+          background: 'linear-gradient(to bottom, #ffffff 0px, #ffffff 10px, #F4F7FA 30px, #F4F7FA 100%)',
+        }}
+      >
+        {/* Animated hex pattern overlay — slow float */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 1 }}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+        >
+          <div className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
+            style={{
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
+              backgroundRepeat: 'repeat',
+              opacity: 0.04,
+            }}
+          />
+        </motion.div>
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 2 }}>
+          <ScrollReveal>
+            <div className="text-center mt-4 mb-12">
+              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Resultados que Hablan</h2>
+              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {proStats.map((stat, i) => (
+              <StatCard
+                key={i}
+                icon={stat.icon}
+                value={stat.value}
+                prefix={stat.prefix}
+                suffix={stat.suffix}
+                label={stat.label}
+                delay={i * 0.3}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PROYECTOS DESTACADOS */}
+      <section className="py-14 md:py-20 bg-[#F4F7FA]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Portafolio</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Proyectos Destacados</h2>
+              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80' },
+              { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80' },
+              { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80' },
+              { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80' },
+              { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80' },
+              { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80' },
+            ].map((project, i) => (
+              <ScrollReveal key={i} delay={i * 0.08}>
+                <motion.div
+                  className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer"
+                  whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                  onClick={() => navigateWithTransition('/proyectos')}
+                >
+                  {/* Immersive image */}
+                  <div className="relative h-[280px] md:h-[320px] overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                      style={{ backgroundImage: `url(${project.image})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#001C3D] via-[#001C3D]/30 to-transparent" />
+                    {/* Category badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 bg-[#C5960C] text-white text-xs font-semibold uppercase tracking-wider rounded-md">{project.category}</span>
+                    </div>
+                  </div>
+                  {/* Content overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <h3 className="text-white font-bold text-lg mb-1">{project.title}</h3>
+                    <div className="flex items-center gap-3 text-white/70 text-sm">
+                      <span>{project.location}</span>
+                      <span className="w-1 h-1 rounded-full bg-white/40" />
+                      <span>{project.area}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              </ScrollReveal>
+            ))}
           </div>
 
-          {/* Pillars — with stagger */}
-          <div className="mt-20">
-            <ScrollReveal>
-              <h3 className="text-2xl font-bold text-[#004691] mb-12 text-center text-shadow-pro">Nuestros Pilares</h3>
-            </ScrollReveal>
-            <ScrollReveal animation="fade-up" staggerDelay={0.12}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                {pillars.map((pillar, i) => (
-                  <motion.div
-                    key={i}
-                    whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                    className="group text-center p-6 sm:p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 shadow-pro hover:shadow-pro-hover transition-all duration-500"
-                  >
-                    <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#C5960C] transition-all duration-500 group-hover:scale-110 shadow-lg">
-                      <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
-                    </div>
-                    <h4 className="font-semibold text-[#004691] text-lg mb-3">{pillar.title}</h4>
-                    <p className="text-[#2D3748] text-sm leading-[1.7]">{pillar.description}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </ScrollReveal>
-          </div>
+          {/* Ver más — redirect to portfolio */}
+          <ScrollReveal>
+            <div className="text-center mt-12">
+              <motion.button
+                onClick={() => navigateWithTransition('/proyectos')}
+                className="group inline-flex items-center gap-2.5 px-8 py-3 bg-[#004691] text-white rounded-lg font-semibold text-sm uppercase tracking-wider hover:bg-[#003466] transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Ver Todos los Proyectos
+                <ArrowRight size={18} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </motion.button>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* NUESTROS PILARES */}
+      <section className="py-14 md:py-20 bg-white hex-pattern-bg" style={{ overflow: 'visible', height: 'auto' }}>
+        {/* Animated hex pattern overlay — slow float */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 0 }}
+          animate={{ y: [0, -6, 0] }}
+          transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
+        >
+          <div className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
+            style={{
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
+              backgroundRepeat: 'repeat',
+              opacity: 0.035,
+            }}
+          />
+        </motion.div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 1, overflow: 'visible' }}>
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Lo que nos define</span>
+              <h3 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5 text-shadow-pro">Nuestros Pilares</h3>
+              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+            </div>
+          </ScrollReveal>
+          <ScrollReveal animation="fade-up" staggerDelay={0.12}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {pillars.map((pillar, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                  className="group text-center p-6 sm:p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 shadow-pro hover:shadow-pro-hover transition-all duration-500"
+                >
+                  <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#C5960C] transition-all duration-500 group-hover:scale-110 shadow-lg">
+                    <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
+                  </div>
+                  <h4 className="font-semibold text-[#004691] text-lg mb-3">{pillar.title}</h4>
+                  <p className="text-[#2D3748] text-sm leading-[1.7]">{pillar.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
