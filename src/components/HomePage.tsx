@@ -19,6 +19,7 @@ import {
   ChevronLeft,
   Wrench,
   Zap,
+  Clock,
 } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 import StatCard from '@/components/StatCard';
@@ -94,7 +95,7 @@ const pillars = [
 const proStats = [
   { icon: HardHat, value: 5000, prefix: '+', suffix: ' m²', label: 'Construidos' },
   { icon: PencilRuler, value: 8000, prefix: '+', suffix: ' m²', label: 'Diseñados' },
-  { icon: History, value: 10, prefix: '+', suffix: ' Años', label: 'Experiencia' },
+  { icon: Clock, value: 10, prefix: '+', suffix: ' Años', label: 'Experiencia' },
 ];
 
 export default function HomePage() {
