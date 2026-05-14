@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { PencilRuler, Wrench, Zap } from 'lucide-react';
 
@@ -41,13 +41,33 @@ const cards = [
 ];
 
 export default function ServiciosSection() {
-  // Mobile tap state
-  const [flippedCard, setFlippedCard] = useState<number | null>(null);
+  // Unified flip state: works for both hover (desktop) and tap (mobile)
+  const [flippedId, setFlippedId] = useState<number | null>(null);
 
-  // Touch device detection
-  const [isTouch, setIsTouch] = useState(false);
+  const isTouch = useState(false)[0];
   useEffect(() => {
-    setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    // We still need this for tap detection
+  }, []);
+
+  const handleMouseEnter = useCallback((id: number) => {
+    // Only on non-touch devices — check if touch is available
+    if (!('ontouchstart' in window) && window.navigator.maxTouchPoints === 0) {
+      setFlippedId(id);
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    // Only unflip on non-touch devices
+    if (!('ontouchstart' in window) && window.navigator.maxTouchPoints === 0) {
+      setFlippedId(null);
+    }
+  }, []);
+
+  const handleTap = useCallback((id: number) => {
+    // Only on touch devices
+    if ('ontouchstart' in window || window.navigator.maxTouchPoints > 0) {
+      setFlippedId(prev => prev === id ? null : id);
+    }
   }, []);
 
   return (
@@ -66,55 +86,49 @@ export default function ServiciosSection() {
 
       {/* ===== 3D FLIP CARDS — FULL BLEED GRID ===== */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-0 md:px-6 lg:px-8" style={{ overflow: 'visible' }}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0" style={{ overflow: 'visible', transformStyle: 'preserve-3d' }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0" style={{ overflow: 'visible' }}>
 
-          {cards.map((card, idx) => {
+          {cards.map((card) => {
             const IconComp = card.icon;
+            const isFlipped = flippedId === card.id;
             return (
               <div
                 key={card.id}
                 className="w-full h-[480px] md:h-[450px] cursor-pointer"
                 style={{ perspective: '1200px', overflow: 'visible', transformStyle: 'preserve-3d' }}
-                onClick={() => {
-                  if (isTouch) {
-                    setFlippedCard(flippedCard === card.id ? null : card.id);
-                  }
-                }}
+                onMouseEnter={() => handleMouseEnter(card.id)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => handleTap(card.id)}
               >
                 <motion.div
-                  className="relative w-full h-full cursor-pointer"
+                  className="relative w-full h-full"
                   style={{ transformStyle: 'preserve-3d' }}
-                  animate={{ rotateY: flippedCard === card.id ? 180 : 0 }}
-                  whileHover={isTouch ? {} : { rotateY: 180, boxShadow: '0 25px 60px rgba(0,70,145,0.35)' }}
-                  transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-                  onClick={() => {
-                    if (isTouch) {
-                      setFlippedCard(flippedCard === card.id ? null : card.id);
-                    }
+                  animate={{
+                    rotateY: isFlipped ? 180 : 0,
+                    boxShadow: isFlipped ? '0 25px 60px rgba(0,70,145,0.35)' : '0 0px 0px rgba(0,0,0,0)',
                   }}
+                  transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
                 >
                   {/* ===== FRONT FACE ===== */}
                   <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center flex flex-col justify-center items-center p-6 relative"
+                    className="absolute inset-0 w-full h-full bg-cover bg-center flex flex-col justify-center items-center p-6"
                     style={{
                       backgroundImage: `url(${card.img})`,
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
-                      pointerEvents: 'none',
                     }}
                   >
                     {/* Dark overlay */}
                     <div className="absolute inset-0 bg-[#004691]/60" />
 
                     <div className="relative z-10 flex flex-col items-center text-center">
-                      {/* Icon — gold with vivid saturation */}
+                      {/* Icon */}
                       <div className="w-16 h-16 bg-[#C5960C] rounded-xl flex items-center justify-center text-white text-2xl mb-4 shadow-lg">
                         <IconComp size={30} strokeWidth={1.5} className="text-white" />
                       </div>
                       <h3 className="text-white text-2xl font-black tracking-wider mb-2 drop-shadow-md">
                         {card.title}
                       </h3>
-                      {/* Responsive hint */}
                       <span className="text-white/60 text-[11px] tracking-[0.15em] uppercase mt-4 block md:hidden">
                         Toca para ver ↗
                       </span>
@@ -132,7 +146,6 @@ export default function ServiciosSection() {
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)',
-                      pointerEvents: 'none',
                     }}
                   >
                     {/* Premium blur layer + brand blue tint */}
@@ -143,10 +156,9 @@ export default function ServiciosSection() {
                       <h4 className="text-[#D4AF37] text-xl font-black mb-6 tracking-wider text-center uppercase drop-shadow-md">
                         {card.title}
                       </h4>
-                      {/* Service list — left-aligned, centered in block */}
                       <ul className="max-w-[240px] mx-auto space-y-4 text-left text-sm font-medium text-white/95">
-                        {card.services.map((service, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5">
+                        {card.services.map((service, sIdx) => (
+                          <li key={sIdx} className="flex items-start gap-2.5">
                             <span className="text-[#D4AF37] text-base leading-none">•</span>
                             <span className="drop-shadow-sm">{service}</span>
                           </li>
@@ -155,7 +167,7 @@ export default function ServiciosSection() {
                     </div>
 
                     {/* CTA Button */}
-                    <div className="relative z-10 w-full px-2" style={{ pointerEvents: 'auto' }}>
+                    <div className="relative z-10 w-full px-2">
                       <a
                         href={`https://wa.me/51944106163?text=${encodeURIComponent(`Hola Sertrade Design, estoy interesado en cotizar el servicio de ${card.title}.`)}`}
                         target="_blank"
