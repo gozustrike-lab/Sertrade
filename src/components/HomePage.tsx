@@ -463,49 +463,113 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* NUESTROS PILARES */}
-      <section className="py-14 md:py-20 bg-white hex-pattern-bg" style={{ overflow: 'visible', height: 'auto' }}>
-        {/* Animated hex pattern overlay — slow float */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{ zIndex: 0 }}
-          animate={{ y: [0, -6, 0] }}
-          transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
-        >
-          <div className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
-            style={{
-              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
-              backgroundRepeat: 'repeat',
-              opacity: 0.035,
-            }}
-          />
+      {/* NUESTROS PILARES — Dynamic Professional Design */}
+      <section className="relative py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #004691 0%, #003266 50%, #001C3D 100%)' }}>
+        {/* Floating geometric circles — decorative */}
+        <motion.div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+          {[{ size: 180, x: '8%', y: '15%', delay: 0 }, { size: 120, x: '75%', y: '10%', delay: 1.5 }, { size: 90, x: '60%', y: '70%', delay: 3 }, { size: 140, x: '20%', y: '75%', delay: 2 }, { size: 60, x: '90%', y: '50%', delay: 0.8 }, { size: 200, x: '40%', y: '-5%', delay: 4 }, { size: 70, x: '5%', y: '55%', delay: 1.2 }].map((c, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full"
+              style={{ width: c.size, height: c.size, left: c.x, top: c.y, border: '1px solid rgba(255,255,255,0.08)', background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)' }}
+              animate={{ y: [0, -12, 0], scale: [1, 1.03, 1], opacity: [0.5, 0.8, 0.5] }}
+              transition={{ repeat: Infinity, duration: 6 + i * 0.8, ease: 'easeInOut', delay: c.delay }}
+            />
+          ))}
         </motion.div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 1, overflow: 'visible' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 1 }}>
+          {/* Header */}
           <ScrollReveal>
-            <div className="text-center mb-12">
+            <div className="text-center mb-16 md:mb-20">
               <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Lo que nos define</span>
-              <h3 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5 text-shadow-pro">Nuestros Pilares</h3>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3 mb-5">Nuestros Pilares</h2>
               <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
             </div>
           </ScrollReveal>
-          <ScrollReveal animation="fade-up" staggerDelay={0.12}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {pillars.map((pillar, i) => (
+
+          {/* Pillars Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {pillars.map((pillar, i) => (
+              <ScrollReveal key={i} delay={i * 0.15}>
                 <motion.div
-                  key={i}
-                  whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                  className="group text-center p-6 sm:p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 shadow-pro hover:shadow-pro-hover transition-all duration-500"
+                  className="group relative"
+                  whileHover={{ y: -10, transition: { type: 'spring', stiffness: 200, damping: 18 } }}
                 >
-                  <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#C5960C] transition-all duration-500 group-hover:scale-110 shadow-lg">
-                    <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
+                  {/* Card */}
+                  <div className="relative p-7 md:p-8 rounded-2xl border border-white/10 bg-white/[0.06] backdrop-blur-sm transition-all duration-500 group-hover:bg-white/[0.12] group-hover:border-white/20 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] h-full">
+
+                    {/* Number — large decorative */}
+                    <motion.div
+                      className="absolute -top-3 -left-2 w-10 h-10 rounded-full bg-[#C5960C] flex items-center justify-center text-white font-black text-sm shadow-lg"
+                      initial={{ scale: 0, rotate: -90 }}
+                      whileInView={{ scale: 1, rotate: 0 }}
+                      viewport={{ once: true, margin: '-50px' }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 15, delay: i * 0.15 + 0.2 }}
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </motion.div>
+
+                    {/* Rotating arc border — decorative ring */}
+                    <div className="absolute -top-1 -right-1 w-12 h-12 pointer-events-none">
+                      <svg viewBox="0 0 48 48" className="w-full h-full">
+                        <motion.circle
+                          cx="24" cy="24" r="20" fill="none" stroke="rgba(197,150,12,0.3)" strokeWidth="1.5" strokeLinecap="round"
+                          strokeDasharray="40 90"
+                          initial={{ rotate: 0 }}
+                          animate={{ rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 12 + i * 2, ease: 'linear' }}
+                          style={{ transformOrigin: 'center' }}
+                        />
+                      </svg>
+                    </div>
+
+                    {/* Icon */}
+                    <motion.div
+                      className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-[#C5960C] transition-all duration-500 group-hover:scale-110"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-50px' }}
+                      transition={{ duration: 0.6, delay: i * 0.15 + 0.3 }}
+                    >
+                      <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
+                    </motion.div>
+
+                    {/* Title */}
+                    <motion.h4
+                      className="font-bold text-white text-lg mb-3 group-hover:text-[#C5960C] transition-colors duration-500"
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-50px' }}
+                      transition={{ duration: 0.6, delay: i * 0.15 + 0.4 }}
+                    >
+                      {pillar.title}
+                    </motion.h4>
+
+                    {/* Description */}
+                    <motion.p
+                      className="text-white/70 text-sm leading-[1.8] group-hover:text-white/90 transition-colors duration-500"
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-50px' }}
+                      transition={{ duration: 0.6, delay: i * 0.15 + 0.5 }}
+                    >
+                      {pillar.description}
+                    </motion.p>
+
+                    {/* Bottom accent line — animated */}
+                    <motion.div
+                      className="absolute bottom-0 left-1/2 h-[3px] bg-[#C5960C] rounded-full"
+                      initial={{ width: 0, x: '-50%' }}
+                      whileInView={{ width: '60%', x: '-50%' }}
+                      viewport={{ once: true, margin: '-30px' }}
+                      transition={{ duration: 0.8, delay: i * 0.15 + 0.6, ease: 'easeOut' }}
+                    />
                   </div>
-                  <h4 className="font-semibold text-[#004691] text-lg mb-3">{pillar.title}</h4>
-                  <p className="text-[#2D3748] text-sm leading-[1.7]">{pillar.description}</p>
                 </motion.div>
-              ))}
-            </div>
-          </ScrollReveal>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </section>
 

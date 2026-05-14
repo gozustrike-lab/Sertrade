@@ -51,7 +51,7 @@ export default function ServiciosSection() {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#F4F7FA] py-20">
+    <section className="relative w-full bg-[#F4F7FA] py-20">
 
       {/* ===== HEXAGONAL WATERMARK BACKGROUND — Floating Animation ===== */}
       <motion.div
@@ -83,15 +83,15 @@ export default function ServiciosSection() {
 
       {/* ===== 3D FLIP CARDS — FULL BLEED GRID ===== */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-0 md:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 rounded-none overflow-hidden shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0" style={{ overflow: 'visible', transformStyle: 'preserve-3d' }}>
 
-          {cards.map((card) => {
+          {cards.map((card, idx) => {
             const IconComp = card.icon;
             return (
               <div
                 key={card.id}
                 className="w-full h-[480px] md:h-[450px] cursor-pointer"
-                style={{ perspective: '1000px' }}
+                style={{ perspective: '1200px', overflow: 'visible', transformStyle: 'preserve-3d' }}
                 onClick={() => {
                   if (isTouch) {
                     setFlippedCard(flippedCard === card.id ? null : card.id);
@@ -102,8 +102,8 @@ export default function ServiciosSection() {
                   className="relative w-full h-full"
                   style={{ transformStyle: 'preserve-3d' }}
                   animate={{ rotateY: flippedCard === card.id ? 180 : 0 }}
-                  whileHover={isTouch ? {} : { rotateY: 180 }}
-                  transition={{ type: 'spring', stiffness: 150, damping: 20 }}
+                  whileHover={isTouch ? {} : { rotateY: 180, boxShadow: '0 25px 60px rgba(0,70,145,0.35)' }}
+                  transition={{ type: 'spring', stiffness: 120, damping: 18 }}
                 >
                   {/* ===== FRONT FACE ===== */}
                   <div
