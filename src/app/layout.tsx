@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Preloader from "@/components/Preloader";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sertradedesign.com"),
@@ -88,9 +77,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#004691" />
         <meta name="theme-color" content="#004691" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
-      >
+      <body className="antialiased bg-background text-foreground">
         <Preloader />
         <div className="min-h-screen flex flex-col bg-white">
           <Header />

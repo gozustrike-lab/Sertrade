@@ -1,6 +1,94 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* ========================================
+   POPPINS FONT FAMILY — Local @font-face
+   ======================================== */
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/files/Poppins-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -104,6 +192,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Poppins', sans-serif;
   }
   ul, ol {
     list-style: none;
@@ -294,10 +383,10 @@
    ======================================== */
 .hero-overlay-dark {
   background: linear-gradient(
-    135deg,
-    rgba(0, 30, 66, 0.55) 0%,
-    rgba(0, 70, 145, 0.45) 50%,
-    rgba(0, 30, 66, 0.35) 100%
+    180deg,
+    rgba(0, 20, 50, 0.70) 0%,
+    rgba(0, 50, 110, 0.55) 40%,
+    rgba(0, 20, 50, 0.65) 100%
   );
 }
 
@@ -346,11 +435,42 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    align-items: center;
   }
   .hero-btn-stack > a,
-  .hero-btn-stack > button {
+  .hero-btn-stack > button,
+  .hero-btn-stack > div {
     width: 100%;
     justify-content: center;
     text-align: center;
   }
 }
+
+/* ========================================
+   Hero Slider Navigation Arrows
+   ======================================== */
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 35;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.hero-arrow:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.hero-arrow-left { left: 24px; }
+.hero-arrow-right { right: 24px; }

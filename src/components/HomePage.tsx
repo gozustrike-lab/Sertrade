@@ -17,27 +17,19 @@ import {
   HardHat,
   PencilRuler,
   History,
+  ChevronLeft,
 } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 import StatCard from '@/components/StatCard';
 
 const sliderData = [
   {
-    title: 'SERTRADE DESIGN',
-    subtitle: 'Arquitectura Comercial',
-    description: 'Transformamos espacios en experiencias memorables',
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80',
   },
   {
-    title: 'DISEÑO INNOVADOR',
-    subtitle: 'Espacios que Inspiran',
-    description: 'Soluciones arquitectónicas a la medida de tu marca',
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80',
   },
   {
-    title: 'EXCELENCIA CREATIVA',
-    subtitle: 'Más de 10 Años de Experiencia',
-    description: 'Proyectos que superan expectativas en cada detalle',
     image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&q=80',
   },
 ];
@@ -59,7 +51,7 @@ const pillars = [
 ];
 
 /* =============================================
-   ANIMATED PRO STATS — with spring counters
+   ANIMATED PRO STATS
    ============================================= */
 const proStats = [
   { icon: HardHat, value: 5000, prefix: '+', suffix: ' m²', label: 'Construidos' },
@@ -77,9 +69,13 @@ export default function HomePage() {
     setCurrentSlide((prev) => (prev + 1) % sliderData.length);
   }, []);
 
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + sliderData.length) % sliderData.length);
+  }, []);
+
   useEffect(() => {
     setMounted(true);
-    const interval = setInterval(nextSlide, 4000);
+    const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [nextSlide]);
 
@@ -107,11 +103,12 @@ export default function HomePage() {
       />
 
       {/* =============================================
-          HERO SLIDER — Two independent layers:
-            LAYER 1 (z-10): Background images — opacity fade only
-            LAYER 2 (z-20): Text content — 100% STATIC, renders once
+          HERO SLIDER — CENTERED LAYOUT
+            LAYER 1 (z-10): Background images — opacity fade
+            LAYER 2 (z-20): Text content — 100% STATIC, centered
+            LAYER 3 (z-30): Arrows + Dots
           ============================================= */}
-      <section className="relative h-screen w-full overflow-hidden">
+      <section className="relative w-full overflow-hidden" style={{ minHeight: '100vh' }}>
 
         {/* ===== LAYER 1: BACKGROUND IMAGES (z-10) ===== */}
         {sliderData.map((s, index) => (
@@ -121,88 +118,88 @@ export default function HomePage() {
             style={{
               opacity: index === currentSlide ? 1 : 0,
               zIndex: index === currentSlide ? 10 : 1,
-              transition: 'opacity 0.8s ease-in-out',
+              transition: 'opacity 1s ease-in-out',
             }}
           >
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{
                 backgroundImage: `url(${s.image})`,
-                transform: index === currentSlide ? 'scale(1)' : 'scale(1.05)',
-                transition: 'transform 8s ease-out',
+                transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
+                transition: 'transform 10s ease-out',
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#004691]/90 via-[#004691]/70 to-transparent" />
-            <div className="hero-overlay-dark absolute inset-0" />
+            {/* Dark blue overlay for text readability */}
+            <div className="absolute inset-0 bg-[rgba(0,20,50,0.60)]" />
           </div>
         ))}
 
-        {/* ===== LAYER 2: STATIC TEXT (z-20) — never re-renders ===== */}
+        {/* ===== LAYER 2: STATIC TEXT — FULLY CENTERED (z-20) ===== */}
         <div
-          className="absolute inset-0 flex items-center pointer-events-none"
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
           style={{ zIndex: 20 }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div
-              className="max-w-2xl"
-              style={{ minHeight: '320px' }}
-            >
-              {/* Subtitle badge — animates once on mount, never again */}
+          <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
+            <div style={{ minHeight: '340px' }} className="flex flex-col items-center justify-center">
+
+              {/* Top subtitle — small uppercase */}
               <div
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
                   transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
-                  transitionDelay: '0.2s',
+                  transitionDelay: '0.3s',
                 }}
-                className="mb-6"
+                className="mb-5"
               >
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/20">
-                  <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
-                  <span className="text-white/80 text-xs tracking-widest uppercase">Arquitectura Comercial</span>
-                </div>
+                <span className="text-white/70 text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
+                  Servicios de Arquitectura y Servicios Generales
+                </span>
               </div>
 
-              {/* Title — STATIC, no key, no blur, renders once */}
+              {/* Main Title — SERTRADE PROYECTOS */}
               <h2
                 style={{
                   opacity: mounted ? 1 : 0,
-                  transform: mounted ? 'translateY(0)' : 'translateY(24px)',
-                  transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                  transitionDelay: '0.35s',
-                }}
-                className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight tracking-tight"
-              >
-                DISEÑO INNOVADOR
-              </h2>
-
-              {/* Description — STATIC */}
-              <p
-                style={{
-                  opacity: mounted ? 1 : 0,
-                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+                  transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+                  transition: 'opacity 0.9s ease-out, transform 0.9s ease-out',
                   transitionDelay: '0.5s',
                 }}
-                className="text-base sm:text-lg lg:text-xl text-white/80 mb-8 max-w-lg leading-[1.7]"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-extrabold text-white mb-4 leading-[1.05] tracking-tight uppercase"
               >
-                Transformamos espacios en experiencias memorables con soluciones arquitectónicas a la medida de tu marca.
-              </p>
+                SERTRADE
+                <span className="block mt-1">PROYECTOS</span>
+              </h2>
 
-              {/* CTA BUTTONS — STATIC, no key, no re-render */}
+              {/* Bottom subtitle — DISEÑO Y EJECUCIÓN */}
               <div
-                className="hero-btn-stack flex items-center gap-4 pointer-events-auto"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
                   transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
-                  transitionDelay: '0.65s',
+                  transitionDelay: '0.7s',
+                }}
+                className="mb-10"
+              >
+                <span className="text-white/60 text-sm sm:text-base tracking-[0.25em] uppercase font-light">
+                  Diseño y Ejecución
+                </span>
+              </div>
+
+              {/* CTA BUTTONS — Centered, side by side on desktop */}
+              <div
+                className="hero-btn-stack flex items-center gap-4 sm:gap-5 pointer-events-auto"
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+                  transitionDelay: '0.9s',
                 }}
               >
-                {/* PRIMARY CTA — VER PROYECTOS */}
+                {/* PRIMARY CTA — VER PROYECTOS (Yellow) */}
                 <motion.button
                   onClick={() => navigateWithTransition('/proyectos')}
-                  className="cta-shimmer-btn group relative px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[15px] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden"
+                  className="cta-shimmer-btn group relative px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden"
                   whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -219,15 +216,13 @@ export default function HomePage() {
                     }}
                     style={{ backgroundSize: '200% 100%' }}
                   />
-                  <span className="relative z-10 flex items-center gap-2.5 transition-colors duration-300 group-hover:text-[#002244]">
+                  <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover:text-[#002244]">
                     VER PROYECTOS
-                    <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-                      <ArrowRight size={18} strokeWidth={2} />
-                    </span>
+                    <ArrowRight size={16} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </motion.button>
 
-                {/* SECONDARY CTA — WhatsApp */}
+                {/* SECONDARY CTA — CONTACTO (Transparent border) */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -238,9 +233,9 @@ export default function HomePage() {
                     href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estoy en la página de inicio de Sertrade y quiero agendar una reunión para presentarles mi proyecto.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
+                    className="px-8 py-3.5 border-2 border-white/30 text-white rounded-[8px] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] hover:bg-white/10 hover:border-white/50 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
                   >
-                    Contáctanos
+                    CONTACTO
                   </a>
                 </motion.div>
               </div>
@@ -248,15 +243,31 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Slider Dots (z-30, above everything) */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ zIndex: 30 }}>
+        {/* ===== LAYER 3: NAVIGATION ARROWS (z-35) ===== */}
+        <button
+          onClick={prevSlide}
+          className="hero-arrow hero-arrow-left hidden sm:flex"
+          aria-label="Anterior"
+        >
+          <ChevronLeft size={28} strokeWidth={1.5} />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="hero-arrow hero-arrow-right hidden sm:flex"
+          aria-label="Siguiente"
+        >
+          <ChevronRight size={28} strokeWidth={1.5} />
+        </button>
+
+        {/* Slider Dots (z-40, bottom center) */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ zIndex: 40 }}>
           {sliderData.map((_, index) => (
             <button key={index} onClick={() => setCurrentSlide(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'}`} aria-label={`Ir a slide ${index + 1}`} />
           ))}
         </div>
 
-        {/* Slide Counter (z-30) */}
-        <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block" style={{ zIndex: 30 }}>
+        {/* Slide Counter (z-40, bottom right) */}
+        <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block" style={{ zIndex: 40 }}>
           <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
           <span className="mx-2">/</span>
           <span>{String(sliderData.length).padStart(2, '0')}</span>
