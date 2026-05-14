@@ -142,7 +142,7 @@ export default function HomePage() {
           <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
             <div className="flex flex-col items-center justify-center">
 
-              {/* Main Title — SERTRADE PROYECTOS */}
+              {/* Main Title — SERTRADE PROJECTS */}
               <h2
                 style={{
                   opacity: mounted ? 1 : 0,
@@ -153,7 +153,7 @@ export default function HomePage() {
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-4 leading-[1.02] tracking-tight uppercase"
               >
                 SERTRADE
-                <span className="block mt-0.5">PROYECTOS</span>
+                <span className="block mt-0.5">PROJECTS</span>
               </h2>
 
               {/* Subtitle — SERVICIOS ARQUITECTURA Y SERVICIOS GENERALES */}
@@ -246,17 +246,19 @@ export default function HomePage() {
         {/* ===== LAYER 3: NAVIGATION ARROWS (z-35) ===== */}
         <button
           onClick={prevSlide}
-          className="hero-arrow hero-arrow-left hidden sm:flex"
+          className="hero-arrow hero-arrow-left"
           aria-label="Anterior"
         >
-          <ChevronLeft size={28} strokeWidth={1.5} />
+          <ChevronLeft size={16} strokeWidth={1.5} className="sm:hidden" />
+          <ChevronLeft size={24} strokeWidth={1.5} className="hidden sm:block" />
         </button>
         <button
           onClick={nextSlide}
-          className="hero-arrow hero-arrow-right hidden sm:flex"
+          className="hero-arrow hero-arrow-right"
           aria-label="Siguiente"
         >
-          <ChevronRight size={28} strokeWidth={1.5} />
+          <ChevronRight size={16} strokeWidth={1.5} className="sm:hidden" />
+          <ChevronRight size={24} strokeWidth={1.5} className="hidden sm:block" />
         </button>
 
         {/* Slider Dots (z-40, bottom center) */}
