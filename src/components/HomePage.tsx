@@ -136,11 +136,11 @@ export default function HomePage() {
 
         {/* ===== LAYER 2: STATIC TEXT — FULLY CENTERED (z-20) ===== */}
         <div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 flex flex-col items-center justify-end pointer-events-none pb-[12vh]"
           style={{ zIndex: 20 }}
         >
           <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
-            <div style={{ minHeight: '340px' }} className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
 
               {/* Top subtitle — small uppercase */}
               <div
@@ -273,19 +273,19 @@ export default function HomePage() {
           <span>{String(sliderData.length).padStart(2, '0')}</span>
         </div>
 
-        {/* ===== BOTTOM FADE: Hero → White (z-45) ===== */}
+        {/* ===== BOTTOM FADE: Hero → Section (z-45) — minimal 45px ===== */}
         <div
           className="absolute bottom-0 left-0 right-0 pointer-events-none"
           style={{
             zIndex: 45,
-            height: '180px',
+            height: '45px',
             background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
           }}
         />
       </section>
 
       {/* PRO STATS — Animated Counters with Spring Physics */}
-      <section className="pt-4 pb-14 md:pt-4 md:pb-16 bg-white">
+      <section className="py-14 md:py-16 bg-[#F4F7FA]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-12">
