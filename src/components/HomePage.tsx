@@ -275,17 +275,14 @@ export default function HomePage() {
 
       </section>
 
-      {/* ===== GRADIENT TRANSITION: Hero (dark) → Nuestros Números (light) ===== */}
-      <div
-        className="w-full"
-        style={{
-          height: '120px',
-          background: 'linear-gradient(to bottom, #001432 0%, #002850 30%, #0a3a6b 60%, #F4F7FA 100%)',
-        }}
-      />
-
       {/* PRO STATS — Animated Counters with Spring Physics */}
-      <section className="py-14 md:py-16 bg-[#F4F7FA]">
+      <section
+        className="py-14 md:py-16"
+        style={{
+          background: 'linear-gradient(to bottom, #001C3D 0%, #F4F7FA 150px), #F4F7FA 150px',
+          backgroundColor: '#F4F7FA',
+        }}
+      >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-12">
