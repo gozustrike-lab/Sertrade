@@ -318,7 +318,7 @@ export default function HomePage() {
           </ScrollReveal>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-20">
             {[
               { number: '200+', label: 'Proyectos Entregados', icon: Building2 },
               { number: '14+', label: 'Años de Experiencia', icon: Award },
@@ -326,10 +326,10 @@ export default function HomePage() {
               { number: '3', label: 'Países', icon: Ruler },
             ].map((stat, i) => (
               <ScrollReveal key={i} delay={i * 0.1} animation="scale">
-                <div className="text-center p-5 sm:p-6 rounded-[8px] bg-[#f7f8fa] hover:bg-[#004691] group transition-all duration-500 hover:shadow-lg hover:-translate-y-1 border border-gray-100 hover:border-[#004691]">
-                  <stat.icon size={24} strokeWidth={1.5} className="mx-auto mb-3 text-[#004691] group-hover:text-[#d4a017] transition-colors" />
-                  <div className="text-2xl sm:text-3xl font-bold text-[#004691] group-hover:text-white transition-colors">{stat.number}</div>
-                  <div className="text-xs sm:text-sm text-[#4A4A4A] group-hover:text-white/70 transition-colors mt-1">{stat.label}</div>
+                <div className="text-center p-6 sm:p-7 rounded-[8px] bg-[#004691] group cursor-pointer border border-transparent shadow-[0_4px_15px_rgba(0,70,145,0.2)] transition-all duration-[300ms] ease-in-out hover:bg-white hover:shadow-[0_10px_25px_rgba(0,0,0,0.1)] hover:-translate-y-1 hover:border-[#e8eaed] active:bg-white active:shadow-[0_10px_25px_rgba(0,0,0,0.1)] active:-translate-y-1">
+                  <stat.icon size={36} strokeWidth={1.5} className="mx-auto mb-4 text-[#D4AF37] group-hover:text-[#004691] transition-colors duration-[300ms]" />
+                  <div className="text-2xl sm:text-3xl font-bold text-white group-hover:text-[#004691] transition-colors duration-[300ms]">{stat.number}</div>
+                  <div className="text-xs sm:text-[13px] text-[#F3F4F6] group-hover:text-[#4A4A4A] transition-colors duration-[300ms] mt-1.5 font-medium">{stat.label}</div>
                 </div>
               </ScrollReveal>
             ))}
