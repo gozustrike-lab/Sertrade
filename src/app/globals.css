@@ -473,3 +473,187 @@
 }
 .hero-arrow-left { left: 20px; }
 .hero-arrow-right { right: 20px; }
+
+/* ========================================
+   STAT CARD — Strict hover/active states
+   Prevents text disappearing on mobile tap
+   ======================================== */
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #004691;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 15px rgba(0, 70, 145, 0.2);
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Icon wrapper */
+.stat-card-icon {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D4AF37;
+  transition: color 300ms ease-in-out;
+}
+.stat-card-icon svg {
+  display: block;
+}
+
+/* Counter value */
+.stat-card-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  transition: color 300ms ease-in-out;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.375rem;
+  line-height: 1.2;
+}
+@media (min-width: 640px) {
+  .stat-card-value { font-size: 1.875rem; }
+}
+
+/* Label */
+.stat-card-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #F3F4F6;
+  transition: color 300ms ease-in-out;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+@media (min-width: 640px) {
+  .stat-card-label { font-size: 0.8125rem; }
+}
+
+/* ===== HOVER STATE (Desktop) ===== */
+.stat-card:hover {
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  border-color: #e8eaed;
+}
+.stat-card:hover .stat-card-icon {
+  color: #004691 !important;
+}
+.stat-card:hover .stat-card-value {
+  color: #004691 !important;
+}
+.stat-card:hover .stat-card-label {
+  color: #4A4A4A !important;
+}
+
+/* ===== ACTIVE STATE (Mobile Touch) ===== */
+.stat-card:active {
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  border-color: #e8eaed;
+}
+.stat-card:active .stat-card-icon {
+  color: #004691 !important;
+}
+.stat-card:active .stat-card-value {
+  color: #004691 !important;
+}
+.stat-card:active .stat-card-label {
+  color: #4A4A4A !important;
+}
+
+/* ===== FOCUS-VISIBLE (Accessibility) ===== */
+.stat-card:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   NOSOTROS INLINE CARDS — Same pattern
+   ======================================== */
+.nosotros-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #004691;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 15px rgba(0, 70, 145, 0.2);
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.nosotros-card-icon {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D4AF37;
+  transition: color 300ms ease-in-out;
+}
+.nosotros-card-icon svg {
+  display: block;
+}
+.nosotros-card-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  transition: color 300ms ease-in-out;
+  line-height: 1.2;
+}
+@media (min-width: 640px) {
+  .nosotros-card-number { font-size: 1.875rem; }
+}
+.nosotros-card-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #F3F4F6;
+  transition: color 300ms ease-in-out;
+  margin-top: 0.375rem;
+}
+@media (min-width: 640px) {
+  .nosotros-card-label { font-size: 0.8125rem; }
+}
+
+/* ===== HOVER ===== */
+.nosotros-card:hover {
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  border-color: #e8eaed;
+}
+.nosotros-card:hover .nosotros-card-icon { color: #004691 !important; }
+.nosotros-card:hover .nosotros-card-number { color: #004691 !important; }
+.nosotros-card:hover .nosotros-card-label { color: #4A4A4A !important; }
+
+/* ===== ACTIVE (Mobile) ===== */
+.nosotros-card:active {
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  border-color: #e8eaed;
+}
+.nosotros-card:active .nosotros-card-icon { color: #004691 !important; }
+.nosotros-card:active .nosotros-card-number { color: #004691 !important; }
+.nosotros-card:active .nosotros-card-label { color: #4A4A4A !important; }
+
+/* ===== FOCUS ===== */
+.nosotros-card:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 2px;
+}
