@@ -81,16 +81,16 @@ export default function ServiciosSection() {
         <div className="w-12 h-1 bg-[#C5960C] mx-auto mt-3 rounded-full" />
       </div>
 
-      {/* ===== 3D FLIP CARDS — IMMERSIVE GRID ===== */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-0 rounded-none overflow-hidden shadow-2xl">
+      {/* ===== 3D FLIP CARDS — FULL BLEED GRID ===== */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-0 md:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 rounded-none overflow-hidden shadow-2xl">
 
           {cards.map((card) => {
             const IconComp = card.icon;
             return (
               <div
                 key={card.id}
-                className="w-full h-[450px] cursor-pointer"
+                className="w-full h-[480px] md:h-[450px] cursor-pointer"
                 style={{ perspective: '1000px' }}
                 onClick={() => {
                   if (isTouch) {
@@ -135,41 +135,47 @@ export default function ServiciosSection() {
                     </div>
                   </div>
 
-                  {/* ===== BACK FACE (rotateY 180°) ===== */}
+                  {/* ===== BACK FACE — Blur Pro Effect ===== */}
                   <div
-                    className="absolute inset-0 w-full h-full bg-[#004691] p-8 flex flex-col justify-between text-white"
+                    className="absolute inset-0 w-full h-full bg-cover bg-center p-8 flex flex-col justify-between text-white overflow-hidden"
                     style={{
+                      backgroundImage: `url(${card.img})`,
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)',
                     }}
                   >
-                    <div>
-                      {/* Title with gold accent */}
-                      <h4 className="text-[#C5960C] text-xl font-bold mb-6 tracking-wide text-center">
+                    {/* Premium blur layer + brand blue tint */}
+                    <div className="absolute inset-0 bg-[#004691]/60 backdrop-blur-lg z-0" />
+
+                    {/* Content: Title + Service List */}
+                    <div className="relative z-10 w-full">
+                      <h4 className="text-[#D4AF37] text-xl font-black mb-6 tracking-wider text-center uppercase drop-shadow-md">
                         {card.title}
                       </h4>
                       {/* Service list — left-aligned, centered in block */}
-                      <ul className="max-w-[240px] mx-auto space-y-3 text-left text-sm text-white/90">
+                      <ul className="max-w-[240px] mx-auto space-y-4 text-left text-sm font-medium text-white/95">
                         {card.services.map((service, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <span className="text-[#C5960C] font-bold mt-[1px]">•</span>
-                            <span>{service}</span>
+                          <li key={idx} className="flex items-start gap-2.5">
+                            <span className="text-[#D4AF37] text-base leading-none">•</span>
+                            <span className="drop-shadow-sm">{service}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
                     {/* CTA Button */}
-                    <a
-                      href={`https://wa.me/51944106163?text=${encodeURIComponent(`Hola Sertrade Design, estoy interesado en cotizar el servicio de ${card.title}.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-full py-3 bg-[#C5960C] hover:bg-[#d4a817] text-[#003466] font-black text-sm uppercase tracking-wider transition-colors duration-300 text-center block"
-                    >
-                      COTIZAR SERVICIO
-                    </a>
+                    <div className="relative z-10 w-full px-2">
+                      <a
+                        href={`https://wa.me/51944106163?text=${encodeURIComponent(`Hola Sertrade Design, estoy interesado en cotizar el servicio de ${card.title}.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-full py-3 bg-[#D4AF37] hover:bg-[#bfa032] text-[#004691] font-black text-sm uppercase tracking-widest transition-all duration-300 shadow-lg active:scale-[0.98] text-center block"
+                      >
+                        COTIZAR SERVICIO
+                      </a>
+                    </div>
                   </div>
 
                 </motion.div>
