@@ -134,9 +134,9 @@ export default function HomePage() {
           </div>
         ))}
 
-        {/* ===== LAYER 2: STATIC TEXT — LOWER THIRD (z-20) ===== */}
+        {/* ===== LAYER 2: STATIC TEXT — VERTICALLY CENTERED (z-20) ===== */}
         <div
-          className="absolute inset-0 flex flex-col items-center justify-end pointer-events-none pb-[10vh]"
+          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           style={{ zIndex: 20 }}
         >
           <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
@@ -150,7 +150,7 @@ export default function HomePage() {
                   transition: 'opacity 0.9s ease-out, transform 0.9s ease-out',
                   transitionDelay: '0.3s',
                 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-3 leading-[1.02] tracking-tight uppercase"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-4 leading-[1.02] tracking-tight uppercase"
               >
                 SERTRADE
                 <span className="block mt-0.5">PROYECTOS</span>
@@ -162,12 +162,27 @@ export default function HomePage() {
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
                   transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
-                  transitionDelay: '0.55s',
+                  transitionDelay: '0.5s',
                 }}
-                className="mb-8"
+                className="mb-2"
               >
                 <span className="text-white/70 text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
                   Servicios de Arquitectura y Servicios Generales
+                </span>
+              </div>
+
+              {/* Tagline — DISEÑO Y EJECUCIÓN */}
+              <div
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+                  transitionDelay: '0.65s',
+                }}
+                className="mb-8"
+              >
+                <span className="text-white/50 text-[10px] sm:text-[11px] tracking-[0.35em] uppercase font-light">
+                  Diseño y Ejecución
                 </span>
               </div>
 
@@ -178,7 +193,7 @@ export default function HomePage() {
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
                   transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
-                  transitionDelay: '0.75s',
+                  transitionDelay: '0.8s',
                 }}
               >
                 {/* PRIMARY CTA — VER PROYECTOS (Yellow) */}
@@ -207,7 +222,7 @@ export default function HomePage() {
                   </span>
                 </motion.button>
 
-                {/* SECONDARY CTA — CONTACTO (Solid) */}
+                {/* SECONDARY CTA — CONTACTO (Solid blue-green) */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
