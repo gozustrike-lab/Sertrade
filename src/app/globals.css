@@ -370,14 +370,6 @@
 }
 
 /* ========================================
-   Mobile-First: Prevent horizontal overflow
-   on all containers
-   ======================================== */
-.max-w-7xl {
-  overflow-x: hidden;
-}
-
-/* ========================================
    Hero Overlay: Darker gradient for
    text readability on any image
    ======================================== */

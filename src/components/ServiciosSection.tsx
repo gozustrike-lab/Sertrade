@@ -51,7 +51,7 @@ export default function ServiciosSection() {
   }, []);
 
   return (
-    <section className="relative w-full bg-[#F4F7FA] py-20">
+    <section className="relative w-full bg-[#F4F7FA] py-20" style={{ overflow: 'visible' }}>
 
       {/* ===== HEADER TEXT ===== */}
       <div className="relative z-10 text-center mb-12 px-4">
@@ -65,7 +65,7 @@ export default function ServiciosSection() {
       </div>
 
       {/* ===== 3D FLIP CARDS — FULL BLEED GRID ===== */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-0 md:px-6 lg:px-8">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-0 md:px-6 lg:px-8" style={{ overflow: 'visible' }}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0" style={{ overflow: 'visible', transformStyle: 'preserve-3d' }}>
 
           {cards.map((card, idx) => {
