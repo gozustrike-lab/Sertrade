@@ -136,7 +136,7 @@ export default function HomePage() {
 
         {/* ===== LAYER 2: STATIC TEXT — FULLY CENTERED (z-20) ===== */}
         <div
-          className="absolute inset-0 flex flex-col items-center justify-end pointer-events-none pb-[12vh]"
+          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           style={{ zIndex: 20 }}
         >
           <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
