@@ -24,13 +24,16 @@ import StatCard from '@/components/StatCard';
 
 const sliderData = [
   {
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80',
+    image: '/images/hero/hero-construction.jpg',
   },
   {
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80',
+    image: '/images/hero/hero-electrical.jpg',
   },
   {
-    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&q=80',
+    image: '/images/hero/hero-paseo-antara.jpg',
+  },
+  {
+    image: '/images/hero/hero-northpark.jpg',
   },
 ];
 
