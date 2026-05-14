@@ -82,11 +82,16 @@ export default function ServiciosSection() {
                 }}
               >
                 <motion.div
-                  className="relative w-full h-full"
+                  className="relative w-full h-full cursor-pointer"
                   style={{ transformStyle: 'preserve-3d' }}
                   animate={{ rotateY: flippedCard === card.id ? 180 : 0 }}
                   whileHover={isTouch ? {} : { rotateY: 180, boxShadow: '0 25px 60px rgba(0,70,145,0.35)' }}
                   transition={{ type: 'spring', stiffness: 120, damping: 18 }}
+                  onClick={() => {
+                    if (isTouch) {
+                      setFlippedCard(flippedCard === card.id ? null : card.id);
+                    }
+                  }}
                 >
                   {/* ===== FRONT FACE ===== */}
                   <div
@@ -95,6 +100,7 @@ export default function ServiciosSection() {
                       backgroundImage: `url(${card.img})`,
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
+                      pointerEvents: 'none',
                     }}
                   >
                     {/* Dark overlay */}
@@ -126,6 +132,7 @@ export default function ServiciosSection() {
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)',
+                      pointerEvents: 'none',
                     }}
                   >
                     {/* Premium blur layer + brand blue tint */}
@@ -148,7 +155,7 @@ export default function ServiciosSection() {
                     </div>
 
                     {/* CTA Button */}
-                    <div className="relative z-10 w-full px-2">
+                    <div className="relative z-10 w-full px-2" style={{ pointerEvents: 'auto' }}>
                       <a
                         href={`https://wa.me/51944106163?text=${encodeURIComponent(`Hola Sertrade Design, estoy interesado en cotizar el servicio de ${card.title}.`)}`}
                         target="_blank"
