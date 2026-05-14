@@ -194,7 +194,7 @@ export default function HomePage() {
                   transition: 'opacity 0.9s ease-out, transform 0.9s ease-out',
                   transitionDelay: '0.3s',
                 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-4 leading-[1.02] tracking-tight uppercase"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-4 leading-[1.02] tracking-tight uppercase text-shadow-hero"
               >
                 SERTRADE
                 <span className="block mt-0.5">PROJECTS</span>
@@ -321,17 +321,33 @@ export default function HomePage() {
 
       {/* PRO STATS — Animated Counters with Spring Physics */}
       <section
-        className="py-14 md:py-16"
+        className="py-14 md:py-16 hex-pattern-bg"
         style={{
           background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 10px, #F4F7FA 30px, #F4F7FA 100%)',
         }}
       >
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Animated hex pattern overlay — slow float */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 1 }}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+        >
+          <div className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
+            style={{
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
+              backgroundRepeat: 'repeat',
+              opacity: 0.04,
+            }}
+          />
+        </motion.div>
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 2 }}>
           <ScrollReveal>
             <div className="text-center mt-4 mb-12">
-              <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4">Resultados que Hablan</h2>
-              <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
+              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Resultados que Hablan</h2>
+              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
             </div>
           </ScrollReveal>
 
@@ -352,14 +368,30 @@ export default function HomePage() {
       </section>
 
       {/* NOSOTROS */}
-      <section className="pt-10 pb-20 md:pt-10 md:pb-24 bg-white" style={{ overflow: 'visible', height: 'auto' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ overflow: 'visible' }}>
+      <section className="pt-10 pb-20 md:pt-10 md:pb-24 bg-white hex-pattern-bg" style={{ overflow: 'visible', height: 'auto' }}>
+        {/* Animated hex pattern overlay — slow float */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 0 }}
+          animate={{ y: [0, -6, 0] }}
+          transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
+        >
+          <div className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
+            style={{
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
+              backgroundRepeat: 'repeat',
+              opacity: 0.035,
+            }}
+          />
+        </motion.div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 1, overflow: 'visible' }}>
           <ScrollReveal>
             <div className="text-center mb-16">
-              <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Quiénes Somos</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5">Nosotros</h2>
-              <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
-              <p className="text-[#4A4A4A] max-w-2xl mx-auto mt-6 leading-[1.7]">
+              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Quiénes Somos</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5 text-shadow-pro">Nosotros</h2>
+              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+              <p className="text-[#2D3748] max-w-2xl mx-auto mt-6 leading-[1.7]">
                 Sertrade Design es un estudio de arquitectura especializado en el diseño de espacios comerciales,
                 de salud y residenciales. Nuestro enfoque combina creatividad, funcionalidad y sostenibilidad
                 para crear entornos que transforman la experiencia de quienes los habitan.
@@ -391,9 +423,9 @@ export default function HomePage() {
           <div className="mt-20">
             <ScrollReveal>
               <div className="text-center mb-12">
-                <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Servicios</span>
-                <h3 className="text-2xl sm:text-3xl font-bold text-[#004691] mt-3 mb-4">Lo Que Hacemos</h3>
-                <div className="w-12 h-1 bg-[#004691] mx-auto rounded-full" />
+                <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Servicios</span>
+                <h3 className="text-2xl sm:text-3xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Lo Que Hacemos</h3>
+                <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
               </div>
             </ScrollReveal>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-1 mx-auto w-[95vw] max-w-none">
@@ -413,7 +445,7 @@ export default function HomePage() {
           {/* Pillars — with stagger */}
           <div className="mt-20">
             <ScrollReveal>
-              <h3 className="text-2xl font-bold text-[#004691] mb-12 text-center">Nuestros Pilares</h3>
+              <h3 className="text-2xl font-bold text-[#004691] mb-12 text-center text-shadow-pro">Nuestros Pilares</h3>
             </ScrollReveal>
             <ScrollReveal animation="fade-up" staggerDelay={0.12}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -421,13 +453,13 @@ export default function HomePage() {
                   <motion.div
                     key={i}
                     whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                    className="group text-center p-6 sm:p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 hover:shadow-xl transition-all duration-500"
+                    className="group text-center p-6 sm:p-7 rounded-[8px] bg-white border border-gray-100 hover:border-[#004691]/20 shadow-pro hover:shadow-pro-hover transition-all duration-500"
                   >
-                    <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
+                    <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mx-auto mb-5 group-hover:bg-[#C5960C] transition-all duration-500 group-hover:scale-110 shadow-lg">
                       <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
                     </div>
                     <h4 className="font-semibold text-[#004691] text-lg mb-3">{pillar.title}</h4>
-                    <p className="text-[#4A4A4A] text-sm leading-[1.7]">{pillar.description}</p>
+                    <p className="text-[#2D3748] text-sm leading-[1.7]">{pillar.description}</p>
                   </motion.div>
                 ))}
               </div>
