@@ -97,13 +97,31 @@ export default function HomePage() {
   };
 
   return (
-    <div>
+    <div className="relative">
       {/* Page Transition Overlay */}
       <div
         id="page-transition-overlay"
         className="fixed inset-0 z-[9999] bg-[#004691] pointer-events-none"
         style={{ opacity: 0, transition: 'opacity 0.4s ease-in-out' }}
       />
+
+      {/* ===== GLOBAL BRAND HEX WATERMARK ===== */}
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 9998 }}>
+        <motion.div
+          className="absolute inset-0 w-full h-full"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 15, ease: 'easeInOut' }}
+        >
+          <div
+            className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
+            style={{
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
+              backgroundRepeat: 'repeat',
+              opacity: 0.04,
+            }}
+          />
+        </motion.div>
+      </div>
 
       {/* =============================================
           HERO SLIDER — CENTERED LAYOUT
@@ -281,30 +299,12 @@ export default function HomePage() {
 
       {/* QUIÉNES SOMOS */}
       <section
-        className="pt-10 pb-20 md:pt-10 md:pb-24 hex-pattern-bg"
+        className="pt-10 pb-20 md:pt-10 md:pb-24"
         style={{
-          overflow: 'visible',
-          height: 'auto',
           background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 10px, #F4F7FA 30px, #F4F7FA 100%)',
         }}
       >
-        {/* Animated hex pattern overlay — slow float */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{ zIndex: 0 }}
-          animate={{ y: [0, -6, 0] }}
-          transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
-        >
-          <div className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
-            style={{
-              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
-              backgroundRepeat: 'repeat',
-              opacity: 0.035,
-            }}
-          />
-        </motion.div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 1, overflow: 'visible' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-16">
               <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Quiénes Somos</span>
@@ -342,34 +342,11 @@ export default function HomePage() {
       </section>
 
       {/* NUESTROS SERVICIOS */}
-      <section className="py-14 md:py-16 bg-white">
-        <ServiciosSection />
-      </section>
+      <ServiciosSection />
 
       {/* NUESTROS NÚMEROS — Animated Counters with Spring Physics */}
-      <section
-        className="py-14 md:py-16 hex-pattern-bg"
-        style={{
-          background: 'linear-gradient(to bottom, #ffffff 0px, #ffffff 10px, #F4F7FA 30px, #F4F7FA 100%)',
-        }}
-      >
-        {/* Animated hex pattern overlay — slow float */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{ zIndex: 1 }}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
-        >
-          <div className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
-            style={{
-              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
-              backgroundRepeat: 'repeat',
-              opacity: 0.04,
-            }}
-          />
-        </motion.div>
-
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 2 }}>
+      <section className="py-14 md:py-16 bg-[#F4F7FA]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mt-4 mb-12">
               <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>

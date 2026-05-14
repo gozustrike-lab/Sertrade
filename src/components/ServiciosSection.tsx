@@ -53,23 +53,6 @@ export default function ServiciosSection() {
   return (
     <section className="relative w-full bg-[#F4F7FA] py-20">
 
-      {/* ===== HEXAGONAL WATERMARK BACKGROUND — Floating Animation ===== */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 0 }}
-        animate={{ y: [0, 6, 0] }}
-        transition={{ repeat: Infinity, duration: 9, ease: 'easeInOut' }}
-      >
-        <div
-          className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E")`,
-            backgroundRepeat: 'repeat',
-            opacity: 0.04,
-          }}
-        />
-      </motion.div>
-
       {/* ===== HEADER TEXT ===== */}
       <div className="relative z-10 text-center mb-12 px-4">
         <span className="text-[#C5960C] text-xs font-bold tracking-[0.2em] uppercase block mb-2">

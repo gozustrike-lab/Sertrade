@@ -710,7 +710,6 @@
    ======================================== */
 .hex-pattern-bg {
   position: relative;
-  overflow: hidden;
 }
 .hex-pattern-bg::before {
   content: '';
