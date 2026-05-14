@@ -108,7 +108,7 @@ export default function HomePage() {
             LAYER 2 (z-20): Text content — 100% STATIC, centered
             LAYER 3 (z-30): Arrows + Dots
           ============================================= */}
-      <section className="relative w-full overflow-hidden" style={{ minHeight: '100vh' }}>
+      <section className="relative w-full overflow-hidden" style={{ height: '100vh' }}>
 
         {/* ===== LAYER 1: BACKGROUND IMAGES (z-10) ===== */}
         {sliderData.map((s, index) => (
@@ -273,16 +273,16 @@ export default function HomePage() {
           <span>{String(sliderData.length).padStart(2, '0')}</span>
         </div>
 
-        {/* ===== BOTTOM FADE: Hero → Section (z-45) — minimal 45px ===== */}
-        <div
-          className="absolute bottom-0 left-0 right-0 pointer-events-none"
-          style={{
-            zIndex: 45,
-            height: '45px',
-            background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
-          }}
-        />
       </section>
+
+      {/* ===== GRADIENT TRANSITION: Hero (dark) → Nuestros Números (light) ===== */}
+      <div
+        className="w-full"
+        style={{
+          height: '120px',
+          background: 'linear-gradient(to bottom, #001432 0%, #002850 30%, #0a3a6b 60%, #F4F7FA 100%)',
+        }}
+      />
 
       {/* PRO STATS — Animated Counters with Spring Physics */}
       <section className="py-14 md:py-16 bg-[#F4F7FA]">
