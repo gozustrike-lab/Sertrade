@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -66,7 +66,9 @@ export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const [activeStatIndex, setActiveStatIndex] = useState(0);
   const router = useRouter();
+  const statsSectionRef = useRef<HTMLDivElement>(null);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % sliderData.length);
@@ -76,11 +78,19 @@ export default function HomePage() {
     setCurrentSlide((prev) => (prev - 1 + sliderData.length) % sliderData.length);
   }, []);
 
+  /* Autoplay highlight for Nuestros Números — cycles every 3s */
   useEffect(() => {
     setMounted(true);
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [nextSlide]);
+
+  useEffect(() => {
+    const statsInterval = setInterval(() => {
+      setActiveStatIndex((prev) => (prev + 1) % proStats.length);
+    }, 3000);
+    return () => clearInterval(statsInterval);
+  }, []);
 
   /* Smooth page transition: fade-out then navigate */
   const navigateWithTransition = (href: string) => {
@@ -344,8 +354,8 @@ export default function HomePage() {
       {/* NUESTROS SERVICIOS */}
       <ServiciosSection />
 
-      {/* NUESTROS NÚMEROS — Animated Counters with Spring Physics */}
-      <section className="py-14 md:py-16 bg-[#F4F7FA]">
+      {/* NUESTROS NÚMEROS — Animated Counters with Autoplay Highlight */}
+      <section className="py-14 md:py-16 bg-[#F4F7FA]" ref={statsSectionRef}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mt-4 mb-12">
@@ -365,6 +375,7 @@ export default function HomePage() {
                 suffix={stat.suffix}
                 label={stat.label}
                 delay={i * 0.3}
+                isActive={activeStatIndex === i}
               />
             ))}
           </div>

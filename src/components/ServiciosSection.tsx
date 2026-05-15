@@ -94,7 +94,7 @@ export default function ServiciosSection() {
             return (
               <div
                 key={card.id}
-                className="w-full h-[480px] md:h-[450px] cursor-pointer"
+                className="w-full h-[480px] md:h-[530px] cursor-pointer"
                 style={{ perspective: '1200px', overflow: 'visible', transformStyle: 'preserve-3d' }}
                 onMouseEnter={() => handleMouseEnter(card.id)}
                 onMouseLeave={handleMouseLeave}
@@ -140,7 +140,7 @@ export default function ServiciosSection() {
 
                   {/* ===== BACK FACE — Blur Pro Effect ===== */}
                   <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center p-8 flex flex-col justify-between text-white overflow-hidden"
+                    className="absolute inset-0 w-full h-full bg-cover bg-center p-8 flex flex-col justify-center items-center text-center my-auto text-white overflow-hidden"
                     style={{
                       backgroundImage: `url(${card.img})`,
                       backfaceVisibility: 'hidden',
@@ -149,25 +149,24 @@ export default function ServiciosSection() {
                     }}
                   >
                     {/* Premium blur layer + brand blue tint */}
-                    <div className="absolute inset-0 bg-[#004691]/60 backdrop-blur-lg z-0" />
+                    <div className="absolute inset-0 bg-[#004691]/60 backdrop-blur-xl z-0" />
 
                     {/* Content: Title + Service List */}
-                    <div className="relative z-10 w-full">
+                    <div className="relative z-10 w-full flex flex-col items-center">
                       <h4 className="text-[#D4AF37] text-xl font-black mb-6 tracking-wider text-center uppercase drop-shadow-md">
                         {card.title}
                       </h4>
-                      <ul className="max-w-[240px] mx-auto space-y-4 text-left text-sm font-medium text-white/95">
+                      <ul className="max-w-[240px] mx-auto space-y-2 text-sm font-medium text-white/95">
                         {card.services.map((service, sIdx) => (
-                          <li key={sIdx} className="flex items-start gap-2.5">
-                            <span className="text-[#D4AF37] text-base leading-none">•</span>
-                            <span className="drop-shadow-sm">{service}</span>
+                          <li key={sIdx} className="drop-shadow-sm">
+                            {service}
                           </li>
                         ))}
                       </ul>
                     </div>
 
                     {/* CTA Button */}
-                    <div className="relative z-10 w-full px-2">
+                    <div className="relative z-10 w-full flex justify-center px-2">
                       <a
                         href={`https://wa.me/51944106163?text=${encodeURIComponent(`Hola Sertrade Design, estoy interesado en cotizar el servicio de ${card.title}.`)}`}
                         target="_blank"
