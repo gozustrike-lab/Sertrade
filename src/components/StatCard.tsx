@@ -50,10 +50,10 @@ export default function StatCard({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Icon — ALWAYS gold #D4AF37, independent of card state */}
+        {/* Icon — gold on blue bg, blue on white bg */}
         <div
-          className="stat-card-icon"
-          style={{ color: '#D4AF37' }}
+          className="stat-card-icon transition-colors duration-300"
+          style={{ color: isHighlighted ? '#004691' : '#D4AF37' }}
         >
           <Icon size={36} strokeWidth={1.5} />
         </div>
