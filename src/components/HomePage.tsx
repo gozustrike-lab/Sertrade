@@ -382,46 +382,43 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
-              { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', desc: 'Espacio comercial premium con diseño moderno y funcional.' },
-              { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', desc: 'Infraestructura de salud con ambientes confortables y tecnológicos.' },
-              { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', desc: 'Residencia de lujo con acabados de alta calidad y espacios abiertos.' },
-              { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80', desc: 'Torre corporativa con diseño sostenible y ambientes productivos.' },
-              { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80', desc: 'Centro hospitalario de referencia con infraestructura de primer nivel.' },
-              { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', desc: 'Villa residencial con vista panorámica y diseño integrado a la naturaleza.' },
+              { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80' },
+              { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80' },
+              { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80' },
+              { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80' },
+              { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80' },
+              { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80' },
             ].map((project, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
                 <motion.div
-                  className="group bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer border border-gray-100"
-                  whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(0,28,61,0.12)', transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                  className="relative w-full h-[550px] md:h-[600px] overflow-hidden group bg-black cursor-pointer rounded-xl"
+                  whileHover={{ y: -6, boxShadow: '0 25px 60px rgba(0,0,0,0.35)', transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                   onClick={() => navigateWithTransition('/proyectos')}
                 >
-                  {/* Image — rectangular, top portion */}
-                  <div className="relative h-[220px] md:h-[250px] overflow-hidden">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                      style={{ backgroundImage: `url(${project.image})` }}
-                    />
-                  </div>
-                  {/* Content — centered below image */}
-                  <div className="p-5 md:p-6 text-center">
-                    {/* Category badge */}
-                    <span className="inline-block px-3 py-1 bg-[#C5960C]/10 text-[#C5960C] text-[10px] font-bold uppercase tracking-[0.15em] rounded-full mb-3">
+                  {/* Full-bleed image */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover opacity-85 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"
+                    loading="lazy"
+                  />
+                  {/* Gradient overlay — text contrast backdrop */}
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 flex flex-col justify-end p-6 md:p-8 text-center">
+                    {/* Category tag */}
+                    <span className="inline-block self-center px-3 py-1 bg-[#C5960C] text-white text-[10px] font-bold uppercase tracking-[0.15em] rounded-full mb-3">
                       {project.category}
                     </span>
-                    <h3 className="text-[#004691] font-bold text-base md:text-lg mb-2 leading-tight group-hover:text-[#003266] transition-colors duration-300">
+                    {/* Title */}
+                    <h3 className="text-white font-bold text-lg md:text-xl leading-tight uppercase tracking-wide drop-shadow-lg">
                       {project.title}
                     </h3>
-                    <p className="text-[#2D3748]/60 text-xs md:text-sm leading-relaxed mb-3">
-                      {project.desc}
-                    </p>
-                    <div className="flex items-center justify-center gap-3 text-[#2D3748]/40 text-xs">
-                      <span className="flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                        {project.location}
-                      </span>
-                      <span className="w-1 h-1 rounded-full bg-[#2D3748]/20" />
+                    {/* Location + Area */}
+                    <div className="flex items-center justify-center gap-3 text-white/70 text-xs mt-2">
+                      <span>{project.location}</span>
+                      <span className="w-1 h-1 rounded-full bg-white/40" />
                       <span>{project.area}</span>
                     </div>
                   </div>
