@@ -67,7 +67,12 @@ export default function ProjectsPage() {
       </section>
 
       {/* IMMERSIVE CATEGORY FILTER — Editorial text-only uppercase strip */}
-      <section className="relative bg-[#f7f8fa] brand-pattern-wrapper">
+      <section
+        className="relative brand-pattern-wrapper"
+        style={{
+          background: 'linear-gradient(to bottom, #002B5B 0px, #002B5B 10px, #f7f8fa 40px, #f7f8fa 100%)',
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal animation="fade-up" delay={0.15}>
             <div className="flex items-center justify-center py-8 md:py-10 border-b border-gray-200/60">

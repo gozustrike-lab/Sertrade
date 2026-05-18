@@ -58,7 +58,12 @@ export default function ServicesPage() {
       </section>
 
       {/* SERVICE CATEGORIES — with stagger + spring hover */}
-      <section className="py-24 bg-white brand-pattern-wrapper">
+      <section
+        className="pt-24 pb-24 brand-pattern-wrapper"
+        style={{
+          background: 'linear-gradient(to bottom, #002B5B 0px, #002B5B 10px, #ffffff 40px, #ffffff 100%)',
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <div className="text-center mb-16">

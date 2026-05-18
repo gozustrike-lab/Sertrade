@@ -542,7 +542,7 @@ export default function HomePage() {
 
           {/* Client logos grid */}
           <ScrollReveal animation="fade-up" staggerDelay={0.1}>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 items-center justify-items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-8 md:gap-12 items-center justify-items-center">
               {[
                 { name: 'Lima Kombo', img: '/img/clients/lima-kombo.png', alt: 'Lima Kombo - Cocina al Fuego' },
                 { name: 'Mitsubishi Motors', img: '/img/clients/mitsubishi-motors.png', alt: 'Mitsubishi Motors' },
@@ -550,10 +550,10 @@ export default function HomePage() {
               ].map((client, i) => (
                 <motion.div
                   key={i}
-                  className="flex flex-col items-center gap-4 group"
+                  className="flex flex-col items-center gap-3 sm:gap-4 group"
                   whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                 >
-                  <div className="w-32 h-32 md:w-36 md:h-36 rounded-2xl bg-white border border-gray-100 shadow-md flex items-center justify-center p-6 group-hover:shadow-xl group-hover:border-[#004691]/20 transition-all duration-500">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-xl sm:rounded-2xl bg-white border border-gray-100 shadow-md flex items-center justify-center p-4 sm:p-6 group-hover:shadow-xl group-hover:border-[#004691]/20 transition-all duration-500">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={client.img}
@@ -562,7 +562,7 @@ export default function HomePage() {
                       loading="lazy"
                     />
                   </div>
-                  <span className="text-[#2D3748]/50 text-xs font-medium uppercase tracking-[0.15em] group-hover:text-[#004691] transition-colors duration-500">
+                  <span className="text-[#2D3748]/50 text-[10px] sm:text-xs font-medium uppercase tracking-[0.12em] sm:tracking-[0.15em] group-hover:text-[#004691] transition-colors duration-500">
                     {client.name}
                   </span>
                 </motion.div>
