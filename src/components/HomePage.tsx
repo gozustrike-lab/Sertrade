@@ -18,6 +18,7 @@ import {
   PencilRuler,
   ChevronLeft,
   Clock,
+  MessageCircle,
 } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 import StatCard from '@/components/StatCard';
@@ -202,9 +203,9 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* CTA BUTTONS — Centered, side by side on desktop */}
+              {/* CTA BUTTONS — WhatsApp style with notification dot */}
               <div
-                className="hero-btn-stack flex items-center gap-3 sm:gap-5 pointer-events-auto"
+                className="hero-btn-stack flex items-center gap-4 sm:gap-5 pointer-events-auto"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
@@ -212,47 +213,48 @@ export default function HomePage() {
                   transitionDelay: '0.8s',
                 }}
               >
-                {/* PRIMARY CTA — VER PROYECTOS (Yellow) */}
-                <motion.button
-                  onClick={() => navigateWithTransition('/proyectos')}
-                  className="cta-shimmer-btn group relative px-8 py-3 bg-[#d4a017] text-[#003466] rounded-[8px] font-bold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden"
-                  whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
+                {/* PRIMARY CTA — VER PROYECTOS (WhatsApp green style) */}
+                <motion.div
+                  className="relative"
+                  whileHover={{ scale: 1.08 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 >
-                  <motion.span
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
-                    initial={{ x: '-100%' }}
-                    animate={{ x: ['100%', '-100%'] }}
-                    transition={{
-                      duration: 2.5,
-                      repeat: Infinity,
-                      repeatDelay: 1,
-                      ease: 'easeInOut',
-                    }}
-                    style={{ backgroundSize: '200% 100%' }}
-                  />
-                  <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover:text-[#002244]">
+                  <motion.button
+                    onClick={() => navigateWithTransition('/proyectos')}
+                    className="relative px-8 py-3.5 bg-[#25D366] text-white rounded-full font-bold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden hover:shadow-[0_0_25px_rgba(37,211,102,0.5)] transition-shadow duration-300"
+                  >
+                    <MessageCircle size={18} strokeWidth={1.5} className="fill-white/20" />
                     VER PROYECTOS
-                    <ArrowRight size={16} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </motion.button>
+                  {/* Pulse notification dot */}
+                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EF4444] opacity-60" />
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-[#EF4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]" />
                   </span>
-                </motion.button>
+                </motion.div>
 
-                {/* SECONDARY CTA — CONTACTO (Solid blue-green) */}
+                {/* SECONDARY CTA — CONTACTO WhatsApp */}
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
+                  className="relative"
+                  whileHover={{ scale: 1.08 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  className="pointer-events-auto"
                 >
                   <a
                     href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estoy en la página de inicio de Sertrade y quiero agendar una reunión para presentarles mi proyecto.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-8 py-3 bg-transparent border border-white/40 text-white rounded-[8px] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] hover:bg-white/10 hover:border-white/60 transition-all duration-300 flex items-center justify-center"
+                    className="px-8 py-3.5 bg-[#25D366] text-white rounded-full font-semibold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] shadow-lg flex items-center gap-2.5 justify-center hover:shadow-[0_0_25px_rgba(37,211,102,0.5)] transition-shadow duration-300"
                   >
+                    <MessageCircle size={18} strokeWidth={1.5} className="fill-white/20" />
                     CONTACTO
                   </a>
+                  {/* Pulse notification dot */}
+                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EF4444] opacity-60" />
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-[#EF4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]" />
+                  </span>
                 </motion.div>
               </div>
             </div>
@@ -380,39 +382,46 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80' },
-              { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80' },
-              { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80' },
-              { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80' },
-              { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80' },
-              { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80' },
+              { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', desc: 'Espacio comercial premium con diseño moderno y funcional.' },
+              { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', desc: 'Infraestructura de salud con ambientes confortables y tecnológicos.' },
+              { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', desc: 'Residencia de lujo con acabados de alta calidad y espacios abiertos.' },
+              { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80', desc: 'Torre corporativa con diseño sostenible y ambientes productivos.' },
+              { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80', desc: 'Centro hospitalario de referencia con infraestructura de primer nivel.' },
+              { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', desc: 'Villa residencial con vista panorámica y diseño integrado a la naturaleza.' },
             ].map((project, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
                 <motion.div
-                  className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer"
-                  whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                  className="group bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer border border-gray-100"
+                  whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(0,28,61,0.12)', transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                   onClick={() => navigateWithTransition('/proyectos')}
                 >
-                  {/* Immersive image */}
-                  <div className="relative h-[280px] md:h-[320px] overflow-hidden">
+                  {/* Image — rectangular, top portion */}
+                  <div className="relative h-[220px] md:h-[250px] overflow-hidden">
                     <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                       style={{ backgroundImage: `url(${project.image})` }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#001C3D] via-[#001C3D]/30 to-transparent" />
-                    {/* Category badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-[#C5960C] text-white text-xs font-semibold uppercase tracking-wider rounded-md">{project.category}</span>
-                    </div>
                   </div>
-                  {/* Content overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <h3 className="text-white font-bold text-lg mb-1">{project.title}</h3>
-                    <div className="flex items-center gap-3 text-white/70 text-sm">
-                      <span>{project.location}</span>
-                      <span className="w-1 h-1 rounded-full bg-white/40" />
+                  {/* Content — centered below image */}
+                  <div className="p-5 md:p-6 text-center">
+                    {/* Category badge */}
+                    <span className="inline-block px-3 py-1 bg-[#C5960C]/10 text-[#C5960C] text-[10px] font-bold uppercase tracking-[0.15em] rounded-full mb-3">
+                      {project.category}
+                    </span>
+                    <h3 className="text-[#004691] font-bold text-base md:text-lg mb-2 leading-tight group-hover:text-[#003266] transition-colors duration-300">
+                      {project.title}
+                    </h3>
+                    <p className="text-[#2D3748]/60 text-xs md:text-sm leading-relaxed mb-3">
+                      {project.desc}
+                    </p>
+                    <div className="flex items-center justify-center gap-3 text-[#2D3748]/40 text-xs">
+                      <span className="flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        {project.location}
+                      </span>
+                      <span className="w-1 h-1 rounded-full bg-[#2D3748]/20" />
                       <span>{project.area}</span>
                     </div>
                   </div>
@@ -421,18 +430,29 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Ver más — redirect to portfolio */}
+          {/* Ver más — WhatsApp style CTA */}
           <ScrollReveal>
-            <div className="text-center mt-12">
-              <motion.button
-                onClick={() => navigateWithTransition('/proyectos')}
-                className="group inline-flex items-center gap-2.5 px-8 py-3 bg-[#004691] text-white rounded-lg font-semibold text-sm uppercase tracking-wider hover:bg-[#003466] transition-all duration-300"
+            <div className="text-center mt-14">
+              <motion.div
+                className="relative inline-block"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               >
-                Ver Todos los Proyectos
-                <ArrowRight size={18} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1" />
-              </motion.button>
+                <motion.button
+                  onClick={() => navigateWithTransition('/proyectos')}
+                  className="px-8 py-3.5 bg-[#25D366] text-white rounded-full font-semibold text-sm uppercase tracking-wider shadow-lg flex items-center gap-2.5 hover:shadow-[0_0_25px_rgba(37,211,102,0.5)] transition-shadow duration-300"
+                >
+                  <MessageCircle size={18} strokeWidth={1.5} className="fill-white/20" />
+                  Ver Todos los Proyectos
+                  <ArrowRight size={16} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-1" />
+                </motion.button>
+                {/* Pulse notification dot */}
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EF4444] opacity-60" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#EF4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]" />
+                </span>
+              </motion.div>
             </div>
           </ScrollReveal>
         </div>
@@ -608,32 +628,28 @@ export default function HomePage() {
               Cada espacio tiene una historia. Permítenos escribir la tuya con diseño, innovación y excelencia.
               Agenda una consulta gratuita hoy.
             </p>
-            <motion.a
-              href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, quiero solicitar una consulta gratuita para evaluar mi próximo proyecto.')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cta-shimmer-btn group relative px-8 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold shadow-lg inline-flex items-center gap-2 overflow-hidden"
-              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(212,160,23,0.35)' }}
+            <motion.div
+              className="relative inline-block"
+              whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
-              {/* Animated gradient background sweep */}
-              <motion.span
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
-                initial={{ x: '-100%' }}
-                animate={{ x: ['100%', '-100%'] }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  repeatDelay: 1,
-                  ease: 'easeInOut',
-                }}
-                style={{ backgroundSize: '200% 100%' }}
-              />
-              <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover:text-[#002244]">
-                Solicitar Consulta Gratuita <ChevronRight size={18} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1.5" />
+              <motion.a
+                href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, quiero solicitar una consulta gratuita para evaluar mi próximo proyecto.')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-10 py-4 bg-[#25D366] text-white rounded-full font-bold text-base uppercase tracking-wider shadow-lg inline-flex items-center gap-3 hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] transition-shadow duration-300"
+              >
+                <MessageCircle size={20} strokeWidth={1.5} className="fill-white/20" />
+                Solicitar Consulta Gratuita
+                <ChevronRight size={18} strokeWidth={2} />
+              </motion.a>
+              {/* Pulse notification dot */}
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EF4444] opacity-60" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-[#EF4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]" />
               </span>
-            </motion.a>
+            </motion.div>
           </div>
         </section>
       </ScrollReveal>
