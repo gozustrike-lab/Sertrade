@@ -203,9 +203,9 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* CTA BUTTONS — WhatsApp style with notification dot */}
+              {/* CTA BUTTONS — Circular WhatsApp style */}
               <div
-                className="hero-btn-stack flex items-center gap-4 sm:gap-5 pointer-events-auto"
+                className="hero-btn-stack flex items-center gap-5 sm:gap-6 pointer-events-auto"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(20px)',
@@ -213,31 +213,35 @@ export default function HomePage() {
                   transitionDelay: '0.8s',
                 }}
               >
-                {/* PRIMARY CTA — VER PROYECTOS (WhatsApp green style) */}
+                {/* PRIMARY CTA — VER PROYECTOS (circular) */}
                 <motion.div
-                  className="relative"
-                  whileHover={{ scale: 1.08 }}
+                  className="relative group/btn"
+                  whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 >
                   <motion.button
                     onClick={() => navigateWithTransition('/proyectos')}
-                    className="relative px-8 py-3.5 bg-[#25D366] text-white rounded-full font-bold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] shadow-lg flex items-center gap-2.5 justify-center overflow-hidden hover:shadow-[0_0_25px_rgba(37,211,102,0.5)] transition-shadow duration-300"
+                    className="w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-2xl hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] transition-shadow duration-300"
                   >
-                    <MessageCircle size={18} strokeWidth={1.5} className="fill-white/20" />
-                    VER PROYECTOS
+                    <ArrowRight size={26} strokeWidth={2} className="text-white" />
                   </motion.button>
                   {/* Pulse notification dot */}
-                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EF4444] opacity-60" />
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-[#EF4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]" />
                   </span>
+                  {/* Tooltip */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-white rounded-xl shadow-xl text-xs text-[#003366] font-semibold uppercase tracking-wider whitespace-nowrap opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    Ver Proyectos
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-white" />
+                  </div>
                 </motion.div>
 
-                {/* SECONDARY CTA — CONTACTO WhatsApp */}
+                {/* SECONDARY CTA — CONTACTO WhatsApp (circular) */}
                 <motion.div
-                  className="relative"
-                  whileHover={{ scale: 1.08 }}
+                  className="relative group/btn"
+                  whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 >
@@ -245,16 +249,20 @@ export default function HomePage() {
                     href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estoy en la página de inicio de Sertrade y quiero agendar una reunión para presentarles mi proyecto.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-8 py-3.5 bg-[#25D366] text-white rounded-full font-semibold text-[14px] sm:text-[15px] uppercase tracking-[0.08em] shadow-lg flex items-center gap-2.5 justify-center hover:shadow-[0_0_25px_rgba(37,211,102,0.5)] transition-shadow duration-300"
+                    className="w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-2xl hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] transition-shadow duration-300"
                   >
-                    <MessageCircle size={18} strokeWidth={1.5} className="fill-white/20" />
-                    CONTACTO
+                    <MessageCircle size={26} strokeWidth={1.5} className="text-white fill-white/10" />
                   </a>
                   {/* Pulse notification dot */}
-                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EF4444] opacity-60" />
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-[#EF4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]" />
                   </span>
+                  {/* Tooltip */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-white rounded-xl shadow-xl text-xs text-[#003366] font-semibold uppercase tracking-wider whitespace-nowrap opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    Contacto
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-white" />
+                  </div>
                 </motion.div>
               </div>
             </div>
@@ -427,28 +435,31 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Ver más — WhatsApp style CTA */}
+          {/* Ver más — Circular WhatsApp CTA */}
           <ScrollReveal>
             <div className="text-center mt-14">
               <motion.div
-                className="relative inline-block"
-                whileHover={{ scale: 1.05 }}
+                className="relative inline-block group/btn"
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               >
                 <motion.button
                   onClick={() => navigateWithTransition('/proyectos')}
-                  className="px-8 py-3.5 bg-[#25D366] text-white rounded-full font-semibold text-sm uppercase tracking-wider shadow-lg flex items-center gap-2.5 hover:shadow-[0_0_25px_rgba(37,211,102,0.5)] transition-shadow duration-300"
+                  className="w-16 h-16 rounded-full bg-[#25D366] flex items-center justify-center shadow-2xl hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] transition-shadow duration-300"
                 >
-                  <MessageCircle size={18} strokeWidth={1.5} className="fill-white/20" />
-                  Ver Todos los Proyectos
-                  <ArrowRight size={16} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight size={30} strokeWidth={2} className="text-white" />
                 </motion.button>
                 {/* Pulse notification dot */}
-                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EF4444] opacity-60" />
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-[#EF4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]" />
                 </span>
+                {/* Tooltip */}
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-white rounded-xl shadow-xl text-xs text-[#003366] font-semibold uppercase tracking-wider whitespace-nowrap opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  Ver Todos los Proyectos
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-white" />
+                </div>
               </motion.div>
             </div>
           </ScrollReveal>
@@ -626,8 +637,8 @@ export default function HomePage() {
               Agenda una consulta gratuita hoy.
             </p>
             <motion.div
-              className="relative inline-block"
-              whileHover={{ scale: 1.08 }}
+              className="relative inline-block group/btn"
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
@@ -635,17 +646,20 @@ export default function HomePage() {
                 href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, quiero solicitar una consulta gratuita para evaluar mi próximo proyecto.')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-10 py-4 bg-[#25D366] text-white rounded-full font-bold text-base uppercase tracking-wider shadow-lg inline-flex items-center gap-3 hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] transition-shadow duration-300"
+                className="w-16 h-16 rounded-full bg-[#25D366] flex items-center justify-center shadow-2xl hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] transition-shadow duration-300"
               >
-                <MessageCircle size={20} strokeWidth={1.5} className="fill-white/20" />
-                Solicitar Consulta Gratuita
-                <ChevronRight size={18} strokeWidth={2} />
+                <MessageCircle size={30} strokeWidth={1.5} className="text-white fill-white/10" />
               </motion.a>
               {/* Pulse notification dot */}
-              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EF4444] opacity-60" />
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-[#EF4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]" />
               </span>
+              {/* Tooltip */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-white rounded-xl shadow-xl text-xs text-[#003366] font-semibold uppercase tracking-wider whitespace-nowrap opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none">
+                Solicitar Consulta Gratuita
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-white" />
+              </div>
             </motion.div>
           </div>
         </section>
