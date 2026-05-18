@@ -487,23 +487,21 @@
   user-select: none;
 }
 
-/* Icon wrapper — gold #D4AF37 fixed, never changes */
+/* Icon wrapper — color driven by React inline style (gold/blue) */
 .stat-card-icon {
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #D4AF37;
 }
 .stat-card-icon svg {
   display: block;
 }
 
-/* Counter value — white by default, colors driven by React/Tailwind conditional */
+/* Counter value — color driven entirely by React/Tailwind conditional classes */
 .stat-card-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff;
   font-variant-numeric: tabular-nums;
   margin-bottom: 0.375rem;
   line-height: 1.2;
@@ -512,11 +510,10 @@
   .stat-card-value { font-size: 1.875rem; }
 }
 
-/* Label — white by default, colors driven by React/Tailwind conditional */
+/* Label — color driven entirely by React/Tailwind conditional classes */
 .stat-card-label {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #ffffff;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -681,7 +678,7 @@
   height: calc(100% + 40px);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8' opacity='1'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8' opacity='1'/%3E%3C/svg%3E");
   background-repeat: repeat;
-  opacity: 0.035;
+  opacity: 0.03;
   pointer-events: none;
   z-index: 0;
 }

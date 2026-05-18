@@ -295,7 +295,7 @@ export default function HomePage() {
       <section
         className="hex-pattern-bg pt-10 pb-20 md:pt-10 md:pb-24"
         style={{
-          background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 10px, #F4F7FA 30px, #F4F7FA 100%)',
+          background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 10px, transparent 30px, transparent 100%)',
         }}
       >
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -339,7 +339,7 @@ export default function HomePage() {
       <ServiciosSection />
 
       {/* NUESTROS NÚMEROS — Animated Counters with Autoplay Highlight */}
-      <section className="hex-pattern-bg py-14 md:py-16 bg-[#F4F7FA]" ref={statsSectionRef}>
+      <section className="hex-pattern-bg py-14 md:py-16 bg-transparent" ref={statsSectionRef}>
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mt-4 mb-12">
@@ -367,7 +367,7 @@ export default function HomePage() {
       </section>
 
       {/* PROYECTOS DESTACADOS */}
-      <section className="hex-pattern-bg py-14 md:py-20 bg-[#F4F7FA]">
+      <section className="hex-pattern-bg py-14 md:py-20 bg-transparent">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-12">
@@ -546,7 +546,7 @@ export default function HomePage() {
       </section>
 
       {/* NUESTROS CLIENTES COMERCIALES */}
-      <section className="hex-pattern-bg py-16 md:py-20 bg-[#F4F7FA]">
+      <section className="hex-pattern-bg py-16 md:py-20 bg-transparent">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-14">

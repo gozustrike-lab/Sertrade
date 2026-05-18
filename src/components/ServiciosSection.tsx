@@ -71,7 +71,7 @@ export default function ServiciosSection() {
   }, []);
 
   return (
-    <section className="hex-pattern-bg relative w-full bg-[#F4F7FA] py-20" style={{ overflow: 'visible' }}>
+    <section className="hex-pattern-bg relative w-full bg-transparent py-20" style={{ overflow: 'visible' }}>
 
       {/* ===== HEADER TEXT ===== */}
       <div className="relative z-10 text-center mb-12 px-4">
