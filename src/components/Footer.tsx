@@ -9,6 +9,7 @@ const quickLinks = [
   { label: 'Proyectos', href: '/proyectos' },
   { label: 'Sobre Nosotros', href: '/' },
   { label: 'Contacto', href: '/' },
+  { label: 'Libro de Reclamaciones', href: '/libro-reclamaciones', external: true },
 ];
 
 export default function Footer() {
@@ -70,12 +71,23 @@ export default function Footer() {
             <ul className="space-y-3 list-none m-0 p-0">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-white/60 text-sm hover:text-[#d4a017] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+                  {'external' in link && link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/60 text-sm hover:text-[#d4a017] transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-white/60 text-sm hover:text-[#d4a017] transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

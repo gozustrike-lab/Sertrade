@@ -103,17 +103,6 @@ export default function ProjectsPage() {
       <section className="py-16 md:py-20 bg-[#f7f8fa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Project counter */}
-          <motion.p
-            key={activeCategory}
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="text-center text-[#999] text-sm mb-10"
-          >
-            Mostrando <span className="text-[#004691] font-semibold">{filteredProjects.length}</span> {filteredProjects.length === 1 ? 'proyecto' : 'proyectos'}{activeCategory !== 'Todos' ? ` en <span className="text-[#004691] font-semibold">${activeCategory}</span>` : ''}
-          </motion.p>
-
           {/* Projects — Full-Width Gallery Layout with Animated Filter */}
           <AnimatePresence mode="wait">
             <motion.div

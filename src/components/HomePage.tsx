@@ -575,16 +575,15 @@ export default function HomePage() {
       {/* ===== END LIGHT SECTIONS WRAPPER ===== */}
       </div>
 
-      {/* CTA */}
+      {/* CTA — Compact */}
       <ScrollReveal animation="fade">
-        <section className="relative py-20 md:py-24 overflow-hidden">
+        <section className="relative py-14 md:py-16 overflow-hidden">
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80)' }} />
           <div className="absolute inset-0 bg-[#004691]/90" />
           <div className="relative max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-5">Comienza tu próximo proyecto con nosotros</h2>
-            <p className="text-white/70 mb-8 max-w-2xl mx-auto leading-[1.7]">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Comienza tu próximo proyecto con nosotros</h2>
+            <p className="text-white/70 mb-6 max-w-2xl mx-auto text-sm sm:text-base leading-[1.7]">
               Cada espacio tiene una historia. Permítenos escribir la tuya con diseño, innovación y excelencia.
-              Agenda una consulta gratuita hoy.
             </p>
             <motion.a
               href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, quiero solicitar una consulta gratuita para evaluar mi próximo proyecto.')}`}
@@ -592,7 +591,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="px-10 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
             >
               Solicitar Consulta Gratuita <ArrowRight size={18} strokeWidth={2} />
             </motion.a>
