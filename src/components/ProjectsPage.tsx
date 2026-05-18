@@ -42,8 +42,8 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      {/* COMPACT HERO HEADER — Slim gradient strip behind transparent header */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 50%, #002B5B 100%)' }}>
+      {/* COMPACT HERO HEADER — Gradient fades to light gray at bottom */}
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 35%, #002B5B 55%, #7a9cb8 78%, #f7f8fa 100%)' }}>
         {/* Decorative geometric accents */}
         <div className="absolute top-0 right-0 w-60 h-60 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-40 h-40 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
@@ -66,14 +66,10 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* IMMERSIVE CATEGORY FILTER — Editorial text-only uppercase strip */}
-      <section
-        className="relative brand-pattern-wrapper"
-        style={{
-          background: 'linear-gradient(to bottom, #002B5B 0px, #002B5B 10px, #f7f8fa 40px, #f7f8fa 100%)',
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* IMMERSIVE CATEGORY FILTER + GALLERY — Unified light wrapper */}
+      <div className="brand-pattern-wrapper bg-[#f7f8fa]">
+        <section className="relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal animation="fade-up" delay={0.15}>
             <div className="flex items-center justify-center py-8 md:py-10 border-b border-gray-200/60">
               {categories.map((cat, i) => (
@@ -102,10 +98,10 @@ export default function ProjectsPage() {
             </div>
           </ScrollReveal>
         </div>
-      </section>
+        </section>
 
       {/* PROJECTS GALLERY */}
-      <section className="py-16 md:py-20 bg-[#f7f8fa] brand-pattern-wrapper">
+      <section className="py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* Projects — Full-Width Gallery Layout with Animated Filter */}
@@ -257,8 +253,7 @@ export default function ProjectsPage() {
           </div>
         </div>
       </section>
-
-      {/* Lightbox Modal */}
+      </div>
       <Lightbox
         images={lightboxImages}
         initialIndex={lightboxIndex}
