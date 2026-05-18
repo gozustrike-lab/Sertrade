@@ -44,18 +44,17 @@ export default function StatCard({
           borderColor: isActive ? '#e8eaed' : 'transparent',
         }}
       >
-        {/* Icon */}
+        {/* Icon — ALWAYS gold #D4AF37, independent of card state */}
         <div
           className="stat-card-icon"
-          style={{ color: isActive ? '#004691' : '#C5960C' }}
+          style={{ color: '#D4AF37' }}
         >
           <Icon size={36} strokeWidth={1.5} />
         </div>
 
-        {/* Animated Counter */}
+        {/* Animated Counter — white by default, blue on active */}
         <div
-          className="stat-card-value"
-          style={{ color: isActive ? '#004691' : '#ffffff' }}
+          className={`stat-card-value transition-colors duration-300 ${isActive ? 'text-[#004691]' : 'text-white'}`}
         >
           <Counter
             target={value}
@@ -65,10 +64,9 @@ export default function StatCard({
           />
         </div>
 
-        {/* Label */}
+        {/* Label — white by default, gray on active */}
         <div
-          className="stat-card-label"
-          style={{ color: isActive ? '#4A4A4A' : '#F3F4F6' }}
+          className={`stat-card-label transition-colors duration-300 ${isActive ? 'text-gray-600' : 'text-white'}`}
         >
           {label}
         </div>

@@ -487,25 +487,23 @@
   user-select: none;
 }
 
-/* Icon wrapper */
+/* Icon wrapper — gold #D4AF37 fixed, never changes */
 .stat-card-icon {
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #C5960C;
-  transition: color 300ms ease-in-out;
+  color: #D4AF37;
 }
 .stat-card-icon svg {
   display: block;
 }
 
-/* Counter value */
+/* Counter value — white by default, colors driven by React/Tailwind conditional */
 .stat-card-value {
   font-size: 1.5rem;
   font-weight: 700;
   color: #ffffff;
-  transition: color 300ms ease-in-out;
   font-variant-numeric: tabular-nums;
   margin-bottom: 0.375rem;
   line-height: 1.2;
@@ -514,12 +512,11 @@
   .stat-card-value { font-size: 1.875rem; }
 }
 
-/* Label */
+/* Label — white by default, colors driven by React/Tailwind conditional */
 .stat-card-label {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #F3F4F6;
-  transition: color 300ms ease-in-out;
+  color: #ffffff;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -527,38 +524,13 @@
   .stat-card-label { font-size: 0.8125rem; }
 }
 
-/* ===== HOVER STATE (Desktop) ===== */
-.stat-card:hover {
-  background-color: #ffffff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  transform: translateY(-4px);
-  border-color: #e8eaed;
-}
-.stat-card:hover .stat-card-icon {
-  color: #004691 !important;
-}
-.stat-card:hover .stat-card-value {
-  color: #004691 !important;
-}
-.stat-card:hover .stat-card-label {
-  color: #4A4A4A !important;
-}
-
-/* ===== ACTIVE STATE (Mobile Touch) ===== */
+/* ===== HOVER / ACTIVE — Background and layout ONLY ===== */
+/* Text colors are controlled exclusively by React isActive prop + Tailwind classes */
+/* Do NOT add color overrides here — they conflict with Framer Motion inline styles */
+.stat-card:hover,
 .stat-card:active {
-  background-color: #ffffff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   transform: translateY(-4px);
-  border-color: #e8eaed;
-}
-.stat-card:active .stat-card-icon {
-  color: #004691 !important;
-}
-.stat-card:active .stat-card-value {
-  color: #004691 !important;
-}
-.stat-card:active .stat-card-label {
-  color: #4A4A4A !important;
 }
 
 /* ===== FOCUS-VISIBLE (Accessibility) ===== */
