@@ -128,7 +128,7 @@ export default function ServicesPage() {
       </section>
 
       {/* PROJECT PRESENTATION BLOCKS — with stagger + spring hover */}
-      <section className="py-24 bg-[#f7f8fa] brand-pattern-wrapper">
+      <section className="py-24 bg-white brand-pattern-wrapper">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <div className="text-center mb-16">
@@ -146,7 +146,7 @@ export default function ServicesPage() {
                 key={i}
                 whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
               >
-                <div className="group bg-white rounded-[12px] p-7 border border-gray-100 hover:border-[#004691]/20 hover:shadow-2xl transition-all duration-500">
+                <div className="group bg-[#f7f8fa] rounded-[12px] p-7 border border-gray-100 hover:border-[#004691]/20 hover:shadow-2xl transition-all duration-500">
                   <div className="w-14 h-14 rounded-[8px] bg-[#004691] flex items-center justify-center mb-5 group-hover:bg-[#d4a017] transition-all duration-500 group-hover:scale-110 shadow-lg">
                     <block.icon size={28} strokeWidth={1.5} className="text-white" />
                   </div>
@@ -154,7 +154,7 @@ export default function ServicesPage() {
                   <p className="text-[#4A4A4A] text-sm leading-[1.7] mb-5">{block.description}</p>
                   <div className="space-y-2.5">
                     {block.items.map((item, j) => (
-                      <div key={j} className="flex items-center gap-3 px-4 py-2.5 rounded-[8px] bg-[#f7f8fa] border border-gray-100 group-hover:border-[#004691]/10">
+                      <div key={j} className="flex items-center gap-3 px-4 py-2.5 rounded-[8px] bg-white border border-gray-100 group-hover:border-[#004691]/10">
                         <div className="w-5 h-5 rounded-full bg-[#004691]/10 flex items-center justify-center shrink-0 group-hover:bg-[#d4a017]/20 transition-colors">
                           <ChevronRight size={12} strokeWidth={1.5} className="text-[#004691] group-hover:text-[#d4a017] transition-colors" />
                         </div>
