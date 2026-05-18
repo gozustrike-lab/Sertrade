@@ -210,17 +210,25 @@
 }
 
 /* ========================================
-   Hide ALL Scrollbars (keep scroll functionality)
+   CORPORATE SCROLLBAR — Sertrade Brand
    ======================================== */
-*,
-*::before,
-*::after {
-  scrollbar-width: none !important;
+::-webkit-scrollbar {
+  width: 10px;
 }
-*::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
+::-webkit-scrollbar-track {
+  background: #F4F7FA;
+}
+::-webkit-scrollbar-thumb {
+  background: #004691;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #004691 #F4F7FA;
 }
 
 /* ========================================

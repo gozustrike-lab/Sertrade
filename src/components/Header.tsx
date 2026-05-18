@@ -133,7 +133,7 @@ export default function Header() {
      GLASSMORPHISM STYLES
      ============================================= */
   const headerBg = scrolled
-    ? 'bg-[rgba(0,28,61,0.70)] backdrop-blur-[12px] shadow-[0_4px_30px_rgba(0,0,0,0.12)]'
+    ? 'bg-[#004691]/80 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.12)]'
     : 'bg-transparent shadow-none';
 
   const logoSizePC = scrolled ? 34 : 40;
