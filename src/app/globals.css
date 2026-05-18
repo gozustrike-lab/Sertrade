@@ -666,8 +666,10 @@
 
 /* ========================================
    BRAND WATERMARK — Client-provided pattern
-   Single wrapper around ALL light sections
-   so tiles are continuous — no clipped logos.
+   Tile: 1086x177px (cropped at gap rows so
+   logos are never sliced at tile boundaries).
+   background-position aligns the gap with
+   the wrapper's top edge (inset offset).
    ======================================== */
 .brand-pattern-wrapper {
   position: relative;
@@ -678,9 +680,10 @@
   inset: -80px;
   width: calc(100% + 160px);
   height: calc(100% + 160px);
-  background-image: url('/brand-pattern.png');
+  background-image: url('/brand-pattern-tile.png');
   background-repeat: repeat;
-  background-size: 1086px 1448px;
+  background-size: 1086px 177px;
+  background-position: 0 80px;
   opacity: 0.25;
   pointer-events: none;
   z-index: 0;
