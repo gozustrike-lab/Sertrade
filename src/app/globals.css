@@ -665,11 +665,9 @@
 }
 
 /* ========================================
-   ISOTYPE PATTERN BACKGROUND (Brand Watermark)
-   Diagonal isometric grid using the actual
-   Sertrade isotype — hexagon with interlocking
-   lines + inner hexagon. Spaced, not touching.
-   Tile: 380x880 (2-row offset for diagonal)
+   BRAND WATERMARK — Client-provided pattern
+   Exact isotype image, tiled as background.
+   Applied only to light/white sections.
    ======================================== */
 .hex-pattern-bg {
   position: relative;
@@ -680,10 +678,10 @@
   inset: -60px;
   width: calc(100% + 120px);
   height: calc(100% + 120px);
-  background-image: url('/pattern-isotype.svg');
+  background-image: url('/brand-pattern.png');
   background-repeat: repeat;
-  background-size: 380px 880px;
-  opacity: 0.025;
+  background-size: 1086px 1448px;
+  opacity: 0.25;
   pointer-events: none;
   z-index: 0;
 }
