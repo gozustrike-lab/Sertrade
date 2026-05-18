@@ -694,13 +694,13 @@
 .brand-pattern-wrapper::before {
   content: '';
   position: absolute;
-  inset: -80px;
-  width: calc(100% + 160px);
-  height: calc(100% + 160px);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background-image: url('/brand-pattern-tile.png');
   background-repeat: repeat;
   background-size: 1086px 177px;
-  background-position: 0 80px;
+  background-position: 0 0;
   opacity: 0.25;
   pointer-events: none;
   z-index: 0;
