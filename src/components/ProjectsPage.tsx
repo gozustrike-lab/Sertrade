@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {
   MapPin, Maximize2, Calendar, Building2, Eye, ArrowRight, MessageCircle,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
 
@@ -103,8 +103,27 @@ export default function ProjectsPage() {
       <section className="py-16 md:py-20 bg-[#f7f8fa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Projects — Full-Width Gallery Layout with Stagger */}
-          <ScrollReveal animation="fade-up" staggerDelay={0.12} className="space-y-20">
+          {/* Project counter */}
+          <motion.p
+            key={activeCategory}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-center text-[#999] text-sm mb-10"
+          >
+            Mostrando <span className="text-[#004691] font-semibold">{filteredProjects.length}</span> {filteredProjects.length === 1 ? 'proyecto' : 'proyectos'}{activeCategory !== 'Todos' ? ` en <span className="text-[#004691] font-semibold">${activeCategory}</span>` : ''}
+          </motion.p>
+
+          {/* Projects — Full-Width Gallery Layout with Animated Filter */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
+              className="space-y-20"
+            >
             {filteredProjects.map((project) => (
                 <article
                   className="group"
@@ -216,7 +235,8 @@ export default function ProjectsPage() {
                   </motion.div>
                 </article>
             ))}
-          </ScrollReveal>
+          </motion.div>
+          </AnimatePresence>
 
           {/* Load More CTA */}
           <div className="text-center mt-16">
