@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { Menu, X, ArrowRight, Phone, Mail } from 'lucide-react';
 
 /* =============================================
@@ -87,6 +87,16 @@ export default function Header() {
   const pathname = usePathname();
   const isFirstRender = useRef(true);
 
+  /* =============================================
+     SCROLL PROGRESS BAR — useScroll + useSpring
+     ============================================= */
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
   }, []);
@@ -152,7 +162,12 @@ export default function Header() {
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between">
+        {/* ===== SCROLL PROGRESS BAR — Gold 3px line ===== */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#D4AF37] origin-left z-50"
+          style={{ scaleX }}
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between relative z-10">
 
           {/* ====== LOGO (LEFT) ====== */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0 transition-all duration-[400ms] ease-in-out">

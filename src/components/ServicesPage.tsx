@@ -58,8 +58,8 @@ export default function ServicesPage() {
       </section>
 
       {/* SERVICE CATEGORIES — with stagger + spring hover */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-white brand-pattern-wrapper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <div className="text-center mb-16">
               <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Especialidades</span>
@@ -107,8 +107,8 @@ export default function ServicesPage() {
       </section>
 
       {/* PROJECT PRESENTATION BLOCKS — with stagger + spring hover */}
-      <section className="py-24 bg-[#f7f8fa]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-[#f7f8fa] brand-pattern-wrapper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <div className="text-center mb-16">
               <span className="text-[#d4a017] text-sm font-semibold tracking-[0.2em] uppercase">Herramientas</span>
@@ -149,8 +149,8 @@ export default function ServicesPage() {
       </section>
 
       {/* ADDITIONAL SERVICES — with stagger + spring hover */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-white brand-pattern-wrapper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-[#004691] mb-5">Servicios Adicionales</h2>
@@ -159,7 +159,7 @@ export default function ServicesPage() {
               </p>
             </div>
           </ScrollReveal>
-          <ScrollReveal animation="fade-up" staggerDelay={0.08} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <ScrollReveal animation="fade-up" staggerDelay={0.08} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 relative z-10">
             {additionalServices.map((svc, i) => (
               <motion.div
                 key={i}

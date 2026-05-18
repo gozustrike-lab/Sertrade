@@ -67,8 +67,8 @@ export default function ProjectsPage() {
       </section>
 
       {/* IMMERSIVE CATEGORY FILTER — Editorial text-only uppercase strip */}
-      <section className="relative bg-[#f7f8fa]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-[#f7f8fa] brand-pattern-wrapper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal animation="fade-up" delay={0.15}>
             <div className="flex items-center justify-center py-8 md:py-10 border-b border-gray-200/60">
               {categories.map((cat, i) => (
@@ -100,8 +100,8 @@ export default function ProjectsPage() {
       </section>
 
       {/* PROJECTS GALLERY */}
-      <section className="py-16 md:py-20 bg-[#f7f8fa]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-20 bg-[#f7f8fa] brand-pattern-wrapper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* Projects — Full-Width Gallery Layout with Animated Filter */}
           <AnimatePresence mode="wait">
