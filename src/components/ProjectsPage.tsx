@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
-  MapPin, Maximize2, Calendar, Building2, Eye, ArrowRight, MessageCircle,
+  MapPin, Maximize2, Calendar, Building2, Eye, ArrowRight, MessageCircle, ChevronLeft, ChevronRight,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
 
@@ -19,36 +19,81 @@ const projects = [
   { id: 6, title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', year: '2023', client: 'Privado', status: 'Completado', description: 'Residencia de lujo junto al lago que integra materiales locales como piedra andina y madera de eucalipto en un diseño contemporáneo. La casa se organiza en volúmenes escalonados que se adaptan a la topografía del terreno.', images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80'] },
 ];
 
+/* Swipe threshold in px */
+const SWIPE_THRESHOLD = 50;
+
 export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
 
-  // Lightbox state
+  /* Track current image index per project for swipe */
+  const [projectImages, setProjectImages] = useState<Record<number, number>>({});
+  const getImageIndex = (id: number) => projectImages[id] || 0;
+  const setImageIndex = (id: number, idx: number) =>
+    setProjectImages((prev) => ({ ...prev, [id]: idx }));
+
+  /* Lightbox state */
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const filteredProjects = activeCategory === 'Todos' ? projects : projects.filter((p) => p.category === activeCategory);
+  const filteredProjects =
+    activeCategory === 'Todos'
+      ? projects
+      : projects.filter((p) => p.category === activeCategory);
 
   const openLightbox = (images: string[], index: number) => {
     setLightboxImages(images);
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
+  const closeLightbox = () => setLightboxOpen(false);
 
-  const closeLightbox = () => {
-    setLightboxOpen(false);
+  /* Swipe handler — Instagram-style */
+  const handleSwipe = useCallback(
+    (projectId: number, images: string[], info: PanInfo, offset: number) => {
+      const idx = getImageIndex(projectId);
+      if (offset > SWIPE_THRESHOLD && info.offset.x < -SWIPE_THRESHOLD) {
+        /* Swiped LEFT → next image */
+        setImageIndex(projectId, Math.min(idx + 1, images.length - 1));
+      } else if (offset < -SWIPE_THRESHOLD && info.offset.x > SWIPE_THRESHOLD) {
+        /* Swiped RIGHT → prev image */
+        setImageIndex(projectId, Math.max(idx - 1, 0));
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [projectImages],
+  );
+
+  /* Tap handler — open lightbox with current image */
+  const handleImageTap = (project: typeof projects[0]) => {
+    openLightbox(project.images, getImageIndex(project.id));
   };
 
   return (
     <div>
-      {/* COMPACT HERO HEADER — Gradient fades to light gray at bottom */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 35%, #002B5B 55%, #7a9cb8 78%, #f7f8fa 100%)' }}>
-        {/* Decorative geometric accents */}
+      {/* ======== HERO HEADER V2 — Solid dark, 20px micro-gradient ======== */}
+      <section className="relative overflow-hidden" style={{ minHeight: '40vh' }}>
+        {/* Solid dark background */}
+        <div className="absolute inset-0 bg-[#004691]" />
+
+        {/* Decorative geometric accents — opacity extremely low */}
         <div className="absolute top-0 right-0 w-60 h-60 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-40 h-40 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
-        {/* Slim content — clear header only */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-[120px] md:pt-[130px] pb-10 md:pb-12">
+        <div className="absolute bottom-0 left-0 w-40 h-40 border border-[#d4a017]/8 -rotate-12 translate-y-1/3 -translate-x-1/4" />
+
+        {/* Brand pattern watermark — ultra subtle */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'url(/brand-pattern-tile.png)',
+            backgroundRepeat: 'repeat',
+            backgroundSize: '1086px 177px',
+            opacity: 0.02,
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-[120px] md:pt-[130px] pb-16 md:pb-20">
           <ScrollReveal animation="fade-down" delay={0.1}>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-4">
               <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
@@ -56,204 +101,307 @@ export default function ProjectsPage() {
             </div>
           </ScrollReveal>
           <ScrollReveal animation="fade-up" delay={0.2}>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight">Nuestros Proyectos</h1>
+            <h1
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight"
+              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
+            >
+              Nuestros Proyectos
+            </h1>
           </ScrollReveal>
           <ScrollReveal animation="fade-up" delay={0.3}>
-            <p className="text-white/60 max-w-2xl mx-auto text-base leading-[1.7]">
+            <p
+              className="text-sm md:text-base text-white max-w-2xl mx-auto leading-relaxed"
+              style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}
+            >
               Cada proyecto es un testimonio de nuestro compromiso con la excelencia, la innovación y la satisfacción de nuestros clientes.
             </p>
           </ScrollReveal>
         </div>
+
+        {/* 20px micro-gradient at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-5 bg-gradient-to-b from-transparent to-[#f7f8fa] z-10" />
       </section>
 
-      {/* IMMERSIVE CATEGORY FILTER + GALLERY — Unified light wrapper */}
+      {/* ======== FILTER + GALLERY — Unified light wrapper ======== */}
       <div className="brand-pattern-wrapper bg-[#f7f8fa]">
+        {/* ======== CATEGORY FILTER — Horizontal scroll on mobile ======== */}
         <section className="relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <ScrollReveal animation="fade-up" delay={0.15}>
-            <div className="flex items-center justify-center py-8 md:py-10 border-b border-gray-200/60">
-              {categories.map((cat, i) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`relative text-sm sm:text-base font-semibold tracking-[0.15em] uppercase transition-all duration-400 px-4 sm:px-6 lg:px-8 py-3 group ${
-                    activeCategory === cat
-                      ? 'text-[#004691]'
-                      : 'text-[#999] hover:text-[#4A4A4A]'
-                  }`}
-                >
-                  {/* Active underline indicator */}
-                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full transition-all duration-400 ${
-                    activeCategory === cat
-                      ? 'w-8 bg-[#d4a017]'
-                      : 'w-0 bg-[#d4a017] group-hover:w-4'
-                  }`} />
-                  {cat}
-                  {/* Dot separator between items */}
-                  {i < categories.length - 1 && (
-                    <span className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300 select-none pointer-events-none">/</span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </ScrollReveal>
-        </div>
+          {/* Fading overlays — mobile only */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#f7f8fa] to-transparent pointer-events-none z-20 md:hidden" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f7f8fa] to-transparent pointer-events-none z-20 md:hidden" />
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <ScrollReveal animation="fade-up" delay={0.15}>
+              <div className="flex overflow-x-auto whitespace-nowrap scrollbar-none justify-start md:justify-center items-center py-8 md:py-10 border-b border-gray-200/60 px-4 md:px-0">
+                {categories.map((cat, i) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`relative text-sm sm:text-base font-semibold tracking-[0.15em] uppercase transition-all duration-300 px-4 sm:px-6 lg:px-8 py-3 shrink-0 ${
+                      activeCategory === cat
+                        ? 'text-[#004691]'
+                        : 'text-[#999] hover:text-[#4A4A4A]'
+                    }`}
+                  >
+                    {/* Active underline indicator — fixed width centered */}
+                    <span
+                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full transition-all duration-300 ${
+                        activeCategory === cat
+                          ? 'w-8 bg-[#d4a017]'
+                          : 'w-0 bg-[#d4a017]'
+                      }`}
+                    />
+                    {cat}
+                    {/* Dot separator between items — desktop only */}
+                    {i < categories.length - 1 && (
+                      <span className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300 select-none pointer-events-none hidden md:inline">/</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
         </section>
 
-      {/* PROJECTS GALLERY */}
-      <section className="py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-0 md:px-6 relative z-10">
+        {/* ======== PROJECTS GALLERY ======== */}
+        <section className="py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-0 md:px-6 relative z-10">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                className="space-y-20"
+              >
+                {filteredProjects.map((project) => {
+                  const currentImgIdx = getImageIndex(project.id);
+                  const totalImages = project.images.length;
 
-          {/* Projects — Full-Width Gallery Layout with Animated Filter */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="space-y-20"
-            >
-            {filteredProjects.map((project) => (
-                <article
-                  className="group"
-                  onMouseEnter={() => setHoveredProject(project.id)}
-                  onMouseLeave={() => setHoveredProject(null)}
-                >
-                  <motion.div
-                    whileHover={{ scale: 1.01 }}
-                    transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-                    className="contents"
-                  >
-                  {/* TITLE — Above image, large with tracking */}
-                  <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-4 md:px-2">
-                    <div>
-                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#004691] tracking-wide group-hover:text-[#0062b8] transition-colors duration-300">
-                        {project.title}
-                      </h2>
-                      <p className="text-[#4A4A4A] text-sm mt-2 max-w-2xl leading-[1.7]">{project.description}</p>
-                    </div>
-                    <button
-                      onClick={() => openLightbox(project.images, 0)}
-                      className="hidden sm:flex items-center gap-2 text-[#004691] font-semibold text-sm hover:text-[#d4a017] transition-colors group/btn shrink-0"
+                  return (
+                    <article
+                      key={project.id}
+                      className="group"
+                      onMouseEnter={() => setHoveredProject(project.id)}
+                      onMouseLeave={() => setHoveredProject(null)}
                     >
-                      Ver galería <ArrowRight size={16} strokeWidth={1.5} className="group-hover/btn:translate-x-1 transition-transform" />
-                    </button>
-                  </div>
-
-                  {/* HERO IMAGE — Full Width, 60vh height */}
-                  <div
-                    className="relative overflow-hidden rounded-none md:rounded-xl shadow-lg cursor-pointer"
-                    style={{ height: 'clamp(280px, 60vh, 650px)' }}
-                    onClick={() => openLightbox(project.images, 0)}
-                  >
-                    <img
-                      src={project.images[0]}
-                      alt={project.title}
-                      className={`img-lazy-zoom w-full h-full object-cover transition-transform duration-700 ${hoveredProject === project.id ? 'scale-105' : 'scale-100'}`}
-                      loading="lazy"
-                    />
-                    {/* Gradient overlay for status badges */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-
-                    {/* Category Badge — top left */}
-                    <div className="absolute top-4 left-4 md:top-5 md:left-5">
-                      <span className="px-4 py-1.5 bg-[#004691] text-white text-xs font-semibold rounded-[8px] tracking-wider uppercase">
-                        {project.category}
-                      </span>
-                    </div>
-
-                    {/* Status Badge — top right */}
-                    <div className="absolute top-4 right-4 md:top-5 md:right-5">
-                      <span className={`px-3 py-1 rounded-[8px] text-xs font-semibold ${
-                        project.status === 'Completado' ? 'bg-green-500/90 text-white' : 'bg-amber-500/90 text-white'
-                      }`}>
-                        {project.status}
-                      </span>
-                    </div>
-
-                    {/* Lightbox CTA — center on hover */}
-                    <div className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-500 ${hoveredProject === project.id ? 'opacity-100' : 'opacity-0'}`}>
-                      <div className="flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-md rounded-[12px] border border-white/20">
-                        <Eye size={22} strokeWidth={1.5} className="text-white" />
-                        <span className="text-white font-semibold tracking-wide">Abrir Galería</span>
-                      </div>
-                    </div>
-
-                    {/* Thumbnail strip — bottom on hover */}
-                    {project.images.length > 1 && (
-                      <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 transition-all duration-500 ${hoveredProject === project.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        {project.images.map((img, i) => (
+                      <motion.div
+                        whileHover={{ scale: 1.01 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+                        className="contents"
+                      >
+                        {/* TITLE — Above image */}
+                        <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-4 md:px-2">
+                          <div>
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#004691] tracking-wide group-hover:text-[#0062b8] transition-colors duration-300">
+                              {project.title}
+                            </h2>
+                            <p className="text-[#4A4A4A] text-sm mt-2 max-w-2xl leading-[1.7]">{project.description}</p>
+                          </div>
                           <button
-                            key={i}
-                            onClick={(e) => { e.stopPropagation(); openLightbox(project.images, i); }}
-                            className={`w-14 h-14 rounded-[8px] overflow-hidden border-2 transition-all duration-200 ${
-                              i === 0 ? 'border-[#d4a017] scale-110' : 'border-white/40 opacity-60 hover:opacity-100 hover:border-white/80'
+                            onClick={() => handleImageTap(project)}
+                            className="hidden sm:flex items-center gap-2 text-[#004691] font-semibold text-sm hover:text-[#d4a017] transition-colors group/btn shrink-0"
+                          >
+                            Ver galería <ArrowRight size={16} strokeWidth={1.5} className="group-hover/btn:translate-x-1 transition-transform" />
+                          </button>
+                        </div>
+
+                        {/* ===== HERO IMAGE — Swipeable on mobile ===== */}
+                        <div
+                          className="relative overflow-hidden rounded-none md:rounded-xl shadow-lg"
+                          style={{ height: 'clamp(280px, 60vh, 650px)' }}
+                        >
+                          {/* Swipeable image container — Framer Motion drag on mobile */}
+                          <motion.div
+                            className="w-full h-full cursor-grab active:cursor-grabbing md:cursor-pointer"
+                            drag={totalImages > 1 ? 'x' : false}
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.1}
+                            onDragEnd={(_, info) => handleSwipe(project.id, project.images, info, info.offset.x)}
+                            onTap={() => handleImageTap(project)}
+                          >
+                            <AnimatePresence mode="wait" initial={false}>
+                              <motion.img
+                                key={currentImgIdx}
+                                src={project.images[currentImgIdx]}
+                                alt={`${project.title} - Imagen ${currentImgIdx + 1}`}
+                                className="w-full h-full object-cover"
+                                initial={{ opacity: 0, x: 40 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -40 }}
+                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                loading="lazy"
+                                draggable={false}
+                              />
+                            </AnimatePresence>
+                          </motion.div>
+
+                          {/* Gradient overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+
+                          {/* Category Badge — top left */}
+                          <div className="absolute top-4 left-4 md:top-5 md:left-5">
+                            <span className="px-4 py-1.5 bg-[#004691] text-white text-xs font-semibold rounded-[8px] tracking-wider uppercase">
+                              {project.category}
+                            </span>
+                          </div>
+
+                          {/* Status Badge — top right */}
+                          <div className="absolute top-4 right-4 md:top-5 md:right-5">
+                            <span
+                              className={`px-3 py-1 rounded-[8px] text-xs font-semibold ${
+                                project.status === 'Completado'
+                                  ? 'bg-green-500/90 text-white'
+                                  : 'bg-amber-500/90 text-white'
+                              }`}
+                            >
+                              {project.status}
+                            </span>
+                          </div>
+
+                          {/* Desktop: Lightbox CTA on hover */}
+                          <div
+                            className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-500 md:flex hidden ${
+                              hoveredProject === project.id ? 'opacity-100' : 'opacity-0'
                             }`}
                           >
-                            <img src={img} alt={`${project.title} miniatura ${i + 1}`} className="w-full h-full object-cover" />
+                            <div className="flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-md rounded-[12px] border border-white/20">
+                              <Eye size={22} strokeWidth={1.5} className="text-white" />
+                              <span className="text-white font-semibold tracking-wide">Abrir Galería</span>
+                            </div>
+                          </div>
+
+                          {/* Desktop: Thumbnail strip on hover */}
+                          {project.images.length > 1 && (
+                            <div
+                              className={`absolute bottom-4 left-1/2 -translate-x-1/2 items-center gap-2 transition-all duration-500 hidden md:flex ${
+                                hoveredProject === project.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                              }`}
+                            >
+                              {project.images.map((img, i) => (
+                                <button
+                                  key={i}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setImageIndex(project.id, i);
+                                  }}
+                                  className={`w-14 h-14 rounded-[8px] overflow-hidden border-2 transition-all duration-200 ${
+                                    i === currentImgIdx
+                                      ? 'border-[#d4a017] scale-110'
+                                      : 'border-white/40 opacity-60 hover:opacity-100 hover:border-white/80'
+                                  }`}
+                                >
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img src={img} alt={`${project.title} miniatura ${i + 1}`} className="w-full h-full object-cover" />
+                                </button>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Mobile: Instagram-style dot indicators */}
+                          {totalImages > 1 && (
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 md:hidden">
+                              {project.images.map((_, i) => (
+                                <span
+                                  key={i}
+                                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                                    i === currentImgIdx ? 'w-5 bg-white' : 'w-1.5 bg-white/50'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Mobile: Prev/Next chevrons (tap) */}
+                          {totalImages > 1 && (
+                            <>
+                              {currentImgIdx > 0 && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setImageIndex(project.id, currentImgIdx - 1);
+                                  }}
+                                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white md:hidden"
+                                  aria-label="Imagen anterior"
+                                >
+                                  <ChevronLeft size={18} strokeWidth={2} />
+                                </button>
+                              )}
+                              {currentImgIdx < totalImages - 1 && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setImageIndex(project.id, currentImgIdx + 1);
+                                  }}
+                                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white md:hidden"
+                                  aria-label="Siguiente imagen"
+                                >
+                                  <ChevronRight size={18} strokeWidth={2} />
+                                </button>
+                              )}
+                            </>
+                          )}
+                        </div>
+
+                        {/* DATA STRIP */}
+                        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-5 px-4 md:px-2">
+                          {[
+                            { icon: MapPin, value: project.location },
+                            { icon: Maximize2, value: project.area },
+                            { icon: Calendar, value: project.year },
+                            { icon: Building2, value: project.client },
+                          ].map((data, j) => (
+                            <div key={j} className="flex items-center gap-2 text-[#888]">
+                              <data.icon size={13} strokeWidth={1.5} className="text-[#d4a017]" />
+                              <span className="text-xs font-light tracking-wide">{data.value}</span>
+                            </div>
+                          ))}
+                          {/* Mobile gallery button */}
+                          <button
+                            onClick={() => handleImageTap(project)}
+                            className="sm:hidden flex items-center gap-2 text-[#004691] font-semibold text-xs ml-auto"
+                          >
+                            <Eye size={13} strokeWidth={1.5} /> Galería
                           </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                        </div>
 
-                  {/* DATA STRIP — Horizontal, subtle, below image */}
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-5 px-4 md:px-2">
-                    {[
-                      { icon: MapPin, value: project.location },
-                      { icon: Maximize2, value: project.area },
-                      { icon: Calendar, value: project.year },
-                      { icon: Building2, value: project.client },
-                    ].map((data, j) => (
-                      <div key={j} className="flex items-center gap-2 text-[#888]">
-                        <data.icon size={13} strokeWidth={1.5} className="text-[#d4a017]" />
-                        <span className="text-xs font-light tracking-wide">{data.value}</span>
-                      </div>
-                    ))}
-                    {/* Mobile gallery button */}
-                    <button
-                      onClick={() => openLightbox(project.images, 0)}
-                      className="sm:hidden flex items-center gap-2 text-[#004691] font-semibold text-xs ml-auto"
-                    >
-                      <Eye size={13} strokeWidth={1.5} /> Galería
-                    </button>
-                  </div>
+                        {/* Thin separator between projects */}
+                        <div className="mt-20 h-px bg-gray-200 mx-4 md:mx-0" />
+                      </motion.div>
+                    </article>
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
 
-                  {/* Thin separator between projects */}
-                  <div className="mt-20 h-px bg-gray-200 mx-4 md:mx-0" />
-                  </motion.div>
-                </article>
-            ))}
-          </motion.div>
-          </AnimatePresence>
+            {/* Load More CTA */}
+            <div className="text-center mt-16 px-4 md:px-0">
+              <ScrollReveal animation="scale">
+                <button className="px-10 py-4 bg-[#004691] text-white rounded-[8px] font-semibold hover:bg-[#0062b8] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
+                  Cargar Más Proyectos <ArrowRight size={18} strokeWidth={1.5} />
+                </button>
+              </ScrollReveal>
+            </div>
 
-          {/* Load More CTA */}
-          <div className="text-center mt-16 px-4 md:px-0">
-            <ScrollReveal animation="scale">
-              <button className="px-10 py-4 bg-[#004691] text-white rounded-[8px] font-semibold hover:bg-[#0062b8] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
-                Cargar Más Proyectos <ArrowRight size={18} strokeWidth={1.5} />
-              </button>
-            </ScrollReveal>
+            {/* WhatsApp CTA */}
+            <div className="text-center mt-12 px-4 md:px-0">
+              <ScrollReveal animation="fade-up" delay={0.15}>
+                <a
+                  href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estuve revisando su portafolio de proyectos y me interesa cotizar un desarrollo arquitectónico similar.')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-[8px] font-semibold shadow-lg hover:shadow-xl hover:scale-[1.03] transition-all duration-300"
+                >
+                  <MessageCircle size={20} strokeWidth={1.5} />
+                  Cotizar Proyecto Similar
+                </a>
+              </ScrollReveal>
+            </div>
           </div>
-
-          {/* WhatsApp CTA — Cotizar Proyecto Similar */}
-          <div className="text-center mt-12 px-4 md:px-0">
-            <ScrollReveal animation="fade-up" delay={0.15}>
-              <a
-                href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estuve revisando su portafolio de proyectos y me interesa cotizar un desarrollo arquitectónico similar.')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-[8px] font-semibold shadow-lg hover:shadow-xl hover:scale-[1.03] transition-all duration-300"
-              >
-                <MessageCircle size={20} strokeWidth={1.5} />
-                Cotizar Proyecto Similar
-              </a>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
+        </section>
       </div>
+
       <Lightbox
         images={lightboxImages}
         initialIndex={lightboxIndex}

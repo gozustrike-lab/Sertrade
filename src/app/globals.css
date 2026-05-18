@@ -231,6 +231,15 @@
   scrollbar-color: #004691 #F4F7FA;
 }
 
+/* Hide scrollbar utility (for horizontal scroll filters on mobile) */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* ========================================
    Keyframe Animations
    ======================================== */

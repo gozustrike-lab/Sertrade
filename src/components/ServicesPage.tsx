@@ -32,13 +32,28 @@ const additionalServices = [
 export default function ServicesPage() {
   return (
     <div>
-      {/* HERO HEADER — Full bleed, gradient fades to white at bottom */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 35%, #002B5B 58%, #8bacc8 82%, #ffffff 100%)' }}>
+      {/* ======== HERO HEADER V2 — Solid dark, 20px micro-gradient ======== */}
+      <section className="relative overflow-hidden" style={{ minHeight: '40vh' }}>
+        {/* Solid dark background */}
+        <div className="absolute inset-0 bg-[#004691]" />
+
         {/* Decorative geometric accents */}
         <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
-        {/* Content with top padding to clear the transparent header */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-[120px] md:pt-[130px] pb-24 md:pb-28">
+        <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/8 -rotate-12 translate-y-1/3 -translate-x-1/4" />
+
+        {/* Brand pattern watermark — ultra subtle */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'url(/brand-pattern-tile.png)',
+            backgroundRepeat: 'repeat',
+            backgroundSize: '1086px 177px',
+            opacity: 0.02,
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-[120px] md:pt-[130px] pb-16 md:pb-20">
           <ScrollReveal animation="fade-down" delay={0.1}>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-6">
               <Layers size={14} strokeWidth={1.5} className="text-[#d4a017]" />
@@ -46,15 +61,26 @@ export default function ServicesPage() {
             </div>
           </ScrollReveal>
           <ScrollReveal animation="fade-up" delay={0.2}>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">Alcance de Nuestros Servicios</h1>
+            <h1
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
+              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
+            >
+              Alcance de Nuestros Servicios
+            </h1>
           </ScrollReveal>
           <ScrollReveal animation="fade-up" delay={0.35}>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg leading-[1.7]">
+            <p
+              className="text-sm md:text-base text-white max-w-2xl mx-auto leading-relaxed"
+              style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}
+            >
               Ofrecemos soluciones integrales de arquitectura y diseño que abarcan desde la concepción
               hasta la materialización de cada proyecto, con estándares de calidad internacional.
             </p>
           </ScrollReveal>
         </div>
+
+        {/* 20px micro-gradient at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-5 bg-gradient-to-b from-transparent to-white z-10" />
       </section>
 
       {/* SERVICE CATEGORIES — with stagger + spring hover */}
