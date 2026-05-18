@@ -33,7 +33,7 @@ export default function ServicesPage() {
   return (
     <div>
       {/* ======== HERO HEADER V2 — Solid dark, 20px micro-gradient ======== */}
-      <section className="relative overflow-hidden" style={{ minHeight: '40vh' }}>
+      <section className="relative w-full overflow-visible" style={{ minHeight: '40vh' }}>
         {/* Solid dark background */}
         <div className="absolute inset-0 bg-[#004691]" />
 
@@ -70,7 +70,7 @@ export default function ServicesPage() {
           </ScrollReveal>
           <ScrollReveal animation="fade-up" delay={0.35}>
             <p
-              className="text-sm md:text-base text-white max-w-2xl mx-auto leading-relaxed"
+              className="text-sm md:text-base text-white max-w-2xl mx-auto leading-relaxed mb-6"
               style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}
             >
               Ofrecemos soluciones integrales de arquitectura y diseño que abarcan desde la concepción
@@ -79,8 +79,8 @@ export default function ServicesPage() {
           </ScrollReveal>
         </div>
 
-        {/* 20px micro-gradient at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-5 bg-gradient-to-b from-transparent to-white z-10" />
+        {/* 20px micro-gradient — surgical transition blue→transparent */}
+        <div className="absolute left-0 right-0 top-full h-[20px] bg-gradient-to-b from-[#004691] to-transparent pointer-events-none z-20" />
       </section>
 
       {/* SERVICE CATEGORIES — with stagger + spring hover */}
