@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { type LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Counter from './Counter';
@@ -24,16 +25,19 @@ export default function StatCard({
   delay = 0,
   isActive = false,
 }: StatCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isHighlighted = isActive || isHovered;
+
   return (
     <ScrollReveal animation="fade-up" delay={delay} duration={1.2}>
       <motion.div
         className="stat-card"
         animate={{
-          backgroundColor: isActive ? '#ffffff' : '#004691',
-          boxShadow: isActive
+          backgroundColor: isHighlighted ? '#ffffff' : '#004691',
+          boxShadow: isHighlighted
             ? '0 10px 25px rgba(0, 0, 0, 0.1)'
             : '0 15px 35px rgba(0, 28, 61, 0.08)',
-          y: isActive ? -4 : 0,
+          y: isHighlighted ? -4 : 0,
         }}
         transition={{
           type: 'tween',
@@ -41,8 +45,10 @@ export default function StatCard({
           ease: 'easeInOut',
         }}
         style={{
-          borderColor: isActive ? '#e8eaed' : 'transparent',
+          borderColor: isHighlighted ? '#e8eaed' : 'transparent',
         }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Icon — ALWAYS gold #D4AF37, independent of card state */}
         <div
@@ -52,9 +58,9 @@ export default function StatCard({
           <Icon size={36} strokeWidth={1.5} />
         </div>
 
-        {/* Animated Counter — white by default, blue on active */}
+        {/* Animated Counter — white by default, blue on highlighted */}
         <div
-          className={`stat-card-value transition-colors duration-300 ${isActive ? 'text-[#004691]' : 'text-white'}`}
+          className={`stat-card-value transition-colors duration-300 ${isHighlighted ? 'text-[#004691]' : 'text-white'}`}
         >
           <Counter
             target={value}
@@ -64,9 +70,9 @@ export default function StatCard({
           />
         </div>
 
-        {/* Label — white by default, gray on active */}
+        {/* Label — white by default, gray on highlighted */}
         <div
-          className={`stat-card-label transition-colors duration-300 ${isActive ? 'text-gray-600' : 'text-white'}`}
+          className={`stat-card-label transition-colors duration-300 ${isHighlighted ? 'text-gray-600' : 'text-white'}`}
         >
           {label}
         </div>

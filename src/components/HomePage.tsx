@@ -115,23 +115,7 @@ export default function HomePage() {
         style={{ opacity: 0, transition: 'opacity 0.4s ease-in-out' }}
       />
 
-      {/* ===== GLOBAL BRAND HEX WATERMARK ===== */}
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 9998 }}>
-        <motion.div
-          className="absolute inset-0 w-full h-full"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 15, ease: 'easeInOut' }}
-        >
-          <div
-            className="absolute inset-[-20px] w-[calc(100%+40px)] h-[calc(100%+40px)]"
-            style={{
-              backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8'/%3E%3C/svg%3E\")",
-              backgroundRepeat: 'repeat',
-              opacity: 0.04,
-            }}
-          />
-        </motion.div>
-      </div>
+      {/* Hex pattern is now applied per-section via hex-pattern-bg CSS class */}
 
       {/* =============================================
           HERO SLIDER — CENTERED LAYOUT
@@ -309,12 +293,12 @@ export default function HomePage() {
 
       {/* QUIÉNES SOMOS */}
       <section
-        className="pt-10 pb-20 md:pt-10 md:pb-24"
+        className="hex-pattern-bg pt-10 pb-20 md:pt-10 md:pb-24"
         style={{
           background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 10px, #F4F7FA 30px, #F4F7FA 100%)',
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-16">
               <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Quiénes Somos</span>
@@ -355,8 +339,8 @@ export default function HomePage() {
       <ServiciosSection />
 
       {/* NUESTROS NÚMEROS — Animated Counters with Autoplay Highlight */}
-      <section className="py-14 md:py-16 bg-[#F4F7FA]" ref={statsSectionRef}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <section className="hex-pattern-bg py-14 md:py-16 bg-[#F4F7FA]" ref={statsSectionRef}>
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mt-4 mb-12">
               <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
@@ -383,8 +367,8 @@ export default function HomePage() {
       </section>
 
       {/* PROYECTOS DESTACADOS */}
-      <section className="py-14 md:py-20 bg-[#F4F7FA]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <section className="hex-pattern-bg py-14 md:py-20 bg-[#F4F7FA]">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-12">
               <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Portafolio</span>
@@ -562,8 +546,8 @@ export default function HomePage() {
       </section>
 
       {/* NUESTROS CLIENTES COMERCIALES */}
-      <section className="py-16 md:py-20 bg-[#F4F7FA]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <section className="hex-pattern-bg py-16 md:py-20 bg-[#F4F7FA]">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-14">
               <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Confianza Comercial</span>
