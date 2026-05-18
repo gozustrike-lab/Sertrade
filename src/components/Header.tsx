@@ -164,7 +164,7 @@ export default function Header() {
       >
         {/* ===== SCROLL PROGRESS BAR — Gold 3px line ===== */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#D4AF37] origin-left z-50"
+          className="absolute top-0 left-0 right-0 h-[3px] bg-[#D4AF37] origin-left z-50"
           style={{ scaleX }}
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between relative z-10">
