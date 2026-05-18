@@ -32,11 +32,8 @@ const additionalServices = [
 export default function ServicesPage() {
   return (
     <div>
-      {/* ======== HERO HEADER V2 — Solid dark, 20px micro-gradient ======== */}
-      <section className="relative w-full overflow-visible" style={{ minHeight: '40vh' }}>
-        {/* Solid dark background */}
-        <div className="absolute inset-0 bg-[#004691]" />
-
+      {/* ======== HERO HEADER — Solid uniform blue, clean edge ======== */}
+      <section className="relative w-full bg-[#004691] overflow-hidden" style={{ minHeight: '40vh' }}>
         {/* Decorative geometric accents */}
         <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/8 -rotate-12 translate-y-1/3 -translate-x-1/4" />
@@ -79,8 +76,6 @@ export default function ServicesPage() {
           </ScrollReveal>
         </div>
 
-        {/* 20px micro-gradient — surgical transition blue→transparent */}
-        <div className="absolute left-0 right-0 top-full h-[20px] bg-gradient-to-b from-[#004691] to-transparent pointer-events-none z-20" />
       </section>
 
       {/* SERVICE CATEGORIES — with stagger + spring hover */}
