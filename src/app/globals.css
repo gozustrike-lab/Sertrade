@@ -665,7 +665,10 @@
 }
 
 /* ========================================
-   HEX PATTERN BACKGROUND (Watermark)
+   ISOTYPE PATTERN BACKGROUND (Brand Watermark)
+   Diagonal isometric grid using the actual
+   Sertrade isotype — hexagon with interlocking
+   lines + inner hexagon. Spaced, not touching.
    ======================================== */
 .hex-pattern-bg {
   position: relative;
@@ -673,11 +676,12 @@
 .hex-pattern-bg::before {
   content: '';
   position: absolute;
-  inset: -20px;
-  width: calc(100% + 40px);
-  height: calc(100% + 40px);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpolygon points='28,2 52,15 52,37 28,50 4,37 4,15' fill='none' stroke='%23004691' stroke-width='0.8' opacity='1'/%3E%3Cpolygon points='28,52 52,65 52,87 28,100 4,87 4,65' fill='none' stroke='%23004691' stroke-width='0.8' opacity='1'/%3E%3C/svg%3E");
+  inset: -40px;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  background-image: url('/pattern-isotype.svg');
   background-repeat: repeat;
+  background-size: 360px 420px;
   opacity: 0.03;
   pointer-events: none;
   z-index: 0;
