@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import {
-  MapPin, Maximize2, Calendar, Building2, Filter, Eye, ArrowRight, MessageCircle,
+  MapPin, Maximize2, Calendar, Building2, Eye, ArrowRight, MessageCircle,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -42,52 +42,66 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      {/* HERO HEADER — Full bleed behind transparent header */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 40%, #002B5B 100%)' }}>
+      {/* COMPACT HERO HEADER — Slim gradient strip behind transparent header */}
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #004691 0%, #003a7a 50%, #002B5B 100%)' }}>
         {/* Decorative geometric accents */}
-        <div className="absolute top-0 right-0 w-80 h-80 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
-        {/* Content with top padding to clear the transparent header */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-[120px] md:pt-[130px] pb-24 md:pb-28">
+        <div className="absolute top-0 right-0 w-60 h-60 border border-white/5 rotate-45 -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 border border-[#d4a017]/10 -rotate-12 translate-y-1/3 -translate-x-1/4" />
+        {/* Slim content — clear header only */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-[120px] md:pt-[130px] pb-10 md:pb-12">
           <ScrollReveal animation="fade-down" delay={0.1}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[8px] bg-white/10 border border-white/15 mb-4">
               <Building2 size={14} strokeWidth={1.5} className="text-[#d4a017]" />
               <span className="text-white/80 text-xs tracking-widest uppercase">Portafolio</span>
             </div>
           </ScrollReveal>
           <ScrollReveal animation="fade-up" delay={0.2}>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">Nuestros Proyectos</h1>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight">Nuestros Proyectos</h1>
           </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={0.35}>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg leading-[1.7]">
+          <ScrollReveal animation="fade-up" delay={0.3}>
+            <p className="text-white/60 max-w-2xl mx-auto text-base leading-[1.7]">
               Cada proyecto es un testimonio de nuestro compromiso con la excelencia, la innovación y la satisfacción de nuestros clientes.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* FILTER & PROJECTS GALLERY */}
-      <section className="py-20 bg-[#f7f8fa]">
+      {/* IMMERSIVE CATEGORY FILTER — Editorial text-only uppercase strip */}
+      <section className="relative bg-[#f7f8fa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Category Filters */}
-          <ScrollReveal>
-            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-16 flex-wrap">
-              <Filter size={16} strokeWidth={1.5} className="text-gray-400 mr-1" />
-              {categories.map((cat) => (
+          <ScrollReveal animation="fade-up" delay={0.15}>
+            <div className="flex items-center justify-center py-8 md:py-10 border-b border-gray-200/60">
+              {categories.map((cat, i) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-5 py-2.5 rounded-[4px] text-sm font-medium transition-all duration-300 ${
+                  className={`relative text-sm sm:text-base font-semibold tracking-[0.15em] uppercase transition-all duration-400 px-4 sm:px-6 lg:px-8 py-3 group ${
                     activeCategory === cat
-                      ? 'bg-[#004691] text-white shadow-lg shadow-[#004691]/25'
-                      : 'bg-white text-[#4A4A4A] border border-gray-200 hover:border-[#004691]/30 hover:text-[#004691]'
+                      ? 'text-[#004691]'
+                      : 'text-[#999] hover:text-[#4A4A4A]'
                   }`}
                 >
+                  {/* Active underline indicator */}
+                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full transition-all duration-400 ${
+                    activeCategory === cat
+                      ? 'w-8 bg-[#d4a017]'
+                      : 'w-0 bg-[#d4a017] group-hover:w-4'
+                  }`} />
                   {cat}
+                  {/* Dot separator between items */}
+                  {i < categories.length - 1 && (
+                    <span className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300 select-none pointer-events-none">/</span>
+                  )}
                 </button>
               ))}
             </div>
           </ScrollReveal>
+        </div>
+      </section>
+
+      {/* PROJECTS GALLERY */}
+      <section className="py-16 md:py-20 bg-[#f7f8fa]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Projects — Full-Width Gallery Layout with Stagger */}
           <ScrollReveal animation="fade-up" staggerDelay={0.12} className="space-y-20">
