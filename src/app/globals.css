@@ -666,18 +666,18 @@
 
 /* ========================================
    BRAND WATERMARK — Client-provided pattern
-   Exact isotype image, tiled as background.
-   Applied only to light/white sections.
+   Single wrapper around ALL light sections
+   so tiles are continuous — no clipped logos.
    ======================================== */
-.hex-pattern-bg {
+.brand-pattern-wrapper {
   position: relative;
 }
-.hex-pattern-bg::before {
+.brand-pattern-wrapper::before {
   content: '';
   position: absolute;
-  inset: -60px;
-  width: calc(100% + 120px);
-  height: calc(100% + 120px);
+  inset: -80px;
+  width: calc(100% + 160px);
+  height: calc(100% + 160px);
   background-image: url('/brand-pattern.png');
   background-repeat: repeat;
   background-size: 1086px 1448px;
