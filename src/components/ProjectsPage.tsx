@@ -102,7 +102,7 @@ export default function ProjectsPage() {
 
       {/* PROJECTS GALLERY */}
       <section className="py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-0 md:px-6 relative z-10">
 
           {/* Projects — Full-Width Gallery Layout with Animated Filter */}
           <AnimatePresence mode="wait">
@@ -126,7 +126,7 @@ export default function ProjectsPage() {
                     className="contents"
                   >
                   {/* TITLE — Above image, large with tracking */}
-                  <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                  <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-4 md:px-2">
                     <div>
                       <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#004691] tracking-wide group-hover:text-[#0062b8] transition-colors duration-300">
                         {project.title}
@@ -143,7 +143,7 @@ export default function ProjectsPage() {
 
                   {/* HERO IMAGE — Full Width, 60vh height */}
                   <div
-                    className="relative overflow-hidden rounded-[12px] shadow-lg cursor-pointer"
+                    className="relative overflow-hidden rounded-none md:rounded-xl shadow-lg cursor-pointer"
                     style={{ height: 'clamp(280px, 60vh, 650px)' }}
                     onClick={() => openLightbox(project.images, 0)}
                   >
@@ -157,14 +157,14 @@ export default function ProjectsPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
                     {/* Category Badge — top left */}
-                    <div className="absolute top-5 left-5">
+                    <div className="absolute top-4 left-4 md:top-5 md:left-5">
                       <span className="px-4 py-1.5 bg-[#004691] text-white text-xs font-semibold rounded-[8px] tracking-wider uppercase">
                         {project.category}
                       </span>
                     </div>
 
                     {/* Status Badge — top right */}
-                    <div className="absolute top-5 right-5">
+                    <div className="absolute top-4 right-4 md:top-5 md:right-5">
                       <span className={`px-3 py-1 rounded-[8px] text-xs font-semibold ${
                         project.status === 'Completado' ? 'bg-green-500/90 text-white' : 'bg-amber-500/90 text-white'
                       }`}>
@@ -199,7 +199,7 @@ export default function ProjectsPage() {
                   </div>
 
                   {/* DATA STRIP — Horizontal, subtle, below image */}
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-5 px-1">
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-5 px-4 md:px-2">
                     {[
                       { icon: MapPin, value: project.location },
                       { icon: Maximize2, value: project.area },
@@ -221,7 +221,7 @@ export default function ProjectsPage() {
                   </div>
 
                   {/* Thin separator between projects */}
-                  <div className="mt-20 h-px bg-gray-200" />
+                  <div className="mt-20 h-px bg-gray-200 mx-4 md:mx-0" />
                   </motion.div>
                 </article>
             ))}
@@ -229,7 +229,7 @@ export default function ProjectsPage() {
           </AnimatePresence>
 
           {/* Load More CTA */}
-          <div className="text-center mt-16">
+          <div className="text-center mt-16 px-4 md:px-0">
             <ScrollReveal animation="scale">
               <button className="px-10 py-4 bg-[#004691] text-white rounded-[8px] font-semibold hover:bg-[#0062b8] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.03] inline-flex items-center gap-2">
                 Cargar Más Proyectos <ArrowRight size={18} strokeWidth={1.5} />
@@ -238,7 +238,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* WhatsApp CTA — Cotizar Proyecto Similar */}
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 px-4 md:px-0">
             <ScrollReveal animation="fade-up" delay={0.15}>
               <a
                 href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estuve revisando su portafolio de proyectos y me interesa cotizar un desarrollo arquitectónico similar.')}`}
