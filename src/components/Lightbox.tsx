@@ -21,6 +21,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
   const lastTapTime = useRef(0);
   const panStartRef = useRef({ x: 0, y: 0, ox: 0, oy: 0 });
   const isPanning = useRef(false);
+  const didPanRef = useRef(false); /* survives past pointerUp to block onClick */
   const touchStartRef = useRef({ x: 0, y: 0, time: 0 });
   const isDragging = useRef(false);
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -96,14 +97,20 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
   /* ── Click-to-zoom on PC: zoom into the clicked area ── */
   const handleImageClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (isPanning.current) return;
-      const container = imageContainerRef.current;
-      if (!container) return;
-
+      /* When zoomed: ignore clicks entirely — only pan works */
       if (zoom > 1) {
-        resetZoom();
+        didPanRef.current = false; /* clear flag for next interaction */
         return;
       }
+
+      /* If a pan just finished (drag > 5px), ignore this synthetic click */
+      if (didPanRef.current) {
+        didPanRef.current = false;
+        return;
+      }
+
+      const container = imageContainerRef.current;
+      if (!container) return;
 
       /* Calculate click position as % of the image container */
       const rect = container.getBoundingClientRect();
@@ -113,7 +120,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
       setPanOffset({ x: 0, y: 0 });
       setZoom(2.5);
     },
-    [zoom, resetZoom],
+    [zoom],
   );
 
   /* ── Touch handlers for swipe navigation + tap detection ── */
@@ -155,6 +162,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
       if (zoom <= 1) return;
       e.preventDefault();
       isPanning.current = true;
+      didPanRef.current = false; /* reset — will become true if user drags */
       panStartRef.current = { x: e.clientX, y: e.clientY, ox: panOffset.x, oy: panOffset.y };
       try {
         (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -169,6 +177,10 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
       e.preventDefault();
       const dx = e.clientX - panStartRef.current.x;
       const dy = e.clientY - panStartRef.current.y;
+      /* Mark as real pan if moved > 5px — prevents synthetic onClick */
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        didPanRef.current = true;
+      }
       setPanOffset({ x: panStartRef.current.ox + dx, y: panStartRef.current.oy + dy });
     },
     [zoom],
@@ -176,6 +188,8 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
 
   const handlePointerUp = useCallback(() => {
     isPanning.current = false;
+    /* NOTE: didPanRef stays true so handleImageClick can read it.
+       handleImageClick clears it after reading. */
   }, []);
 
   /* ── Zoom controls ── */
@@ -216,11 +230,14 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
           className="fixed inset-0 z-[100] bg-black flex flex-col select-none"
           style={{ paddingTop: 'env(safe-area-inset-top)' }}
         >
-          {/* ═══ BACKGROUND — click to close (only when not zoomed) ═══ */}
+          {/* ═══ BACKGROUND — inert when zoomed, closes lightbox when not ═══ */}
           <div
             className="absolute inset-0 z-0"
             onClick={() => {
-              if (zoom > 1) resetZoom();
+              /* When zoomed: do nothing — user is panning */
+              if (zoom > 1) return;
+              /* When not zoomed: close lightbox on background click */
+              onClose();
             }}
           />
 
