@@ -153,7 +153,7 @@ export default function ProjectsPage() {
         </div>
 
         {/* Subtle 0.3cm gradient: blue → content transition */}
-        <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-[#f7f8fa] to-[#004691] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '11px', background: 'linear-gradient(to top, #f7f8fa 0%, rgba(247,248,250,0.8) 4px, rgba(247,248,250,0.3) 7px, #004691 11px)' }} />
       </section>
 
       {/* ======== FILTER + GALLERY — Unified light wrapper ======== */}

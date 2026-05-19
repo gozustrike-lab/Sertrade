@@ -273,7 +273,7 @@ export default function HomePage() {
       <section
         className="pt-10 pb-20 md:pt-10 md:pb-24"
         style={{
-          background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 10px, transparent 30px, transparent 100%)',
+          background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 4px, rgba(0,28,61,0.6) 11px, transparent 11px, transparent 100%)',
         }}
       >
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -348,14 +348,17 @@ export default function HomePage() {
       <section className="py-14 md:py-20 bg-transparent">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 sm:mb-12">
               <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Portafolio</span>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Proyectos Destacados</h2>
               <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
             </div>
           </ScrollReveal>
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        {/* Full-width grid on mobile, padded on desktop */}
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 sm:gap-6 md:gap-8">
             {[
               { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', slug: 'plaza-central' },
               { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', slug: 'clinica-san-rafael' },
@@ -366,7 +369,7 @@ export default function HomePage() {
             ].map((project, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
                 <motion.div
-                  className="relative w-full h-[550px] md:h-[600px] overflow-hidden group bg-black cursor-pointer rounded-xl"
+                  className="relative w-full h-[450px] sm:h-[550px] md:h-[600px] overflow-hidden group bg-black cursor-pointer rounded-none sm:rounded-xl"
                   whileHover={{ y: -6, boxShadow: '0 25px 60px rgba(0,0,0,0.35)', transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                   onClick={() => navigateWithTransition(`/proyectos#${project.slug}`)}
                 >
@@ -399,8 +402,10 @@ export default function HomePage() {
               </ScrollReveal>
             ))}
           </div>
+        </div>
 
-          {/* Ver más — Gold CTA */}
+        {/* Ver más — Gold CTA */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mt-14">
               <motion.button

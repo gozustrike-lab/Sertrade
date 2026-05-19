@@ -77,7 +77,7 @@ export default function ServicesPage() {
         </div>
 
         {/* Subtle 0.3cm gradient: blue → white transition */}
-        <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-white to-[#004691] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '11px', background: 'linear-gradient(to top, white 0%, rgba(255,255,255,0.8) 4px, rgba(255,255,255,0.3) 7px, #004691 11px)' }} />
       </section>
 
       {/* SERVICE CATEGORIES — with stagger + spring hover */}
@@ -204,7 +204,7 @@ export default function ServicesPage() {
       <ScrollReveal animation="fade">
         <section className="relative py-20 bg-[#004691]">
           {/* Subtle 0.3cm gradient: white → blue transition */}
-          <div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-b from-white to-[#004691] pointer-events-none z-10" />
+          <div className="absolute top-0 left-0 right-0 pointer-events-none z-10" style={{ height: '11px', background: 'linear-gradient(to bottom, white 0%, rgba(255,255,255,0.8) 4px, rgba(255,255,255,0.3) 7px, #004691 11px)' }} />
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-5">¿Necesitas un servicio personalizado?</h2>
             <p className="text-white/70 mb-8 max-w-2xl mx-auto leading-[1.7]">
