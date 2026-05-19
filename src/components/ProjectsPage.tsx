@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   MapPin, Maximize2, Calendar, Building2, Eye, ArrowRight, MessageCircle, ChevronLeft, ChevronRight,
 } from 'lucide-react';
@@ -11,12 +11,12 @@ import Lightbox from '@/components/Lightbox';
 const categories = ['Todos', 'Comercial', 'Salud', 'Residencial'];
 
 const projects = [
-  { id: 1, title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', year: '2023', client: 'Inversiones SAC', status: 'Completado', description: 'Un complejo comercial de tres niveles que integra retail, entretenimiento y gastronomía bajo un concepto arquitectónico moderno y sostenible. El diseño prioriza la circulación fluida y la experiencia del visitante con espacios abiertos iluminados naturalmente.', images: ['https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', 'https://images.unsplash.com/photo-1567449303078-57ad995bd329?w=800&q=80', 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80'] },
-  { id: 2, title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', year: '2022', client: 'Grupo Salud Integral', status: 'Completado', description: 'Una clínica de alta complejidad diseñada para optimizar los flujos clínicos y ofrecer un ambiente terapéutico. Las áreas de espera se concibieron como jardines interiores que promueven la calma y el bienestar de pacientes y acompañantes.', images: ['https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80', 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&q=80'] },
-  { id: 3, title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', year: '2024', client: 'Privado', status: 'En Proceso', description: 'Vivienda unifamiliar contemporánea que fusiona la calidez del hogar con líneas arquitectónicas audaces. Grandes ventanales de piso a techo conectan el interior con el jardín, creando una experiencia de vida íntegra con la naturaleza circundante.', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80'] },
-  { id: 4, title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', year: '2023', client: 'Corporación Andina', status: 'Completado', description: 'Torre de oficinas corporativas con certificación LEED Gold. El diseño incorpora bioclimatismo, paneles solares y jardines verticales. Los espacios de coworking y terrazas verdes fomentan la colaboración y el bienestar laboral.', images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80', 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80', 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80'] },
-  { id: 5, title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', year: '2024', client: 'Ministerio de Salud', status: 'En Proceso', description: 'Proyecto hospitalario de gran escala con 200 camas. El diseño modular permite futuras ampliaciones, mientras que la eficiencia energética y la iluminación natural son pilares fundamentales de la concepción espacial.', images: ['https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80', 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80', 'https://images.unsplash.com/photo-1551076805-e1869033e561?w=800&q=80'] },
-  { id: 6, title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', year: '2023', client: 'Privado', status: 'Completado', description: 'Residencia de lujo junto al lago que integra materiales locales como piedra andina y madera de eucalipto en un diseño contemporáneo. La casa se organiza en volúmenes escalonados que se adaptan a la topografía del terreno.', images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80'] },
+  { id: 1, slug: 'plaza-central', title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', year: '2023', client: 'Inversiones SAC', status: 'Completado', description: 'Un complejo comercial de tres niveles que integra retail, entretenimiento y gastronomía bajo un concepto arquitectónico moderno y sostenible. El diseño prioriza la circulación fluida y la experiencia del visitante con espacios abiertos iluminados naturalmente.', images: ['https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', 'https://images.unsplash.com/photo-1567449303078-57ad995bd329?w=800&q=80', 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80'] },
+  { id: 2, slug: 'clinica-san-rafael', title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', year: '2022', client: 'Grupo Salud Integral', status: 'Completado', description: 'Una clínica de alta complejidad diseñada para optimizar los flujos clínicos y ofrecer un ambiente terapéutico. Las áreas de espera se concibieron como jardines interiores que promueven la calma y el bienestar de pacientes y acompañantes.', images: ['https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80', 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&q=80'] },
+  { id: 3, slug: 'residencial-los-cedros', title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', year: '2024', client: 'Privado', status: 'En Proceso', description: 'Vivienda unifamiliar contemporánea que fusiona la calidez del hogar con líneas arquitectónicas audaces. Grandes ventanales de piso a techo conectan el interior con el jardín, creando una experiencia de vida íntegra con la naturaleza circundante.', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80'] },
+  { id: 4, slug: 'oficinas-torre-andina', title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', year: '2023', client: 'Corporación Andina', status: 'Completado', description: 'Torre de oficinas corporativas con certificación LEED Gold. El diseño incorpora bioclimatismo, paneles solares y jardines verticales. Los espacios de coworking y terrazas verdes fomentan la colaboración y el bienestar laboral.', images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80', 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80', 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80'] },
+  { id: 5, slug: 'hospital-metropolitano', title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', year: '2024', client: 'Ministerio de Salud', status: 'En Proceso', description: 'Proyecto hospitalario de gran escala con 200 camas. El diseño modular permite futuras ampliaciones, mientras que la eficiencia energética y la iluminación natural son pilares fundamentales de la concepción espacial.', images: ['https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80', 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80', 'https://images.unsplash.com/photo-1551076805-e1869033e561?w=800&q=80'] },
+  { id: 6, slug: 'casa-del-lago', title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', year: '2023', client: 'Privado', status: 'Completado', description: 'Residencia de lujo junto al lago que integra materiales locales como piedra andina y madera de eucalipto en un diseño contemporáneo. La casa se organiza en volúmenes escalonados que se adaptan a la topografía del terreno.', images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80'] },
 ];
 
 /* Swipe threshold in px */
@@ -25,6 +25,40 @@ const SWIPE_THRESHOLD = 50;
 export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  /* Detect viewport for drag behavior */
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  /* Scroll to project from hash (e.g. #plaza-central) */
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    const project = projects.find((p) => p.slug === hash);
+    if (project) {
+      /* Set category filter to match the project */
+      setActiveCategory('Todos');
+      /* Wait for render, then scroll */
+      const timer = setTimeout(() => {
+        const el = document.getElementById(`project-${project.slug}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          /* Brief highlight flash */
+          el.style.transition = 'box-shadow 0.3s ease';
+          el.style.boxShadow = '0 0 0 3px #d4a017, 0 0 30px rgba(212,160,23,0.3)';
+          setTimeout(() => {
+            el.style.boxShadow = '';
+          }, 2000);
+        }
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   /* Track current image index per project for swipe */
   const [projectImages, setProjectImages] = useState<Record<number, number>>({});
@@ -182,7 +216,8 @@ export default function ProjectsPage() {
                   return (
                     <article
                       key={project.id}
-                      className="group"
+                      id={`project-${project.slug}`}
+                      className="group rounded-xl transition-shadow duration-500"
                       onMouseEnter={() => setHoveredProject(project.id)}
                       onMouseLeave={() => setHoveredProject(null)}
                     >
@@ -212,10 +247,10 @@ export default function ProjectsPage() {
                           className="relative overflow-hidden rounded-none md:rounded-xl shadow-lg"
                           style={{ height: 'clamp(280px, 60vh, 650px)' }}
                         >
-                          {/* Swipeable image container — Framer Motion drag on mobile */}
+                          {/* Swipeable image container — drag only on mobile, click on desktop */}
                           <motion.div
                             className="w-full h-full cursor-grab active:cursor-grabbing md:cursor-pointer"
-                            drag={totalImages > 1 ? 'x' : false}
+                            drag={isMobile && totalImages > 1 ? 'x' : false}
                             dragConstraints={{ left: 0, right: 0 }}
                             dragElastic={0.1}
                             onDragStart={() => { didSwipeRef.current = false; }}
@@ -233,6 +268,10 @@ export default function ProjectsPage() {
                                 handleImageTap(project);
                               }
                               didSwipeRef.current = false;
+                            }}
+                            onClick={() => {
+                              /* Desktop fallback — drag disables onClick, so onTap handles it.
+                                 But if drag is false (desktop), onClick works. */
                             }}
                           >
                             <AnimatePresence mode="wait" initial={false}>
