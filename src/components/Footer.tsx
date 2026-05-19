@@ -9,7 +9,7 @@ const quickLinks = [
   { label: 'Proyectos', href: '/proyectos' },
   { label: 'Sobre Nosotros', href: '/' },
   { label: 'Contacto', href: '/' },
-  { label: 'Libro de Reclamaciones', href: '/libro-reclamaciones', external: true },
+  { label: 'Libro de Reclamaciones', href: '/libro-reclamaciones' },
 ];
 
 export default function Footer() {
