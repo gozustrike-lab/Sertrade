@@ -293,16 +293,25 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
               {/* Separator */}
               <div className="w-px h-6 bg-white/10 mx-0.5" />
 
-              {/* CLOSE — Prominent */}
+              {/* CLOSE — In top bar */}
               <button
                 onClick={(e) => { e.stopPropagation(); onClose(); }}
-                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 hover:bg-red-500/80 text-white flex items-center justify-center backdrop-blur-sm shadow-lg shadow-black/30 transition-all duration-200 hover:scale-110 active:scale-95"
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/15 hover:bg-red-500/80 text-white flex items-center justify-center backdrop-blur-sm shadow-lg shadow-black/30 transition-all duration-200 hover:scale-110 active:scale-95"
                 aria-label="Cerrar galería"
               >
                 <X size={20} strokeWidth={2.5} />
               </button>
             </div>
           </div>
+
+          {/* ═══ FLOATING CLOSE BUTTON — Always visible ═══ */}
+          <button
+            onClick={(e) => { e.stopPropagation(); onClose(); }}
+            className="absolute top-3 right-3 md:top-4 md:right-4 z-50 w-10 h-10 md:w-11 md:h-11 rounded-full bg-black/60 hover:bg-red-500/90 text-white flex items-center justify-center backdrop-blur-md shadow-lg shadow-black/40 border border-white/20 transition-all duration-200 hover:scale-110 active:scale-95"
+            aria-label="Cerrar galería"
+          >
+            <X size={20} strokeWidth={2.5} />
+          </button>
 
           {/* ═══ IMAGE AREA ═══ */}
           <div
