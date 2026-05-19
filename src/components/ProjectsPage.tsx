@@ -270,8 +270,11 @@ export default function ProjectsPage() {
                               didSwipeRef.current = false;
                             }}
                             onClick={() => {
-                              /* Desktop fallback — drag disables onClick, so onTap handles it.
-                                 But if drag is false (desktop), onClick works. */
+                              /* Desktop fallback — when drag is false, framer-motion still fires onTap.
+                                 This onClick ensures the lightbox opens even if onTap fails. */
+                              if (!isMobile) {
+                                handleImageTap(project);
+                              }
                             }}
                           >
                             <AnimatePresence mode="wait" initial={false}>
@@ -313,9 +316,9 @@ export default function ProjectsPage() {
                             </span>
                           </div>
 
-                          {/* Desktop: Lightbox CTA on hover */}
+                          {/* Desktop: Lightbox CTA on hover — pointer-events-none so clicks pass through */}
                           <div
-                            className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-500 md:flex hidden ${
+                            className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-500 pointer-events-none md:flex hidden ${
                               hoveredProject === project.id ? 'opacity-100' : 'opacity-0'
                             }`}
                           >
@@ -329,7 +332,7 @@ export default function ProjectsPage() {
                           {project.images.length > 1 && (
                             <div
                               className={`absolute bottom-4 left-1/2 -translate-x-1/2 items-center gap-2 transition-all duration-500 hidden md:flex ${
-                                hoveredProject === project.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                                hoveredProject === project.id ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
                               }`}
                             >
                               {project.images.map((img, i) => (
