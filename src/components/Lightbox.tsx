@@ -16,12 +16,14 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
   const [zoom, setZoom] = useState(1);
   const [isLandscape, setIsLandscape] = useState(false);
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [origin, setOrigin] = useState({ x: 50, y: 50 }); /* % position for zoom focus */
 
   const lastTapTime = useRef(0);
   const panStartRef = useRef({ x: 0, y: 0, ox: 0, oy: 0 });
   const isPanning = useRef(false);
   const touchStartRef = useRef({ x: 0, y: 0, time: 0 });
   const isDragging = useRef(false);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
 
   /* Reset state when lightbox opens */
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
       setCurrentIndex(initialIndex);
       setZoom(1);
       setPanOffset({ x: 0, y: 0 });
+      setOrigin({ x: 50, y: 50 });
       setIsLandscape(false);
     }
   }, [isOpen, initialIndex]);
@@ -37,6 +40,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
   useEffect(() => {
     setZoom(1);
     setPanOffset({ x: 0, y: 0 });
+    setOrigin({ x: 50, y: 50 });
   }, [currentIndex]);
 
   const goNext = useCallback(() => {
@@ -50,6 +54,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
   const resetZoom = useCallback(() => {
     setZoom(1);
     setPanOffset({ x: 0, y: 0 });
+    setOrigin({ x: 50, y: 50 });
   }, []);
 
   /* ── Keyboard controls ── */
@@ -88,6 +93,29 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
     return false;
   }, [zoom, resetZoom]);
 
+  /* ── Click-to-zoom on PC: zoom into the clicked area ── */
+  const handleImageClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (isPanning.current) return;
+      const container = imageContainerRef.current;
+      if (!container) return;
+
+      if (zoom > 1) {
+        resetZoom();
+        return;
+      }
+
+      /* Calculate click position as % of the image container */
+      const rect = container.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      setOrigin({ x, y });
+      setPanOffset({ x: 0, y: 0 });
+      setZoom(2.5);
+    },
+    [zoom, resetZoom],
+  );
+
   /* ── Touch handlers for swipe navigation + tap detection ── */
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartRef.current = {
@@ -107,7 +135,6 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
   const handleTouchEnd = useCallback(
     (e: React.TouchEvent) => {
       if (isDragging.current && zoom <= 1) {
-        /* Swipe navigation when not zoomed */
         const dx = e.changedTouches[0].clientX - touchStartRef.current.x;
         const dt = Date.now() - touchStartRef.current.time;
         if (dt < 500 && Math.abs(dx) > 50) {
@@ -115,7 +142,6 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
           return;
         }
       }
-      /* Tap → double-tap zoom */
       if (!isDragging.current) {
         handleDoubleTap();
       }
@@ -132,9 +158,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
       panStartRef.current = { x: e.clientX, y: e.clientY, ox: panOffset.x, oy: panOffset.y };
       try {
         (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-      } catch {
-        /* setPointerCapture may fail in some contexts */
-      }
+      } catch { /* noop */ }
     },
     [zoom, panOffset],
   );
@@ -156,12 +180,21 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
 
   /* ── Zoom controls ── */
   const zoomIn = useCallback(() => {
-    setZoom((z) => Math.min(4, z < 1.5 ? 2.5 : z + 0.5));
-  }, []);
+    if (zoom > 1) {
+      setZoom((z) => Math.min(4, z + 0.5));
+    } else {
+      setZoom(2.5);
+      setPanOffset({ x: 0, y: 0 });
+    }
+  }, [zoom]);
 
   const zoomOut = useCallback(() => {
     setZoom((z) => Math.max(1, z - 0.5));
-  }, []);
+    if (zoom - 0.5 <= 1) {
+      setPanOffset({ x: 0, y: 0 });
+      setOrigin({ x: 50, y: 50 });
+    }
+  }, [zoom]);
 
   const toggleLandscape = useCallback(() => {
     setIsLandscape((l) => !l);
@@ -179,79 +212,86 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[100] bg-black/95 flex flex-col select-none"
-          onClick={() => {
-            if (zoom > 1) {
-              resetZoom();
-            } else {
-              onClose();
-            }
-          }}
+          transition={{ duration: 0.25 }}
+          className="fixed inset-0 z-[100] bg-black flex flex-col select-none"
+          style={{ paddingTop: 'env(safe-area-inset-top)' }}
         >
-          {/* ═══ Top Bar ═══ */}
+          {/* ═══ BACKGROUND — click to close (only when not zoomed) ═══ */}
           <div
-            className="flex items-center justify-between px-4 pt-4 pb-2 z-30 shrink-0"
+            className="absolute inset-0 z-0"
+            onClick={() => {
+              if (zoom > 1) resetZoom();
+            }}
+          />
+
+          {/* ═══ TOP BAR — Controls always visible ═══ */}
+          <div
+            className="relative z-40 flex items-center justify-between shrink-0 px-3 pt-3 pb-2 md:px-5 md:pt-4 md:pb-3"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Counter */}
-            <div className="text-white/60 text-sm font-medium tracking-wide">
-              {currentIndex + 1}
-              <span className="text-white/30 mx-1">/</span>
-              {images.length}
+            {/* Left: Counter */}
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-white/90 text-sm md:text-base font-semibold tabular-nums">
+                {currentIndex + 1}
+              </span>
+              <span className="text-white/30 text-sm">/</span>
+              <span className="text-white/40 text-sm md:text-base tabular-nums">
+                {images.length}
+              </span>
             </div>
 
-            {/* Controls cluster */}
-            <div className="flex items-center gap-1.5">
+            {/* Right: Controls */}
+            <div className="flex items-center gap-1.5 md:gap-2">
               {/* Zoom out */}
               <button
-                onClick={zoomOut}
-                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
-                  zoom > 1 ? 'bg-white/15 text-white' : 'text-white/20 pointer-events-none'
+                onClick={(e) => { e.stopPropagation(); zoomOut(); }}
+                className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-200 backdrop-blur-sm ${
+                  zoom > 1
+                    ? 'bg-white/20 text-white shadow-lg shadow-black/30 hover:bg-white/30'
+                    : 'bg-black/40 text-white/30 pointer-events-none'
                 }`}
                 aria-label="Reducir zoom"
               >
-                <ZoomOut size={16} />
+                <ZoomOut size={18} strokeWidth={2} />
               </button>
 
               {/* Zoom in */}
               <button
-                onClick={zoomIn}
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all duration-200"
+                onClick={(e) => { e.stopPropagation(); zoomIn(); }}
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/15 text-white flex items-center justify-center backdrop-blur-sm shadow-lg shadow-black/20 hover:bg-white/25 transition-all duration-200 active:scale-95"
                 aria-label="Ampliar zoom"
               >
-                <ZoomIn size={16} />
+                <ZoomIn size={18} strokeWidth={2} />
               </button>
 
               {/* Landscape toggle — mobile only */}
               <button
-                onClick={toggleLandscape}
-                className="md:hidden w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all duration-200"
+                onClick={(e) => { e.stopPropagation(); toggleLandscape(); }}
+                className="md:hidden w-10 h-10 rounded-full bg-white/15 text-white flex items-center justify-center backdrop-blur-sm shadow-lg shadow-black/20 hover:bg-white/25 transition-all duration-200 active:scale-95"
                 aria-label="Modo horizontal"
               >
-                <RotateCw size={16} className={isLandscape ? 'text-[#d4a017]' : ''} />
+                <RotateCw size={18} strokeWidth={2} className={isLandscape ? 'text-[#d4a017]' : ''} />
               </button>
 
-              {/* Close */}
+              {/* Separator */}
+              <div className="w-px h-6 bg-white/10 mx-0.5" />
+
+              {/* CLOSE — Prominent */}
               <button
-                onClick={onClose}
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all duration-200 hover:scale-110"
-                aria-label="Cerrar"
+                onClick={(e) => { e.stopPropagation(); onClose(); }}
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/20 hover:bg-red-500/80 text-white flex items-center justify-center backdrop-blur-sm shadow-lg shadow-black/30 transition-all duration-200 hover:scale-110 active:scale-95"
+                aria-label="Cerrar galería"
               >
-                <X size={18} />
+                <X size={20} strokeWidth={2.5} />
               </button>
             </div>
           </div>
 
-          {/* ═══ Image Area ═══ */}
+          {/* ═══ IMAGE AREA ═══ */}
           <div
-            className="flex-1 flex items-center justify-center overflow-hidden relative min-h-0"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (zoom > 1) {
-                resetZoom();
-              }
-            }}
+            ref={imageContainerRef}
+            className="flex-1 flex items-center justify-center overflow-hidden relative min-h-0 z-10"
+            onClick={handleImageClick}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -262,9 +302,9 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
             <AnimatePresence mode="wait">
               <motion.div
                 key={`${currentIndex}-${isLandscape}`}
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
                 className="flex items-center justify-center w-full h-full"
               >
@@ -277,8 +317,8 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
                     transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})${
                       isLandscape ? ' rotate(90deg)' : ''
                     }`,
-                    transformOrigin: 'center center',
-                    transition: isPanning.current ? 'none' : 'transform 0.3s cubic-bezier(0.25,0.1,0.25,1)',
+                    transformOrigin: `${origin.x}% ${origin.y}%`,
+                    transition: isPanning.current ? 'none' : 'transform 0.35s cubic-bezier(0.25,0.1,0.25,1)',
                     touchAction: zoom > 1 ? 'none' : 'pan-y',
                   }}
                 >
@@ -299,9 +339,14 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
 
             {/* Zoom level indicator */}
             {zoom > 1 && (
-              <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm text-white/70 text-xs font-medium">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="absolute top-4 left-1/2 -translate-x-1/2 z-20 px-4 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-white/80 text-xs font-semibold border border-white/10"
+              >
                 {Math.round(zoom * 100)}%
-              </div>
+              </motion.div>
             )}
           </div>
 
@@ -309,24 +354,18 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
           {images.length > 1 && zoom <= 1 && (
             <>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  goPrev();
-                }}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 active:scale-95"
+                onClick={(e) => { e.stopPropagation(); goPrev(); }}
+                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10 transition-all duration-200 hover:bg-black/60 hover:scale-110 active:scale-95"
                 aria-label="Imagen anterior"
               >
-                <ChevronLeft size={24} />
+                <ChevronLeft size={24} strokeWidth={2} />
               </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  goNext();
-                }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 active:scale-95"
+                onClick={(e) => { e.stopPropagation(); goNext(); }}
+                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10 transition-all duration-200 hover:bg-black/60 hover:scale-110 active:scale-95"
                 aria-label="Siguiente imagen"
               >
-                <ChevronRight size={24} />
+                <ChevronRight size={24} strokeWidth={2} />
               </button>
             </>
           )}
@@ -334,17 +373,18 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
           {/* ═══ Thumbnail Strip ═══ */}
           {images.length > 1 && (
             <div
-              className="shrink-0 flex items-center justify-center gap-2 px-4 py-3 z-30"
+              className="shrink-0 z-40 flex items-center justify-center gap-2 px-3 py-2.5 md:px-4 md:py-3"
               onClick={(e) => e.stopPropagation()}
+              style={{ paddingBottom: 'max(0.625rem, env(safe-area-inset-bottom))' }}
             >
               {images.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentIndex(i)}
-                  className={`w-11 h-11 rounded-md overflow-hidden border-2 transition-all duration-200 ${
+                  className={`rounded-lg overflow-hidden border-2 transition-all duration-200 ${
                     i === currentIndex
-                      ? 'border-[#d4a017] scale-110 shadow-lg shadow-[#d4a017]/20'
-                      : 'border-transparent opacity-40 hover:opacity-70 active:scale-95'
+                      ? 'w-14 h-14 md:w-16 md:h-16 border-[#d4a017] scale-105 shadow-lg shadow-[#d4a017]/30'
+                      : 'w-10 h-10 md:w-12 md:h-12 border-transparent opacity-40 hover:opacity-80 active:scale-95'
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
