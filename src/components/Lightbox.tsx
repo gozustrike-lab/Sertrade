@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCw, Shrink } from 'lucide-react';
 
 interface LightboxProps {
   images: string[];
@@ -16,14 +16,13 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
   const [zoom, setZoom] = useState(1);
   const [isLandscape, setIsLandscape] = useState(false);
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
-  const [origin, setOrigin] = useState({ x: 50, y: 50 }); /* % position for zoom focus */
+  const [origin, setOrigin] = useState({ x: 50, y: 50 });
 
   const lastTapTime = useRef(0);
   const panStartRef = useRef({ x: 0, y: 0, ox: 0, oy: 0 });
   const isPanning = useRef(false);
-  const didPanRef = useRef(false); /* survives past pointerUp to block onClick */
+  const didPanRef = useRef(false);
   const touchStartRef = useRef({ x: 0, y: 0, time: 0 });
-  const isDragging = useRef(false);
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
   /* Reset state when lightbox opens */
@@ -81,7 +80,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
   /* ── Double-tap zoom detection ── */
   const handleDoubleTap = useCallback(() => {
     const now = Date.now();
-    if (now - lastTapTime.current < 300) {
+    if (now - lastTapTime.current < 350) {
       lastTapTime.current = 0;
       if (zoom > 1) {
         resetZoom();
@@ -94,25 +93,19 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
     return false;
   }, [zoom, resetZoom]);
 
-  /* ── Click-to-zoom on PC: zoom into the clicked area ── */
+  /* ── Click-to-zoom on PC ── */
   const handleImageClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      /* When zoomed: ignore clicks entirely — only pan works */
       if (zoom > 1) {
-        didPanRef.current = false; /* clear flag for next interaction */
+        didPanRef.current = false;
         return;
       }
-
-      /* If a pan just finished (drag > 5px), ignore this synthetic click */
       if (didPanRef.current) {
         didPanRef.current = false;
         return;
       }
-
       const container = imageContainerRef.current;
       if (!container) return;
-
-      /* Calculate click position as % of the image container */
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;
@@ -123,33 +116,42 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
     [zoom],
   );
 
-  /* ── Touch handlers for swipe navigation + tap detection ── */
+  /* ── Touch handlers — REWRITTEN for reliability ── */
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartRef.current = {
       x: e.touches[0].clientX,
       y: e.touches[0].clientY,
       time: Date.now(),
     };
-    isDragging.current = false;
-  }, []);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    const dx = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
-    const dy = Math.abs(e.touches[0].clientY - touchStartRef.current.y);
-    if (dx > 10 || dy > 10) isDragging.current = true;
   }, []);
 
   const handleTouchEnd = useCallback(
     (e: React.TouchEvent) => {
-      if (isDragging.current && zoom <= 1) {
-        const dx = e.changedTouches[0].clientX - touchStartRef.current.x;
-        const dt = Date.now() - touchStartRef.current.time;
-        if (dt < 500 && Math.abs(dx) > 50) {
-          dx < 0 ? goNext() : goPrev();
-          return;
+      const dx = Math.abs(e.changedTouches[0].clientX - touchStartRef.current.x);
+      const dy = Math.abs(e.changedTouches[0].clientY - touchStartRef.current.y);
+      const dt = Date.now() - touchStartRef.current.time;
+      const totalMove = Math.sqrt(dx * dx + dy * dy);
+
+      /* ── When ZOOMED IN ── */
+      if (zoom > 1) {
+        /* Small movement (< 20px) = tap → try double-tap to reset zoom */
+        if (totalMove < 20) {
+          handleDoubleTap();
         }
+        /* Large movement = pan (already handled by pointer events) */
+        return;
       }
-      if (!isDragging.current) {
+
+      /* ── When NOT zoomed ── */
+      /* Swipe navigation: fast horizontal swipe > 50px */
+      if (totalMove > 50 && dt < 500) {
+        const swipeDx = e.changedTouches[0].clientX - touchStartRef.current.x;
+        swipeDx < 0 ? goNext() : goPrev();
+        return;
+      }
+
+      /* Small tap → double-tap zoom */
+      if (totalMove < 20) {
         handleDoubleTap();
       }
     },
@@ -162,7 +164,7 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
       if (zoom <= 1) return;
       e.preventDefault();
       isPanning.current = true;
-      didPanRef.current = false; /* reset — will become true if user drags */
+      didPanRef.current = false;
       panStartRef.current = { x: e.clientX, y: e.clientY, ox: panOffset.x, oy: panOffset.y };
       try {
         (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -177,7 +179,6 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
       e.preventDefault();
       const dx = e.clientX - panStartRef.current.x;
       const dy = e.clientY - panStartRef.current.y;
-      /* Mark as real pan if moved > 5px — prevents synthetic onClick */
       if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
         didPanRef.current = true;
       }
@@ -188,8 +189,6 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
 
   const handlePointerUp = useCallback(() => {
     isPanning.current = false;
-    /* NOTE: didPanRef stays true so handleImageClick can read it.
-       handleImageClick clears it after reading. */
   }, []);
 
   /* ── Zoom controls ── */
@@ -230,42 +229,52 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
           className="fixed inset-0 z-[100] bg-black flex flex-col select-none"
           style={{ paddingTop: 'env(safe-area-inset-top)' }}
         >
-          {/* ═══ BACKGROUND — inert when zoomed, closes lightbox when not ═══ */}
+          {/* ═══ BACKGROUND — click closes when not zoomed ═══ */}
           <div
             className="absolute inset-0 z-0"
             onClick={() => {
-              /* When zoomed: do nothing — user is panning */
-              if (zoom > 1) return;
-              /* When not zoomed: close lightbox on background click */
-              onClose();
+              if (zoom > 1) resetZoom();
+              else onClose();
             }}
           />
 
-          {/* ═══ TOP BAR — Controls always visible ═══ */}
+          {/* ═══ TOP BAR — Bright, always visible ═══ */}
           <div
-            className="relative z-40 flex items-center justify-between shrink-0 px-3 pt-3 pb-2 md:px-5 md:pt-4 md:pb-3"
+            className="relative z-40 flex items-center justify-between shrink-0 px-3 py-2 md:px-5 md:py-3"
             onClick={(e) => e.stopPropagation()}
+            style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%)' }}
           >
             {/* Left: Counter */}
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="text-white/90 text-sm md:text-base font-semibold tabular-nums">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-white text-sm md:text-base font-bold tabular-nums">
                 {currentIndex + 1}
               </span>
-              <span className="text-white/30 text-sm">/</span>
-              <span className="text-white/40 text-sm md:text-base tabular-nums">
+              <span className="text-white/40 text-sm">/</span>
+              <span className="text-white/60 text-sm md:text-base tabular-nums">
                 {images.length}
               </span>
             </div>
 
-            {/* Right: Controls */}
-            <div className="flex items-center gap-1.5 md:gap-2">
+            {/* Right: Controls — HIGH CONTRAST */}
+            <div className="flex items-center gap-2">
+              {/* Reset zoom — visible when zoomed */}
+              {zoom > 1 && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); resetZoom(); }}
+                  className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#d4a017]/90 text-[#001C3D] flex items-center justify-center shadow-lg shadow-black/40 transition-all duration-200 active:scale-95"
+                  aria-label="Restablecer zoom"
+                >
+                  <Shrink size={18} strokeWidth={2.5} />
+                </button>
+              )}
+
               {/* Zoom out */}
               <button
                 onClick={(e) => { e.stopPropagation(); zoomOut(); }}
-                className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-200 backdrop-blur-sm ${
+                className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-200 ${
                   zoom > 1
-                    ? 'bg-white/20 text-white shadow-lg shadow-black/30 hover:bg-white/30'
-                    : 'bg-black/40 text-white/30 pointer-events-none'
+                    ? 'bg-white/30 text-white shadow-lg shadow-black/30'
+                    : 'bg-black/40 text-white/20 pointer-events-none'
                 }`}
                 aria-label="Reducir zoom"
               >
@@ -275,28 +284,28 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
               {/* Zoom in */}
               <button
                 onClick={(e) => { e.stopPropagation(); zoomIn(); }}
-                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/15 text-white flex items-center justify-center backdrop-blur-sm shadow-lg shadow-black/20 hover:bg-white/25 transition-all duration-200 active:scale-95"
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/25 text-white flex items-center justify-center shadow-md shadow-black/20 transition-all duration-200 active:scale-95"
                 aria-label="Ampliar zoom"
               >
                 <ZoomIn size={18} strokeWidth={2} />
               </button>
 
-              {/* Landscape toggle — mobile only */}
+              {/* Landscape — mobile only */}
               <button
                 onClick={(e) => { e.stopPropagation(); toggleLandscape(); }}
-                className="md:hidden w-10 h-10 rounded-full bg-white/15 text-white flex items-center justify-center backdrop-blur-sm shadow-lg shadow-black/20 hover:bg-white/25 transition-all duration-200 active:scale-95"
+                className="md:hidden w-10 h-10 rounded-full bg-white/25 text-white flex items-center justify-center shadow-md shadow-black/20 transition-all duration-200 active:scale-95"
                 aria-label="Modo horizontal"
               >
                 <RotateCw size={18} strokeWidth={2} className={isLandscape ? 'text-[#d4a017]' : ''} />
               </button>
 
               {/* Separator */}
-              <div className="w-px h-6 bg-white/10 mx-0.5" />
+              <div className="w-px h-6 bg-white/15" />
 
-              {/* CLOSE — In top bar */}
+              {/* CLOSE — Always prominent */}
               <button
                 onClick={(e) => { e.stopPropagation(); onClose(); }}
-                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/15 hover:bg-red-500/80 text-white flex items-center justify-center backdrop-blur-sm shadow-lg shadow-black/30 transition-all duration-200 hover:scale-110 active:scale-95"
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-red-500/90 hover:bg-red-500 text-white flex items-center justify-center shadow-lg shadow-red-500/30 transition-all duration-200 hover:scale-110 active:scale-95"
                 aria-label="Cerrar galería"
               >
                 <X size={20} strokeWidth={2.5} />
@@ -304,22 +313,12 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
             </div>
           </div>
 
-          {/* ═══ FLOATING CLOSE BUTTON — Always visible ═══ */}
-          <button
-            onClick={(e) => { e.stopPropagation(); onClose(); }}
-            className="absolute top-3 right-3 md:top-4 md:right-4 z-50 w-10 h-10 md:w-11 md:h-11 rounded-full bg-black/60 hover:bg-red-500/90 text-white flex items-center justify-center backdrop-blur-md shadow-lg shadow-black/40 border border-white/20 transition-all duration-200 hover:scale-110 active:scale-95"
-            aria-label="Cerrar galería"
-          >
-            <X size={20} strokeWidth={2.5} />
-          </button>
-
           {/* ═══ IMAGE AREA ═══ */}
           <div
             ref={imageContainerRef}
             className="flex-1 flex items-center justify-center overflow-hidden relative min-h-0 z-10"
             onClick={handleImageClick}
             onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             style={{
               cursor: zoom > 1 ? 'grab' : 'zoom-in',
@@ -368,10 +367,9 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="absolute top-4 left-1/2 -translate-x-1/2 z-20 px-4 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-white/80 text-xs font-semibold border border-white/10"
+                className="absolute top-3 left-1/2 -translate-x-1/2 z-20 px-3 py-1 rounded-full bg-[#d4a017]/80 text-[#001C3D] text-xs font-bold"
               >
-                {Math.round(zoom * 100)}%
+                {Math.round(zoom * 100)}% — toca 2x para salir
               </motion.div>
             )}
           </div>
@@ -381,14 +379,14 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
             <>
               <button
                 onClick={(e) => { e.stopPropagation(); goPrev(); }}
-                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10 transition-all duration-200 hover:bg-black/60 hover:scale-110 active:scale-95"
+                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white border border-white/15 transition-all duration-200 hover:bg-black/70 active:scale-95"
                 aria-label="Imagen anterior"
               >
                 <ChevronLeft size={24} strokeWidth={2} />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); goNext(); }}
-                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10 transition-all duration-200 hover:bg-black/60 hover:scale-110 active:scale-95"
+                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white border border-white/15 transition-all duration-200 hover:bg-black/70 active:scale-95"
                 aria-label="Siguiente imagen"
               >
                 <ChevronRight size={24} strokeWidth={2} />
@@ -401,7 +399,10 @@ export default function Lightbox({ images, initialIndex, isOpen, onClose }: Ligh
             <div
               className="shrink-0 z-40 flex items-center justify-center gap-2 px-3 py-2.5 md:px-4 md:py-3"
               onClick={(e) => e.stopPropagation()}
-              style={{ paddingBottom: 'max(0.625rem, env(safe-area-inset-bottom))' }}
+              style={{
+                paddingBottom: 'max(0.625rem, env(safe-area-inset-bottom))',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+              }}
             >
               {images.map((img, i) => (
                 <button
