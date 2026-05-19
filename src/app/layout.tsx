@@ -8,11 +8,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://sertradedesign.com"),
   title: {
-    default: "Sertrade Design | Arquitectura Comercial e Innovación",
+    default: "Sertrade Design | Arquitectura Comercial, Diseño y Construcción",
     template: "%s | Sertrade Design",
   },
   description:
-    "Sertrade Design: Innovación y Eficiencia en Arquitectura Comercial, Salud y Residencial. Transformamos visiones en estructuras sólidas.",
+    "Sertrade Design — Estudio de arquitectura especializado en diseño y ejecución de espacios comerciales, de salud y residenciales. Más de 200 proyectos entregados en Perú, Colombia y Ecuador. EPCM, modelado 3D, recorridos virtuales e infoarquitectura.",
   keywords: [
     "arquitectura comercial",
     "diseño comercial",
@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     "EPCM",
     "diseño salud",
     "diseño residencial",
+    "arquitectura Colombia",
+    "arquitectura Ecuador",
+    "infoarquitectura",
+    "construcción comercial",
+    "remodelación comercial",
   ],
   icons: {
     icon: [
@@ -35,27 +40,27 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Sertrade Design | Arquitectura Comercial e Innovación",
+    title: "Sertrade Design | Arquitectura Comercial, Diseño y Construcción",
     description:
-      "Sertrade Design: Innovación y Eficiencia en Arquitectura Comercial, Salud y Residencial. Transformamos visiones en estructuras sólidas.",
+      "Estudio de arquitectura con más de 14 años de experiencia. Diseño y ejecución de espacios comerciales, de salud y residenciales en Latinoamérica.",
     siteName: "Sertrade Design",
     type: "website",
     locale: "es_PE",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-home-final.png",
         width: 1200,
-        height: 675,
-        alt: "Sertrade Design - Innovación y Eficiencia en Arquitectura Comercial",
+        height: 630,
+        alt: "Sertrade Design — Arquitectura Comercial e Innovación en Latinoamérica",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sertrade Design | Arquitectura Comercial e Innovación",
+    title: "Sertrade Design | Arquitectura Comercial, Diseño y Construcción",
     description:
-      "Sertrade Design: Innovación y Eficiencia en Arquitectura Comercial, Salud y Residencial. Transformamos visiones en estructuras sólidas.",
-    images: ["/og-image.png"],
+      "Estudio de arquitectura con más de 14 años de experiencia. Diseño y ejecución de espacios comerciales, de salud y residenciales en Latinoamérica.",
+    images: ["/og-home-final.png"],
   },
   robots: {
     index: true,
