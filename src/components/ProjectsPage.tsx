@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import {
   MapPin, Maximize2, Calendar, Building2, Eye, ArrowRight, MessageCircle, ChevronLeft, ChevronRight,
 } from 'lucide-react';
@@ -49,14 +49,17 @@ export default function ProjectsPage() {
   };
   const closeLightbox = () => setLightboxOpen(false);
 
-  /* Swipe handler — Instagram-style */
+  /* Track if a meaningful drag happened (to distinguish from tap) */
+  const didSwipeRef = useRef(false);
+
+  /* Swipe handler — Instagram-style: LEFT→next, RIGHT→prev */
   const handleSwipe = useCallback(
-    (projectId: number, images: string[], info: PanInfo, offset: number) => {
+    (projectId: number, images: string[], info: PanInfo) => {
       const idx = getImageIndex(projectId);
-      if (offset > SWIPE_THRESHOLD && info.offset.x < -SWIPE_THRESHOLD) {
+      if (info.offset.x < -SWIPE_THRESHOLD) {
         /* Swiped LEFT → next image */
         setImageIndex(projectId, Math.min(idx + 1, images.length - 1));
-      } else if (offset < -SWIPE_THRESHOLD && info.offset.x > SWIPE_THRESHOLD) {
+      } else if (info.offset.x > SWIPE_THRESHOLD) {
         /* Swiped RIGHT → prev image */
         setImageIndex(projectId, Math.max(idx - 1, 0));
       }
@@ -115,6 +118,8 @@ export default function ProjectsPage() {
           </ScrollReveal>
         </div>
 
+        {/* Subtle 0.3cm gradient: blue → content transition */}
+        <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-[#f7f8fa] to-[#004691] pointer-events-none" />
       </section>
 
       {/* ======== FILTER + GALLERY — Unified light wrapper ======== */}
@@ -213,8 +218,22 @@ export default function ProjectsPage() {
                             drag={totalImages > 1 ? 'x' : false}
                             dragConstraints={{ left: 0, right: 0 }}
                             dragElastic={0.1}
-                            onDragEnd={(_, info) => handleSwipe(project.id, project.images, info, info.offset.x)}
-                            onTap={() => handleImageTap(project)}
+                            onDragStart={() => { didSwipeRef.current = false; }}
+                            onDrag={(_, info) => {
+                              if (Math.abs(info.offset.x) > 8) didSwipeRef.current = true;
+                            }}
+                            onDragEnd={(_, info) => {
+                              if (didSwipeRef.current) {
+                                handleSwipe(project.id, project.images, info);
+                              }
+                              didSwipeRef.current = false;
+                            }}
+                            onTap={() => {
+                              if (!didSwipeRef.current) {
+                                handleImageTap(project);
+                              }
+                              didSwipeRef.current = false;
+                            }}
                           >
                             <AnimatePresence mode="wait" initial={false}>
                               <motion.img
