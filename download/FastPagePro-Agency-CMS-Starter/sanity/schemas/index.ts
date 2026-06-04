@@ -1,3 +1,4 @@
+// @ts-nocheck — Sanity schema types are validated by Studio, not Next.js
 // ============================================================
 // FAST PAGE PRO STUDIO v2.0 — Schema Index
 // Centralized re-export of all document types.

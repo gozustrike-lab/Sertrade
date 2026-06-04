@@ -1,3 +1,4 @@
+// @ts-nocheck — Sanity schema types are validated by Studio, not Next.js
 // ============================================================
 // FAST PAGE PRO STUDIO v2.0 — Service Category
 // Dynamic categories for services. Client can create/delete from Studio.

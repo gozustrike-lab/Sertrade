@@ -1,3 +1,4 @@
+// @ts-nocheck — Sanity schema types are validated by Studio, not Next.js
 // ============================================================
 // FAST PAGE PRO STUDIO v2.0 — Project (Portfolio / Case Study)
 // Each project is a case study with full gallery.

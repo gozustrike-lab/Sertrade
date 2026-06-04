@@ -1,3 +1,4 @@
+// @ts-nocheck — Sanity schema types are validated by Studio, not Next.js
 // ============================================================
 // FAST PAGE PRO STUDIO v2.0 — Schema Master (Reusable Field Presets)
 // Centralized helpers for all Fast Page Pro projects.

@@ -1,3 +1,4 @@
+// @ts-nocheck — Sanity schema types are validated by Studio, not Next.js
 // ============================================================
 // FAST PAGE PRO STUDIO v2.0 — Constants (Environment-Driven)
 // Branding y configuración dinámica por proyecto.

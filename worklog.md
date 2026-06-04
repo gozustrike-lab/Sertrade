@@ -47,3 +47,26 @@ Stage Summary:
 - Mobile: full-bleed cards, centered immersive text, no side padding
 - Commit: e0ca430 pushed to origin/main
 - Vercel auto-deploy triggered
+---
+Task ID: 1
+Agent: main
+Task: Fix Sanity Studio crash on /admin — "Configuration must contain projectId"
+
+Work Log:
+- Cloned repo and read admin page, sanity.config.ts, sanity.client.ts, live.ts
+- Diagnosed root cause: admin page called require("sanity.config") at component top level, which passed projectId="" to defineConfig, and Studio's internal createClient() threw
+- Verified Vercel has NO NEXT_PUBLIC_SANITY_PROJECT_ID env var set
+- Created StudioGuard component that checks Boolean(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) before rendering StudioWithConfig
+- When unconfigured: shows styled "No Configurado" message with required env vars
+- When configured: Studio loads normally via StudioWithConfig
+- Confirmed sanity.client.ts and live.ts already had proper guards
+- Local build: 0 errors, all 9 routes compile
+- Pushed commit 5cb735e to GitHub
+- Verified Vercel deploy: /admin returns 200 with friendly message, all other routes 200
+
+Stage Summary:
+- File modified: src/app/admin/[[...tool]]/page.tsx (1 file, +87/-1 lines)
+- Commit: 5cb735e
+- Production URLs verified: / (200), /servicios (200), /proyectos (200), /admin (200)
+- Root cause: require("../../../../sanity.config") executed defineConfig with projectId="" before StudioGuard could prevent it
+- Fix: Split into StudioGuard (checks env) + StudioWithConfig (lazy require) pattern

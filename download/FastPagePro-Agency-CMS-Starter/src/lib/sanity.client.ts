@@ -7,25 +7,46 @@
 // HARDCODED and never pass through this client.
 // ============================================================
 
-import { createClient } from "@sanity/client";
-import { createImageUrlBuilder } from "@sanity/image-url";
+import { createClient, type SanityClient } from "@sanity/client";
+import { createImageUrlBuilder, type ImageUrlBuilder } from "@sanity/image-url";
 
-// ── Client ──
-export const sanityClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
-  apiVersion: "2025-01-01",
-  useCdn: true,
-  stega: {
-    enabled: true,
-    studioUrl: "/admin",
+// ── Lazy Client — only created when projectId is available ──
+let _client: SanityClient | null = null;
+
+function getClient(): SanityClient | null {
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  if (!projectId) return null;
+  if (!_client) {
+    _client = createClient({
+      projectId,
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+      apiVersion: "2025-01-01",
+      useCdn: true,
+      stega: {
+        enabled: true,
+        studioUrl: "/admin",
+      },
+    });
+  }
+  return _client;
+}
+
+export const sanityClient = {
+  fetch: async <T = unknown>(query: string): Promise<T> => {
+    const client = getClient();
+    if (!client) return [] as unknown as T;
+    return client.fetch<T>(query);
   },
-});
+} as Pick<SanityClient, "fetch">;
 
 // ── Image URL Builder ──
-const builder = createImageUrlBuilder(sanityClient);
-
-export function urlFor(source: Parameters<typeof builder.image>[0]) {
+export function urlFor(source: Parameters<ImageUrlBuilder["image"]>[0]) {
+  const client = getClient();
+  if (!client) {
+    // Return a dummy builder that returns empty URL
+    return { url: () => "", width: () => ({ fit: () => ({ url: () => "" }) }), height: () => ({ fit: () => ({ url: () => "" }) }) } as unknown as ReturnType<ImageUrlBuilder["image"]>;
+  }
+  const builder = createImageUrlBuilder(client);
   return builder.image(source);
 }
 
@@ -233,12 +254,12 @@ export function getVideoUrl(file: SanityFile | null | undefined): string | null 
     const ref = file.asset._ref || "";
     const parts = ref.split("-");
     parts[0] = "file";
-    const [projectId, dataset, ...idParts] = parts;
+    const [, , ...idParts] = parts;
     const id = idParts.join("-");
     const cdnBase = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-      ? `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}`
+      ? `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_DATASET || "production"}/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}`
       : "";
-    return `${cdnBase}/${id}.${file.asset._ref.split('.').pop() || 'mp4'}`;
+    return `${cdnBase}/${id}.${(file.asset._ref.split(".").pop()) || "mp4"}`;
   } catch {
     return null;
   }

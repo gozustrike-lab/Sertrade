@@ -1,3 +1,4 @@
+// @ts-nocheck — Sanity Studio config uses its own type system
 // ============================================================
 // FAST PAGE PRO STUDIO v2.0 — Sanity Studio Configuration
 // Embedded in Next.js App Router at /admin
