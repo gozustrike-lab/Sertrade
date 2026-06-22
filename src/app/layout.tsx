@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import Preloader from "@/components/Preloader";
 import "./globals.css";
+import { VisualEditing } from "@/components/VisualEditing";
+import { SanityLive } from "@/sanity/live";
+import LayoutShell from "@/components/LayoutShell";
+import { fetchCMS } from "@/lib/fetchCMS";
+import { SITE_SETTINGS_QUERY } from "@/lib/sanity.queries";
+import type { SanitySiteSettings } from "@/lib/sanity.client";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sertrade.vercel.app"),
@@ -75,11 +77,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+async function getSiteSettings(): Promise<SanitySiteSettings | null> {
+  return fetchCMS<SanitySiteSettings>(SITE_SETTINGS_QUERY);
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteSettings = await getSiteSettings();
+
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
@@ -90,13 +98,9 @@ export default function RootLayout({
         <meta name="theme-color" content="#004691" />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <Preloader />
-        <div className="min-h-screen flex flex-col bg-white">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <WhatsAppButton />
-        </div>
+        <SanityLive />
+        <LayoutShell siteSettings={siteSettings}>{children}</LayoutShell>
+        <VisualEditing />
       </body>
     </html>
   );
