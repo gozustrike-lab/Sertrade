@@ -1,0 +1,15 @@
+INSTRUCCIONES.txt
+==================
+
+COPIA Y PEGA ESTO EN EL CHAT DE ZHIPU DONDE YA ESTAS TRABAJANDO EL PROYECTO, JUNTO CON ESTE ZIP:
+
+---
+
+Adjunto el ZIP del starter kit FastPagePro CMS con Sanity + Visual Editing (Presentation Tool) 100% funcional. Integra todo el sistema CMS a este proyecto usando la data del negocio que ya tienes en el sandbox. Al terminar haz git push para deploy automatico en Vercel.
+
+REGLAS FIJAS:
+1. "Desarrollado por FastPagePro" con link a https://www.fastpagepro.com esta HARDCODEADO en Footer.tsx. NUNCA lo toques ni lo muevas al CMS.
+2. Adapta colores, textos, schemas, metadata, nav items y todo lo necesario al rubro del negocio.
+3. Crea .env.local con NEXT_PUBLIC_SANITY_PROJECT_ID, SANITY_API_READ_TOKEN y NEXT_PUBLIC_SANITY_API_READ_TOKEN (crea un proyecto nuevo en sanity.io/manage si es necesario).
+4. Crea seedCMS.ts para poblar el CMS con la data del negocio que ya tienes.
+5. npm install && npm run build sin errores antes de push.

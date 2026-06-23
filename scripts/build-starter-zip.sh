@@ -473,6 +473,9 @@ rm -f "$DST/prisma" "$DST/src/lib/db.ts" 2>/dev/null || true
 rm -rf "$DST/public/img" "$DST/public/images" 2>/dev/null || true
 rm -f "$DST/public/sertrade-logo"* "$DST/public/brand-pattern"* "$DST/public/og-"* 2>/dev/null || true
 
+# --- INSTRUCCIONES.txt (prompt for Zhipu sandbox automation) ---
+cp "$BASE/scripts/INSTRUCCIONES-new.txt" "$DST/INSTRUCCIONES.txt"
+
 echo "[6/6] Building ZIP..."
 cd "$DST/.."
 rm -f "$OUT"
