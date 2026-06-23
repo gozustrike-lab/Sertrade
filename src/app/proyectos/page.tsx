@@ -1,4 +1,7 @@
 import ProjectsPage from '@/components/ProjectsPage';
+import { fetchCMS } from '@/lib/fetchCMS';
+import { ALL_PROJECTS_QUERY } from '@/lib/sanity.queries';
+import type { SanityProject } from '@/lib/sanity.client';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -17,6 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <ProjectsPage />;
+export default async function Page() {
+  const projects = await fetchCMS<SanityProject[]>(ALL_PROJECTS_QUERY);
+  return <ProjectsPage projects={projects} />;
 }

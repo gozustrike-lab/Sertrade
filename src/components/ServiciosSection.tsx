@@ -1,11 +1,24 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { PencilRuler, Wrench, Zap } from 'lucide-react';
 import Link from 'next/link';
+import type { SanityService, SanityServiceCategory } from '@/lib/sanity.client';
+import { getImageUrl, plainText } from '@/lib/sanity.client';
 
-const cards = [
+/* =============================================
+   PROPS
+   ============================================= */
+interface ServiciosSectionProps {
+  services?: SanityService[] | null;
+  categories?: SanityServiceCategory[] | null;
+}
+
+/* =============================================
+   FALLBACK DATA
+   ============================================= */
+const fallbackCards = [
   {
     id: 1,
     title: 'DISEÑO',
@@ -44,7 +57,37 @@ const cards = [
   },
 ];
 
-export default function ServiciosSection() {
+export default function ServiciosSection({ services: cmsServices, categories: cmsCategories }: ServiciosSectionProps) {
+  // Merge CMS data with fallback
+  const cards = useMemo(() => {
+    if (cmsCategories?.length && cmsServices?.length) {
+      const iconMap: Record<string, typeof PencilRuler> = {
+        diseno: PencilRuler,
+        'servicios-generales': Wrench,
+        implementacion: Zap,
+      };
+      return cmsCategories.map((cat, idx) => {
+        const catSlug = typeof cat.slug === 'string' ? cat.slug : (cat.slug as { current?: string })?.current || '';
+        const catServices = cmsServices.filter(s => {
+          const sCatSlug = typeof s.category?.slug === 'string' ? s.category.slug : (s.category?.slug as unknown as { current?: string })?.current || '';
+          return sCatSlug === catSlug;
+        });
+        return {
+          id: idx + 1,
+          title: cat.name?.toUpperCase() || fallbackCards[idx]?.title || '',
+          slug: catSlug || fallbackCards[idx]?.slug || '',
+          icon: iconMap[catSlug] || PencilRuler,
+          img: fallbackCards[idx]?.img || '/images/services/diseno.jpg',
+          services: catServices.length > 0
+            ? catServices.map(s => s.title)
+            : (cat.description ? [cat.description] : fallbackCards[idx]?.services || []),
+          _id: cat._id,
+        };
+      });
+    }
+    return fallbackCards;
+  }, [cmsCategories, cmsServices]);
+
   // Unified flip state: works for both hover (desktop) and tap (mobile)
   const [flippedId, setFlippedId] = useState<number | null>(null);
 
@@ -97,7 +140,7 @@ export default function ServiciosSection() {
             const isFlipped = flippedId === card.id;
             return (
               <div
-                key={card.id}
+                key={(card as { _id?: string })._id || card.id}
                 className="w-full h-[480px] md:h-[530px] cursor-pointer"
                 style={{ perspective: '1200px', overflow: 'visible', transformStyle: 'preserve-3d' }}
                 onMouseEnter={() => handleMouseEnter(card.id)}

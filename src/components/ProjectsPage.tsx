@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import {
   MapPin, Maximize2, Calendar, Building2, Eye, ArrowRight, MessageCircle,
   ChevronLeft, ChevronRight, Play, X, Ruler, Briefcase, Users,
@@ -8,6 +8,15 @@ import {
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
+import type { SanityProject } from '@/lib/sanity.client';
+import { getImageUrl, plainText } from '@/lib/sanity.client';
+
+/* ═══════════════════════════════════════════════════
+   PROPS
+   ═══════════════════════════════════════════════════ */
+interface ProjectsPageProps {
+  projects?: SanityProject[] | null;
+}
 
 /* ═══════════════════════════════════════════════════
    CATEGORIES
@@ -15,9 +24,9 @@ import Lightbox from '@/components/Lightbox';
 const categories = ['Todos', 'Comercial', 'Salud', 'Residencial'];
 
 /* ═══════════════════════════════════════════════════
-   PROJECT DATA — Extended with video + extra images
+   FALLBACK PROJECT DATA
    ═══════════════════════════════════════════════════ */
-const projects = [
+const fallbackProjects = [
   {
     id: 1, slug: 'plaza-central', title: 'Centro Comercial Plaza Central', category: 'Comercial',
     location: 'Lima, Perú', area: '15,000 m²', year: '2023', client: 'Inversiones SAC', status: 'Completado',
@@ -101,6 +110,11 @@ const projects = [
 const SWIPE_THRESHOLD = 50;
 
 /* ═══════════════════════════════════════════════════
+   MERGED PROJECT TYPE (CMS or fallback)
+   ═══════════════════════════════════════════════════ */
+type MergedProject = Omit<typeof fallbackProjects[0], 'id'> & { id: number | string; _id?: string; };
+
+/* ═══════════════════════════════════════════════════
    VIDEO LIGHTBOX — Premium modal with Framer Motion
    ═══════════════════════════════════════════════════ */
 function VideoLightbox({ isOpen, onClose, videoUrl }: { isOpen: boolean; onClose: () => void; videoUrl: string }) {
@@ -164,7 +178,7 @@ function VideoLightbox({ isOpen, onClose, videoUrl }: { isOpen: boolean; onClose
 function ProjectCard({
   project, isMobile, openLightboxFn,
 }: {
-  project: typeof projects[0];
+  project: MergedProject;
   isMobile: boolean;
   openLightboxFn: (images: string[], index: number) => void;
 }) {
@@ -413,9 +427,38 @@ function ProjectCard({
 /* ═══════════════════════════════════════════════════
    MAIN PROJECTS PAGE
    ═══════════════════════════════════════════════════ */
-export default function ProjectsPage() {
+export default function ProjectsPage({ projects: cmsProjects }: ProjectsPageProps) {
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [isMobile, setIsMobile] = useState(false);
+
+  /* Merge CMS data with fallback */
+  const projects: MergedProject[] = useMemo(() => {
+    if (cmsProjects?.length) {
+      return cmsProjects.map(p => {
+        const slug = typeof p.slug === 'string' ? p.slug : (p.slug as { current?: string })?.current || '';
+        const galleryUrls = p.gallery?.map(img => getImageUrl(img, 1200, 800) || '').filter(Boolean) || [];
+        const coverUrl = getImageUrl(p.coverImage, 1200, 800) || '';
+        const images = galleryUrls.length > 0 ? galleryUrls : (coverUrl ? [coverUrl] : fallbackProjects[0].images);
+        return {
+          id: p._id || '',
+          slug,
+          title: p.title,
+          category: p.tags?.[0] || 'Proyecto',
+          location: p.location || '',
+          area: p.area ? `${p.area} m²` : '',
+          year: p.year || '',
+          client: p.client || '',
+          status: p.status === 'completed' ? 'Completado' : p.status === 'in-progress' ? 'En Proceso' : 'Planificado',
+          commerce: p.service?.title || '',
+          description: plainText(p.description) || '',
+          images,
+          video: '',
+          _id: p._id,
+        };
+      });
+    }
+    return fallbackProjects;
+  }, [cmsProjects]);
 
   /* Lightbox state */
   const [lightboxOpen, setLightboxOpen] = useState(false);

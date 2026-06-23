@@ -1,4 +1,7 @@
 import ServicesPage from '@/components/ServicesPage';
+import { fetchCMS } from '@/lib/fetchCMS';
+import { ALL_SERVICES_QUERY, ALL_SERVICE_CATEGORIES_QUERY } from '@/lib/sanity.queries';
+import type { SanityService, SanityServiceCategory } from '@/lib/sanity.client';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -17,6 +20,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <ServicesPage />;
+export default async function Page() {
+  const [services, categories] = await Promise.all([
+    fetchCMS<SanityService[]>(ALL_SERVICES_QUERY),
+    fetchCMS<SanityServiceCategory[]>(ALL_SERVICE_CATEGORIES_QUERY),
+  ]);
+
+  return <ServicesPage services={services} categories={categories} />;
 }

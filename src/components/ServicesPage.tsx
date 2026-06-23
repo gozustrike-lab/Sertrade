@@ -1,15 +1,25 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, ChevronRight, ShoppingBag, PencilRuler, Wrench, Zap, ZoomIn } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
+import type { SanityService, SanityServiceCategory } from '@/lib/sanity.client';
+import { getImageUrl, plainText } from '@/lib/sanity.client';
 
 /* ═══════════════════════════════════════════════════
-   SERVICE DATA — 3 Modules × 3 Subservices each
+   PROPS
    ═══════════════════════════════════════════════════ */
-const serviceModules = [
+interface ServicesPageProps {
+  services?: SanityService[] | null;
+  categories?: SanityServiceCategory[] | null;
+}
+
+/* ═══════════════════════════════════════════════════
+   FALLBACK DATA — 3 Modules × 3 Subservices each
+   ═══════════════════════════════════════════════════ */
+const fallbackServiceModules = [
   {
     id: 1,
     title: 'SERVICIO DE DISEÑO',
@@ -91,7 +101,7 @@ const serviceModules = [
    SERVICE MODULE — Block 1 + Block 2 + Block 3
    ═══════════════════════════════════════════════════ */
 function ServiceModule({ module, onOpenLightbox }: {
-  module: typeof serviceModules[0];
+  module: typeof fallbackServiceModules[0];
   onOpenLightbox: (images: string[], index: number) => void;
 }) {
   const ModuleIcon = module.icon;
@@ -245,7 +255,41 @@ function ServiceModule({ module, onOpenLightbox }: {
 /* ═══════════════════════════════════════════════════
    MAIN SERVICES PAGE
    ═══════════════════════════════════════════════════ */
-export default function ServicesPage() {
+export default function ServicesPage({ services: cmsServices, categories: cmsCategories }: ServicesPageProps) {
+
+  /* Merge CMS data with fallback */
+  const serviceModules = useMemo(() => {
+    if (cmsCategories?.length && cmsServices?.length) {
+      const iconMap: Record<string, typeof PencilRuler> = { diseno: PencilRuler, 'servicios-generales': Wrench, implementacion: Zap };
+      const catLabels: Record<string, string> = { diseno: 'ARQUITECTURA', 'servicios-generales': 'CONSTRUCCIÓN', implementacion: 'EJECUCIÓN' };
+      return cmsCategories.map((cat, idx) => {
+        const catSlug = typeof cat.slug === 'string' ? cat.slug : (cat.slug as { current?: string })?.current || '';
+        const catServices = cmsServices.filter(s => {
+          const sCatSlug = typeof s.category?.slug === 'string' ? s.category.slug : (s.category?.slug as unknown as { current?: string })?.current || '';
+          return sCatSlug === catSlug;
+        });
+        return {
+          id: idx + 1,
+          title: cat.name?.toUpperCase() || fallbackServiceModules[idx]?.title || '',
+          slug: catSlug || fallbackServiceModules[idx]?.slug || '',
+          icon: iconMap[catSlug] || PencilRuler,
+          category: catLabels[catSlug] || fallbackServiceModules[idx]?.category || '',
+          coverImage: getImageUrl(catServices[0]?.coverImage, 1400, 600) || fallbackServiceModules[idx]?.coverImage || '',
+          cards: catServices.length > 0
+            ? catServices.slice(0, 3).map(s => ({
+                title: s.title,
+                image: getImageUrl(s.coverImage, 800, 600) || fallbackServiceModules[idx]?.cards[0]?.image || '',
+                subservices: s.subservices?.map(sub => sub.title) || [],
+                _id: s._id,
+              }))
+            : fallbackServiceModules[idx]?.cards || [],
+          _id: cat._id,
+        };
+      });
+    }
+    return fallbackServiceModules;
+  }, [cmsCategories, cmsServices]);
+
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
 
   const handleOpenLightbox = useCallback((images: string[], index: number) => {

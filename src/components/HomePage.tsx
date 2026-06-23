@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -22,29 +22,37 @@ import {
 import ScrollReveal from '@/components/ScrollReveal';
 import StatCard from '@/components/StatCard';
 import ServiciosSection from '@/components/ServiciosSection';
-
-const sliderData = [
-  {
-    image: '/images/hero/hero-construction.jpg',
-    position: 'center center',
-  },
-  {
-    image: '/images/hero/hero-electrical.jpg',
-    position: 'center center',
-  },
-  {
-    image: '/images/hero/hero-paseo-antara.jpg',
-    position: 'center center',
-  },
-  {
-    image: '/images/hero/hero-northpark.jpg',
-    position: 'left center',
-  },
-];
+import type {
+  SanityHeroSlide,
+  SanityStat,
+  SanityService,
+  SanityServiceCategory,
+  SanityProject,
+  SanityPartner,
+} from '@/lib/sanity.client';
+import { getImageUrl, plainText } from '@/lib/sanity.client';
 
 /* =============================================
-   SERVICE DATA (moved to ServiciosSection)
+   PROPS INTERFACE
    ============================================= */
+interface HomePageProps {
+  heroSlides?: SanityHeroSlide[] | null;
+  stats?: SanityStat[] | null;
+  services?: SanityService[] | null;
+  categories?: SanityServiceCategory[] | null;
+  projects?: SanityProject[] | null;
+  partners?: SanityPartner[] | null;
+}
+
+/* =============================================
+   FALLBACK DATA (used when CMS is not available)
+   ============================================= */
+const fallbackSliderData = [
+  { image: '/images/hero/hero-construction.jpg', position: 'center center' },
+  { image: '/images/hero/hero-electrical.jpg', position: 'center center' },
+  { image: '/images/hero/hero-paseo-antara.jpg', position: 'center center' },
+  { image: '/images/hero/hero-northpark.jpg', position: 'left center' },
+];
 
 const pillars = [
   { icon: BookOpen, title: 'Conocimiento', description: 'Equipo multidisciplinario con formación continua en tendencias globales de arquitectura comercial.' },
@@ -53,16 +61,28 @@ const pillars = [
   { icon: ThumbsUp, title: 'Referencias', description: 'Más de 200 clientes satisfechos avalan nuestro compromiso con la excelencia y la calidad.' },
 ];
 
-/* =============================================
-   ANIMATED PRO STATS
-   ============================================= */
-const proStats = [
+const fallbackProStats = [
   { icon: HardHat, value: 5000, prefix: '+', suffix: ' m²', label: 'Construidos' },
   { icon: PencilRuler, value: 8000, prefix: '+', suffix: ' m²', label: 'Diseñados' },
   { icon: Clock, value: 10, prefix: '+', suffix: ' Años', label: 'Experiencia' },
 ];
 
-export default function HomePage() {
+const fallbackProjects = [
+  { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', slug: 'plaza-central' },
+  { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', slug: 'clinica-san-rafael' },
+  { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', slug: 'residencial-los-cedros' },
+  { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80', slug: 'oficinas-torre-andina' },
+  { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80', slug: 'hospital-metropolitano' },
+  { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', slug: 'casa-del-lago' },
+];
+
+const fallbackPartners = [
+  { name: 'Lima Kombo', img: '/img/clients/lima-kombo.png', alt: 'Lima Kombo - Cocina al Fuego' },
+  { name: 'Mitsubishi Motors', img: '/img/clients/mitsubishi-motors.png', alt: 'Mitsubishi Motors' },
+  { name: 'REDRILSA', img: '/img/clients/redrilsa.png', alt: 'REDRILSA - Remicsa Drilling S.A.' },
+];
+
+export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, services: cmsServices, categories: cmsCategories, projects: cmsProjects, partners: cmsPartners }: HomePageProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
@@ -70,13 +90,75 @@ export default function HomePage() {
   const router = useRouter();
   const statsSectionRef = useRef<HTMLDivElement>(null);
 
+  /* =============================================
+     MERGE CMS DATA WITH FALLBACKS
+     ============================================= */
+
+  // Hero slides — prefer CMS images, fall back to local
+  const sliderData = useMemo(() => {
+    if (cmsSlides?.length) {
+      return cmsSlides.map(s => ({
+        image: getImageUrl(s.backgroundImage, 1920, 1080) || fallbackSliderData[0].image,
+        position: 'center center' as const,
+        _id: s._id,
+        title: s.title,
+        subtitle: plainText(s.subtitle),
+      }));
+    }
+    return fallbackSliderData;
+  }, [cmsSlides]);
+
+  // Stats for "Nuestros Números" — prefer CMS
+  const proStats = useMemo(() => {
+    if (cmsStats?.length) {
+      return cmsStats.map(s => ({
+        icon: HardHat,
+        value: s.value,
+        prefix: s.prefix || '',
+        suffix: s.suffix || '',
+        label: s.label,
+        _id: s._id,
+      }));
+    }
+    return fallbackProStats;
+  }, [cmsStats]);
+
+  // Projects for "Proyectos Destacados" — prefer CMS
+  const displayProjects = useMemo(() => {
+    if (cmsProjects?.length) {
+      return cmsProjects.slice(0, 6).map(p => ({
+        title: p.title,
+        category: p.tags?.[0] || 'Proyecto',
+        location: p.location || '',
+        area: p.area ? `${p.area} m²` : '',
+        image: getImageUrl(p.coverImage, 1200, 800) || fallbackProjects[0].image,
+        slug: typeof p.slug === 'string' ? p.slug : (p.slug as { current?: string })?.current || '',
+        _id: p._id,
+      }));
+    }
+    return fallbackProjects;
+  }, [cmsProjects]);
+
+  // Partners — prefer CMS
+  const displayPartners = useMemo(() => {
+    if (cmsPartners?.length) {
+      return cmsPartners.map(p => ({
+        name: p.name,
+        img: getImageUrl(p.logo, 200, 200) || fallbackPartners[0].img,
+        alt: p.name,
+        _id: p._id,
+      }));
+    }
+    return fallbackPartners;
+  }, [cmsPartners]);
+
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % sliderData.length);
-  }, []);
+  }, [sliderData.length]);
 
   const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + sliderData.length) % sliderData.length);
-  }, []);
+  }, [sliderData.length]);
 
   /* Autoplay highlight for Nuestros Números — cycles every 3s */
   useEffect(() => {
@@ -90,7 +172,7 @@ export default function HomePage() {
       setActiveStatIndex((prev) => (prev + 1) % proStats.length);
     }, 3000);
     return () => clearInterval(statsInterval);
-  }, []);
+  }, [proStats.length]);
 
   /* Smooth page transition: fade-out then navigate */
   const navigateWithTransition = (href: string) => {
@@ -114,8 +196,6 @@ export default function HomePage() {
         className="fixed inset-0 z-[9999] bg-[#004691] pointer-events-none"
         style={{ opacity: 0, transition: 'opacity 0.4s ease-in-out' }}
       />
-
-      {/* Hex pattern is now applied per-section via hex-pattern-bg CSS class */}
 
       {/* =============================================
           HERO SLIDER — CENTERED LAYOUT
@@ -158,7 +238,7 @@ export default function HomePage() {
           <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
             <div className="flex flex-col items-center justify-center">
 
-              {/* Main Title — SERTRADE PROJECTS */}
+              {/* Main Title — from CMS hero slide or hardcoded brand */}
               <h2
                 style={{
                   opacity: mounted ? 1 : 0,
@@ -168,11 +248,11 @@ export default function HomePage() {
                 }}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-4 leading-[1.02] tracking-tight uppercase text-shadow-hero"
               >
-                SERTRADE
+                {cmsSlides?.[currentSlide]?.title || 'SERTRADE'}
                 <span className="block mt-0.5">PROJECTS</span>
               </h2>
 
-              {/* Subtitle — SERVICIOS ARQUITECTURA Y SERVICIOS GENERALES */}
+              {/* Subtitle — from CMS hero slide or hardcoded */}
               <div
                 style={{
                   opacity: mounted ? 1 : 0,
@@ -183,7 +263,7 @@ export default function HomePage() {
                 className="mb-2"
               >
                 <span className="text-[#E5E7EB] text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
-                  Servicios de Arquitectura y Servicios Generales
+                  {plainText(cmsSlides?.[currentSlide]?.subtitle) || 'Servicios de Arquitectura y Servicios Generales'}
                 </span>
               </div>
 
@@ -314,7 +394,7 @@ export default function HomePage() {
       </section>
 
       {/* NUESTROS SERVICIOS */}
-      <ServiciosSection />
+      <ServiciosSection services={cmsServices} categories={cmsCategories} />
 
       {/* NUESTROS NÚMEROS — Animated Counters with Autoplay Highlight */}
       <section className="py-14 md:py-16 bg-transparent" ref={statsSectionRef}>
@@ -330,7 +410,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {proStats.map((stat, i) => (
               <StatCard
-                key={i}
+                key={(stat as { _id?: string })._id || i}
                 icon={stat.icon}
                 value={stat.value}
                 prefix={stat.prefix}
@@ -359,15 +439,8 @@ export default function HomePage() {
         {/* Full-width grid on mobile, padded on desktop */}
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 sm:gap-6 md:gap-8">
-            {[
-              { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', slug: 'plaza-central' },
-              { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', slug: 'clinica-san-rafael' },
-              { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', slug: 'residencial-los-cedros' },
-              { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80', slug: 'oficinas-torre-andina' },
-              { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80', slug: 'hospital-metropolitano' },
-              { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', slug: 'casa-del-lago' },
-            ].map((project, i) => (
-              <ScrollReveal key={i} delay={i * 0.08}>
+            {displayProjects.map((project, i) => (
+              <ScrollReveal key={project.slug || i} delay={i * 0.08}>
                 <motion.div
                   className="relative w-full h-[450px] sm:h-[550px] md:h-[600px] overflow-hidden group bg-black cursor-pointer rounded-none sm:rounded-xl"
                   whileHover={{ y: -6, boxShadow: '0 25px 60px rgba(0,0,0,0.35)', transition: { type: 'spring', stiffness: 300, damping: 20 } }}
@@ -548,13 +621,9 @@ export default function HomePage() {
           {/* Client logos grid */}
           <ScrollReveal animation="fade-up" staggerDelay={0.1}>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-8 md:gap-12 items-center justify-items-center">
-              {[
-                { name: 'Lima Kombo', img: '/img/clients/lima-kombo.png', alt: 'Lima Kombo - Cocina al Fuego' },
-                { name: 'Mitsubishi Motors', img: '/img/clients/mitsubishi-motors.png', alt: 'Mitsubishi Motors' },
-                { name: 'REDRILSA', img: '/img/clients/redrilsa.png', alt: 'REDRILSA - Remicsa Drilling S.A.' },
-              ].map((client, i) => (
+              {displayPartners.map((client, i) => (
                 <motion.div
-                  key={i}
+                  key={(client as { _id?: string })._id || i}
                   className="flex flex-col items-center gap-3 sm:gap-4 group"
                   whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                 >
