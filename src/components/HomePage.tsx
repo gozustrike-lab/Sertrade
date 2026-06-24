@@ -427,6 +427,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
 
       {/* QUIÉNES SOMOS */}
       <section
+        id="nosotros"
         className="pt-10 pb-20 md:pt-10 md:pb-24"
         style={{
           background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 4px, rgba(0,28,61,0.6) 11px, transparent 11px, transparent 100%)',
@@ -473,7 +474,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
       <ServiciosSection services={cmsServices} categories={cmsCategories} />
 
       {/* NUESTROS NÚMEROS — Animated Counters with Autoplay Highlight */}
-      <section className="py-14 md:py-16 bg-transparent" ref={statsSectionRef}>
+      <section className="py-14 md:py-16 bg-transparent" ref={statsSectionRef} id="numeros">
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mt-4 mb-12">
@@ -501,7 +502,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
       </section>
 
       {/* PROYECTOS DESTACADOS */}
-      <section className="py-14 md:py-20 bg-transparent">
+      <section className="py-14 md:py-20 bg-transparent" id="portafolio">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-12 sm:mb-12">
@@ -571,7 +572,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
       </section>
 
       {/* NUESTROS PILARES — Dynamic Professional Design */}
-      <section className="relative py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #004691 0%, #003266 50%, #001C3D 100%)' }}>
+      <section className="relative py-16 md:py-24 overflow-hidden" id="pilares" style={{ background: 'linear-gradient(135deg, #004691 0%, #003266 50%, #001C3D 100%)' }}>
         {/* Floating geometric circles — decorative */}
         <motion.div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
           {[{ size: 180, x: '8%', y: '15%', delay: 0 }, { size: 120, x: '75%', y: '10%', delay: 1.5 }, { size: 90, x: '60%', y: '70%', delay: 3 }, { size: 140, x: '20%', y: '75%', delay: 2 }, { size: 60, x: '90%', y: '50%', delay: 0.8 }, { size: 200, x: '40%', y: '-5%', delay: 4 }, { size: 70, x: '5%', y: '55%', delay: 1.2 }].map((c, i) => (
@@ -681,7 +682,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
       </section>
 
       {/* NUESTROS CLIENTES COMERCIALES */}
-      <section className="py-16 md:py-20 bg-transparent">
+      <section className="py-16 md:py-20 bg-transparent" id="clientes">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <ScrollReveal>
             <div className="text-center mb-14">

@@ -98,7 +98,7 @@ export default async function RootLayout({
         <meta name="theme-color" content="#004691" />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <SanityLive />
+        <SanityLive includeDrafts />
         <LayoutShell siteSettings={siteSettings}>{children}</LayoutShell>
         <VisualEditing />
       </body>

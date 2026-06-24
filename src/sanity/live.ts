@@ -8,8 +8,9 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 export const { sanityFetch, SanityLive } = projectId
   ? defineLive({
       client: createClient({
-        projectId, dataset, apiVersion: "2025-01-01", useCdn: true,
-        perspective: "published",
+        projectId, dataset, apiVersion: "2025-01-01", useCdn: false,
+        perspective: "previewDrafts",
+        token: process.env.SANITY_API_READ_TOKEN,
         stega: { enabled: true, studioUrl: "/admin" },
       }),
       serverToken: process.env.SANITY_API_READ_TOKEN,

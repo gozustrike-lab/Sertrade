@@ -75,6 +75,9 @@ export function getImageUrl(image: SanityImage | null | undefined, width = 800, 
 
 export function getVideoUrl(file: SanityFile | null | undefined): string | null {
   if (!file || !file.asset) return null;
+  // When the query resolves asset-> { url }, use the direct URL
+  if (file.asset.url) return file.asset.url;
+  // Fallback: construct URL from _ref (raw asset reference)
   try {
     const ref = file.asset._ref || ""; const parts = ref.split("-"); parts[0] = "file"; const [, , ...idParts] = parts; const id = idParts.join("-");
     const cdnBase = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ? `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_DATASET || "production"}/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}` : "";
