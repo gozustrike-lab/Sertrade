@@ -17,7 +17,9 @@ import type {
   SanityPartner,
 } from '@/lib/sanity.client';
 
-export const revalidate = 60;
+// Revalidation handled by SanityLive tag-based revalidation.
+// Falls back to 60s ISR if SanityLive is not connected.
+export const revalidate = 0;
 
 export default async function Page() {
   const [heroSlides, stats, services, categories, projects, partners] = await Promise.all([
