@@ -1,0 +1,511 @@
+Unstaged changes after reset:
+M	bun.lock
+M	download/FastPagePro-CMS-Starter-Kit.zip
+D	download/FastPagePro-CMS-Starter/.gitignore
+D	download/FastPagePro-CMS-Starter/INSTRUCCIONES.txt
+D	download/FastPagePro-CMS-Starter/components.json
+D	download/FastPagePro-CMS-Starter/eslint.config.mjs
+D	download/FastPagePro-CMS-Starter/next.config.ts
+D	download/FastPagePro-CMS-Starter/package.json
+D	download/FastPagePro-CMS-Starter/postcss.config.mjs
+D	download/FastPagePro-CMS-Starter/public/apple-touch-icon.png
+D	download/FastPagePro-CMS-Starter/public/favicon.png
+D	download/FastPagePro-CMS-Starter/public/favicon.svg
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/OFL.txt
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Black.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-BlackItalic.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Bold.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-BoldItalic.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraBold.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraBoldItalic.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraLight.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraLightItalic.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Italic.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Light.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-LightItalic.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Medium.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-MediumItalic.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Regular.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-SemiBold.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-SemiBoldItalic.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Thin.ttf
+D	download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ThinItalic.ttf
+D	download/FastPagePro-CMS-Starter/public/logo-white.svg
+D	download/FastPagePro-CMS-Starter/public/logo.svg
+D	download/FastPagePro-CMS-Starter/robots.txt
+D	download/FastPagePro-CMS-Starter/sanity.config.ts
+D	download/FastPagePro-CMS-Starter/sanity/lib/constants.ts
+D	download/FastPagePro-CMS-Starter/sanity/lib/schema-master.ts
+D	download/FastPagePro-CMS-Starter/sanity/schema.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/guia.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/heroSlide.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/partner.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/project.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/service.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/serviceCategory.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/siteSettings.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/stat.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/teamMember.ts
+D	download/FastPagePro-CMS-Starter/sanity/schemas/testimonial.ts
+D	download/FastPagePro-CMS-Starter/src/app/admin/[[...tool]]/page.tsx
+D	download/FastPagePro-CMS-Starter/src/app/api/draft-mode/disable/route.ts
+D	download/FastPagePro-CMS-Starter/src/app/api/draft-mode/enable/route.ts
+D	download/FastPagePro-CMS-Starter/src/app/globals.css
+D	download/FastPagePro-CMS-Starter/src/app/layout.tsx
+D	download/FastPagePro-CMS-Starter/src/app/page.tsx
+D	download/FastPagePro-CMS-Starter/src/app/proyectos/page.tsx
+D	download/FastPagePro-CMS-Starter/src/app/servicios/page.tsx
+D	download/FastPagePro-CMS-Starter/src/components/Counter.tsx
+D	download/FastPagePro-CMS-Starter/src/components/FlipCard.tsx
+D	download/FastPagePro-CMS-Starter/src/components/Footer.tsx
+D	download/FastPagePro-CMS-Starter/src/components/Header.tsx
+D	download/FastPagePro-CMS-Starter/src/components/HomePage.tsx
+D	download/FastPagePro-CMS-Starter/src/components/LayoutShell.tsx
+D	download/FastPagePro-CMS-Starter/src/components/Lightbox.tsx
+D	download/FastPagePro-CMS-Starter/src/components/Preloader.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ProjectsPage.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ScrollReveal.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ServicesPage.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ServiciosSection.tsx
+D	download/FastPagePro-CMS-Starter/src/components/StatCard.tsx
+D	download/FastPagePro-CMS-Starter/src/components/VisualEditing.tsx
+D	download/FastPagePro-CMS-Starter/src/components/WhatsAppButton.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/accordion.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/alert-dialog.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/alert.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/aspect-ratio.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/avatar.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/badge.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/breadcrumb.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/button.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/calendar.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/card.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/carousel.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/chart.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/checkbox.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/collapsible.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/command.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/dialog.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/drawer.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/dropdown-menu.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/form.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/hover-card.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/input.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/label.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/menubar.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/navigation-menu.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/pagination.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/popover.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/progress.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/radio-group.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/resizable.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/scroll-area.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/select.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/separator.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/sheet.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/sidebar.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/skeleton.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/slider.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/sonner.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/switch.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/table.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/tabs.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/textarea.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/toast.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/toaster.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/toggle-group.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/toggle.tsx
+D	download/FastPagePro-CMS-Starter/src/components/ui/tooltip.tsx
+D	download/FastPagePro-CMS-Starter/src/hooks/use-mobile.ts
+D	download/FastPagePro-CMS-Starter/src/hooks/use-toast.ts
+D	download/FastPagePro-CMS-Starter/src/lib/fetchCMS.ts
+D	download/FastPagePro-CMS-Starter/src/lib/sanity.client.ts
+D	download/FastPagePro-CMS-Starter/src/lib/sanity.queries.ts
+D	download/FastPagePro-CMS-Starter/src/lib/utils.ts
+D	download/FastPagePro-CMS-Starter/src/sanity/live.ts
+D	download/FastPagePro-CMS-Starter/tailwind.config.ts
+D	download/FastPagePro-CMS-Starter/tsconfig.json
+D	download/_rebuild/FastPagePro-CMS-Starter/.gitignore
+D	download/_rebuild/FastPagePro-CMS-Starter/INSTRUCCIONES.txt
+D	download/_rebuild/FastPagePro-CMS-Starter/components.json
+D	download/_rebuild/FastPagePro-CMS-Starter/eslint.config.mjs
+D	download/_rebuild/FastPagePro-CMS-Starter/next.config.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/package.json
+D	download/_rebuild/FastPagePro-CMS-Starter/postcss.config.mjs
+D	download/_rebuild/FastPagePro-CMS-Starter/public/apple-touch-icon.png
+D	download/_rebuild/FastPagePro-CMS-Starter/public/favicon.png
+D	download/_rebuild/FastPagePro-CMS-Starter/public/favicon.svg
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/OFL.txt
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Black.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-BlackItalic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Bold.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-BoldItalic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraBold.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraBoldItalic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraLight.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraLightItalic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Italic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Light.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-LightItalic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Medium.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-MediumItalic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Regular.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-SemiBold.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-SemiBoldItalic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Thin.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ThinItalic.ttf
+D	download/_rebuild/FastPagePro-CMS-Starter/public/logo-white.svg
+D	download/_rebuild/FastPagePro-CMS-Starter/public/logo.svg
+D	download/_rebuild/FastPagePro-CMS-Starter/robots.txt
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity.config.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/lib/constants.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/lib/schema-master.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schema.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/guia.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/heroSlide.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/partner.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/project.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/service.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/serviceCategory.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/siteSettings.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/stat.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/teamMember.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/testimonial.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/app/admin/[[...tool]]/page.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/app/api/draft-mode/disable/route.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/app/api/draft-mode/enable/route.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/app/globals.css
+D	download/_rebuild/FastPagePro-CMS-Starter/src/app/layout.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/app/page.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/app/proyectos/page.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/app/servicios/page.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/Counter.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/FlipCard.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/Footer.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/Header.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/HomePage.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/LayoutShell.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/Lightbox.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/Preloader.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ProjectsPage.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ScrollReveal.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ServicesPage.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ServiciosSection.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/StatCard.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/VisualEditing.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/WhatsAppButton.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/accordion.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/alert-dialog.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/alert.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/aspect-ratio.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/avatar.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/badge.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/breadcrumb.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/button.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/calendar.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/card.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/carousel.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/chart.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/checkbox.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/collapsible.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/command.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/dialog.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/drawer.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/dropdown-menu.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/form.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/hover-card.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/input.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/label.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/menubar.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/navigation-menu.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/pagination.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/popover.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/progress.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/radio-group.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/resizable.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/scroll-area.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/select.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/separator.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/sheet.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/sidebar.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/skeleton.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/slider.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/sonner.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/switch.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/table.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/tabs.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/textarea.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/toast.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/toaster.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/toggle-group.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/toggle.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/tooltip.tsx
+D	download/_rebuild/FastPagePro-CMS-Starter/src/hooks/use-mobile.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/hooks/use-toast.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/lib/fetchCMS.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/lib/sanity.client.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/lib/sanity.queries.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/lib/utils.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/src/sanity/live.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/tailwind.config.ts
+D	download/_rebuild/FastPagePro-CMS-Starter/tsconfig.json
+M	tool-results/read_1782234442138_900aaef3e357.txt
+ M bun.lock
+ M download/FastPagePro-CMS-Starter-Kit.zip
+ D download/FastPagePro-CMS-Starter/.gitignore
+ D download/FastPagePro-CMS-Starter/INSTRUCCIONES.txt
+ D download/FastPagePro-CMS-Starter/components.json
+ D download/FastPagePro-CMS-Starter/eslint.config.mjs
+ D download/FastPagePro-CMS-Starter/next.config.ts
+ D download/FastPagePro-CMS-Starter/package.json
+ D download/FastPagePro-CMS-Starter/postcss.config.mjs
+ D download/FastPagePro-CMS-Starter/public/apple-touch-icon.png
+ D download/FastPagePro-CMS-Starter/public/favicon.png
+ D download/FastPagePro-CMS-Starter/public/favicon.svg
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/OFL.txt
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Black.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-BlackItalic.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Bold.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-BoldItalic.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraBold.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraBoldItalic.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraLight.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraLightItalic.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Italic.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Light.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-LightItalic.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Medium.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-MediumItalic.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Regular.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-SemiBold.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-SemiBoldItalic.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Thin.ttf
+ D download/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ThinItalic.ttf
+ D download/FastPagePro-CMS-Starter/public/logo-white.svg
+ D download/FastPagePro-CMS-Starter/public/logo.svg
+ D download/FastPagePro-CMS-Starter/robots.txt
+ D download/FastPagePro-CMS-Starter/sanity.config.ts
+ D download/FastPagePro-CMS-Starter/sanity/lib/constants.ts
+ D download/FastPagePro-CMS-Starter/sanity/lib/schema-master.ts
+ D download/FastPagePro-CMS-Starter/sanity/schema.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/guia.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/heroSlide.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/partner.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/project.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/service.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/serviceCategory.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/siteSettings.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/stat.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/teamMember.ts
+ D download/FastPagePro-CMS-Starter/sanity/schemas/testimonial.ts
+ D download/FastPagePro-CMS-Starter/src/app/admin/[[...tool]]/page.tsx
+ D download/FastPagePro-CMS-Starter/src/app/api/draft-mode/disable/route.ts
+ D download/FastPagePro-CMS-Starter/src/app/api/draft-mode/enable/route.ts
+ D download/FastPagePro-CMS-Starter/src/app/globals.css
+ D download/FastPagePro-CMS-Starter/src/app/layout.tsx
+ D download/FastPagePro-CMS-Starter/src/app/page.tsx
+ D download/FastPagePro-CMS-Starter/src/app/proyectos/page.tsx
+ D download/FastPagePro-CMS-Starter/src/app/servicios/page.tsx
+ D download/FastPagePro-CMS-Starter/src/components/Counter.tsx
+ D download/FastPagePro-CMS-Starter/src/components/FlipCard.tsx
+ D download/FastPagePro-CMS-Starter/src/components/Footer.tsx
+ D download/FastPagePro-CMS-Starter/src/components/Header.tsx
+ D download/FastPagePro-CMS-Starter/src/components/HomePage.tsx
+ D download/FastPagePro-CMS-Starter/src/components/LayoutShell.tsx
+ D download/FastPagePro-CMS-Starter/src/components/Lightbox.tsx
+ D download/FastPagePro-CMS-Starter/src/components/Preloader.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ProjectsPage.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ScrollReveal.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ServicesPage.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ServiciosSection.tsx
+ D download/FastPagePro-CMS-Starter/src/components/StatCard.tsx
+ D download/FastPagePro-CMS-Starter/src/components/VisualEditing.tsx
+ D download/FastPagePro-CMS-Starter/src/components/WhatsAppButton.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/accordion.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/alert-dialog.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/alert.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/aspect-ratio.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/avatar.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/badge.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/breadcrumb.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/button.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/calendar.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/card.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/carousel.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/chart.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/checkbox.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/collapsible.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/command.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/dialog.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/drawer.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/dropdown-menu.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/form.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/hover-card.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/input.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/label.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/menubar.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/navigation-menu.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/pagination.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/popover.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/progress.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/radio-group.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/resizable.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/scroll-area.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/select.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/separator.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/sheet.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/sidebar.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/skeleton.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/slider.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/sonner.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/switch.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/table.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/tabs.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/textarea.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/toast.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/toaster.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/toggle-group.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/toggle.tsx
+ D download/FastPagePro-CMS-Starter/src/components/ui/tooltip.tsx
+ D download/FastPagePro-CMS-Starter/src/hooks/use-mobile.ts
+ D download/FastPagePro-CMS-Starter/src/hooks/use-toast.ts
+ D download/FastPagePro-CMS-Starter/src/lib/fetchCMS.ts
+ D download/FastPagePro-CMS-Starter/src/lib/sanity.client.ts
+ D download/FastPagePro-CMS-Starter/src/lib/sanity.queries.ts
+ D download/FastPagePro-CMS-Starter/src/lib/utils.ts
+ D download/FastPagePro-CMS-Starter/src/sanity/live.ts
+ D download/FastPagePro-CMS-Starter/tailwind.config.ts
+ D download/FastPagePro-CMS-Starter/tsconfig.json
+ D download/_rebuild/FastPagePro-CMS-Starter/.gitignore
+ D download/_rebuild/FastPagePro-CMS-Starter/INSTRUCCIONES.txt
+ D download/_rebuild/FastPagePro-CMS-Starter/components.json
+ D download/_rebuild/FastPagePro-CMS-Starter/eslint.config.mjs
+ D download/_rebuild/FastPagePro-CMS-Starter/next.config.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/package.json
+ D download/_rebuild/FastPagePro-CMS-Starter/postcss.config.mjs
+ D download/_rebuild/FastPagePro-CMS-Starter/public/apple-touch-icon.png
+ D download/_rebuild/FastPagePro-CMS-Starter/public/favicon.png
+ D download/_rebuild/FastPagePro-CMS-Starter/public/favicon.svg
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/OFL.txt
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Black.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-BlackItalic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Bold.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-BoldItalic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraBold.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraBoldItalic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraLight.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ExtraLightItalic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Italic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Light.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-LightItalic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Medium.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-MediumItalic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Regular.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-SemiBold.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-SemiBoldItalic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-Thin.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/fonts/poppins/files/Poppins-ThinItalic.ttf
+ D download/_rebuild/FastPagePro-CMS-Starter/public/logo-white.svg
+ D download/_rebuild/FastPagePro-CMS-Starter/public/logo.svg
+ D download/_rebuild/FastPagePro-CMS-Starter/robots.txt
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity.config.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/lib/constants.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/lib/schema-master.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schema.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/guia.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/heroSlide.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/partner.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/project.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/service.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/serviceCategory.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/siteSettings.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/stat.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/teamMember.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/sanity/schemas/testimonial.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/app/admin/[[...tool]]/page.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/app/api/draft-mode/disable/route.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/app/api/draft-mode/enable/route.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/app/globals.css
+ D download/_rebuild/FastPagePro-CMS-Starter/src/app/layout.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/app/page.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/app/proyectos/page.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/app/servicios/page.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/Counter.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/FlipCard.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/Footer.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/Header.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/HomePage.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/LayoutShell.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/Lightbox.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/Preloader.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ProjectsPage.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ScrollReveal.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ServicesPage.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ServiciosSection.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/StatCard.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/VisualEditing.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/WhatsAppButton.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/accordion.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/alert-dialog.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/alert.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/aspect-ratio.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/avatar.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/badge.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/breadcrumb.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/button.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/calendar.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/card.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/carousel.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/chart.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/checkbox.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/collapsible.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/command.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/dialog.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/drawer.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/dropdown-menu.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/form.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/hover-card.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/input.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/label.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/menubar.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/navigation-menu.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/pagination.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/popover.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/progress.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/radio-group.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/resizable.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/scroll-area.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/select.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/separator.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/sheet.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/sidebar.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/skeleton.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/slider.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/sonner.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/switch.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/table.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/tabs.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/textarea.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/toast.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/toaster.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/toggle-group.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/toggle.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/components/ui/tooltip.tsx
+ D download/_rebuild/FastPagePro-CMS-Starter/src/hooks/use-mobile.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/hooks/use-toast.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/lib/fetchCMS.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/lib/sanity.client.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/lib/sanity.queries.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/lib/utils.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/src/sanity/live.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/tailwind.config.ts
+ D download/_rebuild/FastPagePro-CMS-Starter/tsconfig.json
+M  scripts/INSTRUCCIONES-new.txt
+M  scripts/build-starter-zip.sh
+M  src/app/globals.css
+M  src/components/HomePage.tsx
+ M tool-results/read_1782234442138_900aaef3e357.txt
+?? tool-results/read_1782261982294_900aaef3e357.txt
+?? tool-results/read_1782261989474_a801113552b6.txt
+?? upload/pasted_image_1782261837288.png
+?? upload/pasted_image_1782261888157.png

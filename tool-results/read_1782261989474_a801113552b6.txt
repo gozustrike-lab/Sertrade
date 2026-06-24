@@ -1,0 +1,677 @@
+     1→     1→'use client';
+     2→     2→
+     3→     3→import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+     4→     4→import { useRouter } from 'next/navigation';
+     5→     5→import { motion } from 'framer-motion';
+     6→     6→import {
+     7→     7→  BookOpen,
+     8→     8→  Briefcase,
+     9→     9→  RefreshCw,
+    10→    10→  ThumbsUp,
+    11→    11→  ChevronRight,
+    12→    12→  ArrowRight,
+    13→    13→  Building2,
+    14→    14→  Ruler,
+    15→    15→  Users,
+    16→    16→  Award,
+    17→    17→  HardHat,
+    18→    18→  PencilRuler,
+    19→    19→  ChevronLeft,
+    20→    20→  Clock,
+    21→    21→} from 'lucide-react';
+    22→    22→import ScrollReveal from '@/components/ScrollReveal';
+    23→    23→import StatCard from '@/components/StatCard';
+    24→    24→import ServiciosSection from '@/components/ServiciosSection';
+    25→    25→import type {
+    26→    26→  SanityHeroSlide,
+    27→    27→  SanityStat,
+    28→    28→  SanityService,
+    29→    29→  SanityServiceCategory,
+    30→    30→  SanityProject,
+    31→    31→  SanityPartner,
+    32→    32→} from '@/lib/sanity.client';
+    33→    33→import { getImageUrl, plainText } from '@/lib/sanity.client';
+    34→    34→
+    35→    35→/* =============================================
+    36→    36→   PROPS INTERFACE
+    37→    37→   ============================================= */
+    38→    38→interface HomePageProps {
+    39→    39→  heroSlides?: SanityHeroSlide[] | null;
+    40→    40→  stats?: SanityStat[] | null;
+    41→    41→  services?: SanityService[] | null;
+    42→    42→  categories?: SanityServiceCategory[] | null;
+    43→    43→  projects?: SanityProject[] | null;
+    44→    44→  partners?: SanityPartner[] | null;
+    45→    45→}
+    46→    46→
+    47→    47→/* =============================================
+    48→    48→   FALLBACK DATA (used when CMS is not available)
+    49→    49→   ============================================= */
+    50→    50→const fallbackSliderData = [
+    51→    51→  { image: '/images/hero/hero-construction.jpg', position: 'center center' },
+    52→    52→  { image: '/images/hero/hero-electrical.jpg', position: 'center center' },
+    53→    53→  { image: '/images/hero/hero-paseo-antara.jpg', position: 'center center' },
+    54→    54→  { image: '/images/hero/hero-northpark.jpg', position: 'left center' },
+    55→    55→];
+    56→    56→
+    57→    57→const pillars = [
+    58→    58→  { icon: BookOpen, title: 'Conocimiento', description: 'Equipo multidisciplinario con formación continua en tendencias globales de arquitectura comercial.' },
+    59→    59→  { icon: Briefcase, title: 'Experiencia', description: 'Más de una década construyendo proyectos exitosos para las principales marcas del mercado.' },
+    60→    60→  { icon: RefreshCw, title: 'Flexibilidad', description: 'Capacidad de adaptarnos a cada requerimiento, entregando soluciones personalizadas y efectivas.' },
+    61→    61→  { icon: ThumbsUp, title: 'Referencias', description: 'Más de 200 clientes satisfechos avalan nuestro compromiso con la excelencia y la calidad.' },
+    62→    62→];
+    63→    63→
+    64→    64→const fallbackProStats = [
+    65→    65→  { icon: HardHat, value: 5000, prefix: '+', suffix: ' m²', label: 'Construidos' },
+    66→    66→  { icon: PencilRuler, value: 8000, prefix: '+', suffix: ' m²', label: 'Diseñados' },
+    67→    67→  { icon: Clock, value: 10, prefix: '+', suffix: ' Años', label: 'Experiencia' },
+    68→    68→];
+    69→    69→
+    70→    70→const fallbackProjects = [
+    71→    71→  { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', slug: 'plaza-central' },
+    72→    72→  { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', slug: 'clinica-san-rafael' },
+    73→    73→  { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', slug: 'residencial-los-cedros' },
+    74→    74→  { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80', slug: 'oficinas-torre-andina' },
+    75→    75→  { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80', slug: 'hospital-metropolitano' },
+    76→    76→  { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', slug: 'casa-del-lago' },
+    77→    77→];
+    78→    78→
+    79→    79→const fallbackPartners = [
+    80→    80→  { name: 'Lima Kombo', img: '/img/clients/lima-kombo.png', alt: 'Lima Kombo - Cocina al Fuego' },
+    81→    81→  { name: 'Mitsubishi Motors', img: '/img/clients/mitsubishi-motors.png', alt: 'Mitsubishi Motors' },
+    82→    82→  { name: 'REDRILSA', img: '/img/clients/redrilsa.png', alt: 'REDRILSA - Remicsa Drilling S.A.' },
+    83→    83→];
+    84→    84→
+    85→    85→export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, services: cmsServices, categories: cmsCategories, projects: cmsProjects, partners: cmsPartners }: HomePageProps) {
+    86→    86→  const [currentSlide, setCurrentSlide] = useState(0);
+    87→    87→  const [mounted, setMounted] = useState(false);
+    88→    88→  const [transitioning, setTransitioning] = useState(false);
+    89→    89→  const [activeStatIndex, setActiveStatIndex] = useState(0);
+    90→    90→  const router = useRouter();
+    91→    91→  const statsSectionRef = useRef<HTMLDivElement>(null);
+    92→    92→
+    93→    93→  /* =============================================
+    94→    94→     MERGE CMS DATA WITH FALLBACKS
+    95→    95→     ============================================= */
+    96→    96→
+    97→    97→  // Hero slides — prefer CMS images, fall back to local
+    98→    98→  const sliderData = useMemo(() => {
+    99→    99→    if (cmsSlides?.length) {
+   100→   100→      return cmsSlides.map(s => ({
+   101→   101→        image: getImageUrl(s.backgroundImage, 1920, 1080) || fallbackSliderData[0].image,
+   102→   102→        position: 'center center' as const,
+   103→   103→        _id: s._id,
+   104→   104→        title: s.title,
+   105→   105→        subtitle: plainText(s.subtitle),
+   106→   106→      }));
+   107→   107→    }
+   108→   108→    return fallbackSliderData;
+   109→   109→  }, [cmsSlides]);
+   110→   110→
+   111→   111→  // Stats for "Nuestros Números" — prefer CMS
+   112→   112→  const proStats = useMemo(() => {
+   113→   113→    if (cmsStats?.length) {
+   114→   114→      return cmsStats.map(s => ({
+   115→   115→        icon: HardHat,
+   116→   116→        value: s.value,
+   117→   117→        prefix: s.prefix || '',
+   118→   118→        suffix: s.suffix || '',
+   119→   119→        label: s.label,
+   120→   120→        _id: s._id,
+   121→   121→      }));
+   122→   122→    }
+   123→   123→    return fallbackProStats;
+   124→   124→  }, [cmsStats]);
+   125→   125→
+   126→   126→  // Projects for "Proyectos Destacados" — prefer CMS
+   127→   127→  const displayProjects = useMemo(() => {
+   128→   128→    if (cmsProjects?.length) {
+   129→   129→      return cmsProjects.slice(0, 6).map(p => ({
+   130→   130→        title: p.title,
+   131→   131→        category: p.tags?.[0] || 'Proyecto',
+   132→   132→        location: p.location || '',
+   133→   133→        area: p.area ? `${p.area} m²` : '',
+   134→   134→        image: getImageUrl(p.coverImage, 1200, 800) || fallbackProjects[0].image,
+   135→   135→        slug: typeof p.slug === 'string' ? p.slug : (p.slug as { current?: string })?.current || '',
+   136→   136→        _id: p._id,
+   137→   137→      }));
+   138→   138→    }
+   139→   139→    return fallbackProjects;
+   140→   140→  }, [cmsProjects]);
+   141→   141→
+   142→   142→  // Partners — prefer CMS
+   143→   143→  const displayPartners = useMemo(() => {
+   144→   144→    if (cmsPartners?.length) {
+   145→   145→      return cmsPartners.map(p => ({
+   146→   146→        name: p.name,
+   147→   147→        img: getImageUrl(p.logo, 200, 200) || fallbackPartners[0].img,
+   148→   148→        alt: p.name,
+   149→   149→        _id: p._id,
+   150→   150→      }));
+   151→   151→    }
+   152→   152→    return fallbackPartners;
+   153→   153→  }, [cmsPartners]);
+   154→   154→
+   155→   155→  const nextSlide = useCallback(() => {
+   156→   156→    setCurrentSlide((prev) => (prev + 1) % sliderData.length);
+   157→   157→  }, [sliderData.length]);
+   158→   158→
+   159→   159→  const prevSlide = useCallback(() => {
+   160→   160→    setCurrentSlide((prev) => (prev - 1 + sliderData.length) % sliderData.length);
+   161→   161→  }, [sliderData.length]);
+   162→   162→
+   163→   163→  /* Autoplay highlight for Nuestros Números — cycles every 3s */
+   164→   164→  useEffect(() => {
+   165→   165→    setMounted(true);
+   166→   166→    const interval = setInterval(nextSlide, 5000);
+   167→   167→    return () => clearInterval(interval);
+   168→   168→  }, [nextSlide]);
+   169→   169→
+   170→   170→  useEffect(() => {
+   171→   171→    const statsInterval = setInterval(() => {
+   172→   172→      setActiveStatIndex((prev) => (prev + 1) % proStats.length);
+   173→   173→    }, 3000);
+   174→   174→    return () => clearInterval(statsInterval);
+   175→   175→  }, [proStats.length]);
+   176→   176→
+   177→   177→  /* Smooth page transition: fade-out then navigate */
+   178→   178→  const navigateWithTransition = (href: string) => {
+   179→   179→    if (transitioning) return;
+   180→   180→    setTransitioning(true);
+   181→   181→    const overlay = document.getElementById('page-transition-overlay');
+   182→   182→    if (overlay) {
+   183→   183→      overlay.style.opacity = '1';
+   184→   184→      overlay.style.pointerEvents = 'auto';
+   185→   185→    }
+   186→   186→    setTimeout(() => {
+   187→   187→      router.push(href);
+   188→   188→    }, 400);
+   189→   189→  };
+   190→   190→
+   191→   191→  return (
+   192→   192→    <div className="relative">
+   193→   193→      {/* Page Transition Overlay */}
+   194→   194→      <div
+   195→   195→        id="page-transition-overlay"
+   196→   196→        className="fixed inset-0 z-[9999] bg-[#004691] pointer-events-none"
+   197→   197→        style={{ opacity: 0, transition: 'opacity 0.4s ease-in-out' }}
+   198→   198→      />
+   199→   199→
+   200→   200→      {/* =============================================
+   201→   201→          HERO SLIDER — CENTERED LAYOUT
+   202→   202→            LAYER 1 (z-10): Background images — opacity fade
+   203→   203→            LAYER 2 (z-20): Text content — 100% STATIC, centered
+   204→   204→            LAYER 3 (z-30): Arrows + Dots
+   205→   205→          ============================================= */}
+   206→   206→      <section className="relative w-full overflow-hidden" style={{ height: '100vh' }}>
+   207→   207→
+   208→   208→        {/* ===== LAYER 1: BACKGROUND IMAGES (z-10) ===== */}
+   209→   209→        {sliderData.map((s, index) => (
+   210→   210→          <div
+   211→   211→            key={`bg-${index}`}
+   212→   212→            className="absolute inset-0"
+   213→   213→            style={{
+   214→   214→              opacity: index === currentSlide ? 1 : 0,
+   215→   215→              zIndex: index === currentSlide ? 10 : 1,
+   216→   216→              transition: 'opacity 1s ease-in-out',
+   217→   217→            }}
+   218→   218→          >
+   219→   219→            <div
+   220→   220→              className="absolute inset-0 bg-cover"
+   221→   221→              style={{
+   222→   222→                backgroundImage: `url(${s.image})`,
+   223→   223→                backgroundPosition: s.position || 'center center',
+   224→   224→                transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
+   225→   225→                transition: 'transform 10s ease-out',
+   226→   226→              }}
+   227→   227→            />
+   228→   228→            {/* Dark blue overlay for text readability */}
+   229→   229→            <div className="absolute inset-0 bg-[rgba(0,20,50,0.60)]" />
+   230→   230→          </div>
+   231→   231→        ))}
+   232→   232→
+   233→   233→        {/* ===== LAYER 2: STATIC TEXT — VERTICALLY CENTERED (z-20) ===== */}
+   234→   234→        <div
+   235→   235→          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+   236→   236→          style={{ zIndex: 20 }}
+   237→   237→        >
+   238→   238→          <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
+   239→   239→            <div className="flex flex-col items-center justify-center">
+   240→   240→
+   241→   241→              {/* Main Title — from CMS hero slide or hardcoded brand */}
+   242→   242→              <h2
+   243→   243→                style={{
+   244→   244→                  opacity: mounted ? 1 : 0,
+   245→   245→                  transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+   246→   246→                  transition: 'opacity 0.9s ease-out, transform 0.9s ease-out',
+   247→   247→                  transitionDelay: '0.3s',
+   248→   248→                }}
+   249→   249→                className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-4 leading-[1.02] tracking-tight uppercase text-shadow-hero"
+   250→   250→              >
+   251→   251→                {cmsSlides?.[currentSlide]?.title || 'SERTRADE'}
+   252→   252→                <span className="block mt-0.5">PROJECTS</span>
+   253→   253→              </h2>
+   254→   254→
+   255→   255→              {/* Subtitle — from CMS hero slide or hardcoded */}
+   256→   256→              <div
+   257→   257→                style={{
+   258→   258→                  opacity: mounted ? 1 : 0,
+   259→   259→                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+   260→   260→                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+   261→   261→                  transitionDelay: '0.5s',
+   262→   262→                }}
+   263→   263→                className="mb-2"
+   264→   264→              >
+   265→   265→                <span className="text-[#E5E7EB] text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
+   266→   266→                  {plainText(cmsSlides?.[currentSlide]?.subtitle) || 'Servicios de Arquitectura y Servicios Generales'}
+   267→   267→                </span>
+   268→   268→              </div>
+   269→   269→
+   270→   270→              {/* Tagline — DISEÑO Y EJECUCIÓN */}
+   271→   271→              <div
+   272→   272→                style={{
+   273→   273→                  opacity: mounted ? 1 : 0,
+   274→   274→                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+   275→   275→                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+   276→   276→                  transitionDelay: '0.65s',
+   277→   277→                }}
+   278→   278→                className="mb-8"
+   279→   279→              >
+   280→   280→                <span className="text-[#E5E7EB] text-[10px] sm:text-[11px] tracking-[0.35em] uppercase font-light">
+   281→   281→                  Diseño y Ejecución
+   282→   282→                </span>
+   283→   283→              </div>
+   284→   284→
+   285→   285→              {/* CTA BUTTONS — Gold primary + Outlined ghost secondary */}
+   286→   286→              <div
+   287→   287→                className="hero-btn-stack flex items-center gap-4 sm:gap-5 pointer-events-auto"
+   288→   288→                style={{
+   289→   289→                  opacity: mounted ? 1 : 0,
+   290→   290→                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+   291→   291→                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+   292→   292→                  transitionDelay: '0.8s',
+   293→   293→                }}
+   294→   294→              >
+   295→   295→                {/* PRIMARY CTA — VER PROYECTOS (gold) */}
+   296→   296→                <button
+   297→   297→                  onClick={() => navigateWithTransition('/proyectos')}
+   298→   298→                  className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.03] transition-all duration-300"
+   299→   299→                >
+   300→   300→                  VER PROYECTOS <ArrowRight size={18} strokeWidth={2} />
+   301→   301→                </button>
+   302→   302→
+   303→   303→                {/* SECONDARY CTA — CONTACTO (outlined ghost) */}
+   304→   304→                <a
+   305→   305→                  href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estoy en la página de inicio de Sertrade y quiero agendar una reunión para presentarles mi proyecto.')}`}
+   306→   306→                  target="_blank"
+   307→   307→                  rel="noopener noreferrer"
+   308→   308→                  className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium inline-flex items-center gap-2 hover:bg-white/10 transition-all duration-300"
+   309→   309→                >
+   310→   310→                  CONTACTO
+   311→   311→                </a>
+   312→   312→              </div>
+   313→   313→            </div>
+   314→   314→          </div>
+   315→   315→        </div>
+   316→   316→
+   317→   317→        {/* ===== LAYER 3: NAVIGATION ARROWS (z-35) ===== */}
+   318→   318→        <button
+   319→   319→          onClick={prevSlide}
+   320→   320→          className="hero-arrow hero-arrow-left hidden sm:flex"
+   321→   321→          aria-label="Anterior"
+   322→   322→        >
+   323→   323→          <ChevronLeft size={24} strokeWidth={1.5} />
+   324→   324→        </button>
+   325→   325→        <button
+   326→   326→          onClick={nextSlide}
+   327→   327→          className="hero-arrow hero-arrow-right hidden sm:flex"
+   328→   328→          aria-label="Siguiente"
+   329→   329→        >
+   330→   330→          <ChevronRight size={24} strokeWidth={1.5} />
+   331→   331→        </button>
+   332→   332→
+   333→   333→        {/* Slider Dots (z-40, bottom center) */}
+   334→   334→        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ zIndex: 40 }}>
+   335→   335→          {sliderData.map((_, index) => (
+   336→   336→            <button key={index} onClick={() => setCurrentSlide(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'}`} aria-label={`Ir a slide ${index + 1}`} />
+   337→   337→          ))}
+   338→   338→        </div>
+   339→   339→
+   340→   340→        {/* Slide Counter (z-40, bottom right) */}
+   341→   341→        <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block" style={{ zIndex: 40 }}>
+   342→   342→          <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
+   343→   343→          <span className="mx-2">/</span>
+   344→   344→          <span>{String(sliderData.length).padStart(2, '0')}</span>
+   345→   345→        </div>
+   346→   346→
+   347→   347→      </section>
+   348→   348→
+   349→   349→      {/* ===== LIGHT SECTIONS WRAPPER — Single continuous brand pattern ===== */}
+   350→   350→      <div className="brand-pattern-wrapper">
+   351→   351→
+   352→   352→      {/* QUIÉNES SOMOS */}
+   353→   353→      <section
+   354→   354→        className="pt-10 pb-20 md:pt-10 md:pb-24"
+   355→   355→        style={{
+   356→   356→          background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 4px, rgba(0,28,61,0.6) 11px, transparent 11px, transparent 100%)',
+   357→   357→        }}
+   358→   358→      >
+   359→   359→        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   360→   360→          <ScrollReveal>
+   361→   361→            <div className="text-center mb-16">
+   362→   362→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Quiénes Somos</span>
+   363→   363→              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5 text-shadow-pro">Nosotros</h2>
+   364→   364→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   365→   365→              <p className="text-[#2D3748] max-w-2xl mx-auto mt-6 leading-[1.7]">
+   366→   366→                Sertrade Design es un estudio de arquitectura especializado en el diseño de espacios comerciales,
+   367→   367→                de salud y residenciales. Nuestro enfoque combina creatividad, funcionalidad y sostenibilidad
+   368→   368→                para crear entornos que transforman la experiencia de quienes los habitan.
+   369→   369→              </p>
+   370→   370→            </div>
+   371→   371→          </ScrollReveal>
+   372→   372→
+   373→   373→          {/* Stats */}
+   374→   374→          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-20">
+   375→   375→            {[
+   376→   376→              { number: '200+', label: 'Proyectos Entregados', icon: Building2 },
+   377→   377→              { number: '14+', label: 'Años de Experiencia', icon: Award },
+   378→   378→              { number: '50+', label: 'Profesionales', icon: Users },
+   379→   379→              { number: '3', label: 'Países', icon: Ruler },
+   380→   380→            ].map((stat, i) => (
+   381→   381→              <ScrollReveal key={i} delay={i * 0.1} animation="scale">
+   382→   382→                <div className="nosotros-card">
+   383→   383→                  <div className="nosotros-card-icon">
+   384→   384→                    <stat.icon size={36} strokeWidth={1.5} />
+   385→   385→                  </div>
+   386→   386→                  <div className="nosotros-card-number">{stat.number}</div>
+   387→   387→                  <div className="nosotros-card-label">{stat.label}</div>
+   388→   388→                </div>
+   389→   389→              </ScrollReveal>
+   390→   390→            ))}
+   391→   391→          </div>
+   392→   392→
+   393→   393→        </div>
+   394→   394→      </section>
+   395→   395→
+   396→   396→      {/* NUESTROS SERVICIOS */}
+   397→   397→      <ServiciosSection services={cmsServices} categories={cmsCategories} />
+   398→   398→
+   399→   399→      {/* NUESTROS NÚMEROS — Animated Counters with Autoplay Highlight */}
+   400→   400→      <section className="py-14 md:py-16 bg-transparent" ref={statsSectionRef}>
+   401→   401→        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   402→   402→          <ScrollReveal>
+   403→   403→            <div className="text-center mt-4 mb-12">
+   404→   404→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
+   405→   405→              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Resultados que Hablan</h2>
+   406→   406→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   407→   407→            </div>
+   408→   408→          </ScrollReveal>
+   409→   409→
+   410→   410→          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+   411→   411→            {proStats.map((stat, i) => (
+   412→   412→              <StatCard
+   413→   413→                key={(stat as { _id?: string })._id || i}
+   414→   414→                icon={stat.icon}
+   415→   415→                value={stat.value}
+   416→   416→                prefix={stat.prefix}
+   417→   417→                suffix={stat.suffix}
+   418→   418→                label={stat.label}
+   419→   419→                delay={i * 0.3}
+   420→   420→                isActive={activeStatIndex === i}
+   421→   421→              />
+   422→   422→            ))}
+   423→   423→          </div>
+   424→   424→        </div>
+   425→   425→      </section>
+   426→   426→
+   427→   427→      {/* PROYECTOS DESTACADOS */}
+   428→   428→      <section className="py-14 md:py-20 bg-transparent">
+   429→   429→        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   430→   430→          <ScrollReveal>
+   431→   431→            <div className="text-center mb-12 sm:mb-12">
+   432→   432→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Portafolio</span>
+   433→   433→              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Proyectos Destacados</h2>
+   434→   434→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   435→   435→            </div>
+   436→   436→          </ScrollReveal>
+   437→   437→        </div>
+   438→   438→
+   439→   439→        {/* Full-width grid on mobile, padded on desktop */}
+   440→   440→        <div className="max-w-7xl mx-auto">
+   441→   441→          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 sm:gap-6 md:gap-8">
+   442→   442→            {displayProjects.map((project, i) => (
+   443→   443→              <ScrollReveal key={project.slug || i} delay={i * 0.08}>
+   444→   444→                <motion.div
+   445→   445→                  className="relative w-full h-[450px] sm:h-[550px] md:h-[600px] overflow-hidden group bg-black cursor-pointer rounded-none sm:rounded-xl"
+   446→   446→                  whileHover={{ y: -6, boxShadow: '0 25px 60px rgba(0,0,0,0.35)', transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+   447→   447→                  onClick={() => navigateWithTransition(`/proyectos#${project.slug}`)}
+   448→   448→                >
+   449→   449→                  {/* Full-bleed image */}
+   450→   450→                  {/* eslint-disable-next-line @next/next/no-img-element */}
+   451→   451→                  <img
+   452→   452→                    src={project.image}
+   453→   453→                    alt={project.title}
+   454→   454→                    className="w-full h-full object-cover opacity-85 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"
+   455→   455→                    loading="lazy"
+   456→   456→                  />
+   457→   457→                  {/* Gradient overlay — text contrast backdrop */}
+   458→   458→                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 flex flex-col justify-end p-6 md:p-8 text-center">
+   459→   459→                    {/* Category tag */}
+   460→   460→                    <span className="inline-block self-center px-3 py-1 bg-[#C5960C] text-white text-[10px] font-bold uppercase tracking-[0.15em] rounded-full mb-3">
+   461→   461→                      {project.category}
+   462→   462→                    </span>
+   463→   463→                    {/* Title */}
+   464→   464→                    <h3 className="text-white font-bold text-lg md:text-xl leading-tight uppercase tracking-wide drop-shadow-lg">
+   465→   465→                      {project.title}
+   466→   466→                    </h3>
+   467→   467→                    {/* Location + Area */}
+   468→   468→                    <div className="flex items-center justify-center gap-3 text-white/70 text-xs mt-2">
+   469→   469→                      <span>{project.location}</span>
+   470→   470→                      <span className="w-1 h-1 rounded-full bg-white/40" />
+   471→   471→                      <span>{project.area}</span>
+   472→   472→                    </div>
+   473→   473→                  </div>
+   474→   474→                </motion.div>
+   475→   475→              </ScrollReveal>
+   476→   476→            ))}
+   477→   477→          </div>
+   478→   478→        </div>
+   479→   479→
+   480→   480→        {/* Ver más — Gold CTA */}
+   481→   481→        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   482→   482→          <ScrollReveal>
+   483→   483→            <div className="text-center mt-14">
+   484→   484→              <motion.button
+   485→   485→                onClick={() => navigateWithTransition('/proyectos')}
+   486→   486→                whileHover={{ scale: 1.03 }}
+   487→   487→                whileTap={{ scale: 0.97 }}
+   488→   488→                className="px-10 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+   489→   489→              >
+   490→   490→                Ver Todos los Proyectos <ArrowRight size={18} strokeWidth={2} />
+   491→   491→              </motion.button>
+   492→   492→            </div>
+   493→   493→          </ScrollReveal>
+   494→   494→        </div>
+   495→   495→      </section>
+   496→   496→
+   497→   497→      {/* NUESTROS PILARES — Dynamic Professional Design */}
+   498→   498→      <section className="relative py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #004691 0%, #003266 50%, #001C3D 100%)' }}>
+   499→   499→        {/* Floating geometric circles — decorative */}
+   500→   500→        <motion.div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+   501→   501→          {[{ size: 180, x: '8%', y: '15%', delay: 0 }, { size: 120, x: '75%', y: '10%', delay: 1.5 }, { size: 90, x: '60%', y: '70%', delay: 3 }, { size: 140, x: '20%', y: '75%', delay: 2 }, { size: 60, x: '90%', y: '50%', delay: 0.8 }, { size: 200, x: '40%', y: '-5%', delay: 4 }, { size: 70, x: '5%', y: '55%', delay: 1.2 }].map((c, i) => (
+   502→   502→            <motion.div
+   503→   503→              key={i}
+   504→   504→              className="absolute rounded-full"
+   505→   505→              style={{ width: c.size, height: c.size, left: c.x, top: c.y, border: '1px solid rgba(255,255,255,0.08)', background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)' }}
+   506→   506→              animate={{ y: [0, -12, 0], scale: [1, 1.03, 1], opacity: [0.5, 0.8, 0.5] }}
+   507→   507→              transition={{ repeat: Infinity, duration: 6 + i * 0.8, ease: 'easeInOut', delay: c.delay }}
+   508→   508→            />
+   509→   509→          ))}
+   510→   510→        </motion.div>
+   511→   511→
+   512→   512→        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 1 }}>
+   513→   513→          {/* Header */}
+   514→   514→          <ScrollReveal>
+   515→   515→            <div className="text-center mb-16 md:mb-20">
+   516→   516→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Lo que nos define</span>
+   517→   517→              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3 mb-5">Nuestros Pilares</h2>
+   518→   518→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   519→   519→            </div>
+   520→   520→          </ScrollReveal>
+   521→   521→
+   522→   522→          {/* Pillars Grid */}
+   523→   523→          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+   524→   524→            {pillars.map((pillar, i) => (
+   525→   525→              <ScrollReveal key={i} delay={i * 0.15}>
+   526→   526→                <motion.div
+   527→   527→                  className="group relative"
+   528→   528→                  whileHover={{ y: -10, transition: { type: 'spring', stiffness: 200, damping: 18 } }}
+   529→   529→                >
+   530→   530→                  {/* Card */}
+   531→   531→                  <div className="relative p-7 md:p-8 rounded-2xl border border-white/10 bg-white/[0.06] backdrop-blur-sm transition-all duration-500 group-hover:bg-white/[0.12] group-hover:border-white/20 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] h-full">
+   532→   532→
+   533→   533→                    {/* Number — large decorative */}
+   534→   534→                    <motion.div
+   535→   535→                      className="absolute -top-3 -left-2 w-10 h-10 rounded-full bg-[#C5960C] flex items-center justify-center text-white font-black text-sm shadow-lg"
+   536→   536→                      initial={{ scale: 0, rotate: -90 }}
+   537→   537→                      whileInView={{ scale: 1, rotate: 0 }}
+   538→   538→                      viewport={{ once: true, margin: '-50px' }}
+   539→   539→                      transition={{ type: 'spring', stiffness: 300, damping: 15, delay: i * 0.15 + 0.2 }}
+   540→   540→                    >
+   541→   541→                      {String(i + 1).padStart(2, '0')}
+   542→   542→                    </motion.div>
+   543→   543→
+   544→   544→                    {/* Rotating arc border — decorative ring */}
+   545→   545→                    <div className="absolute -top-1 -right-1 w-12 h-12 pointer-events-none">
+   546→   546→                      <svg viewBox="0 0 48 48" className="w-full h-full">
+   547→   547→                        <motion.circle
+   548→   548→                          cx="24" cy="24" r="20" fill="none" stroke="rgba(197,150,12,0.3)" strokeWidth="1.5" strokeLinecap="round"
+   549→   549→                          strokeDasharray="40 90"
+   550→   550→                          initial={{ rotate: 0 }}
+   551→   551→                          animate={{ rotate: 360 }}
+   552→   552→                          transition={{ repeat: Infinity, duration: 12 + i * 2, ease: 'linear' }}
+   553→   553→                          style={{ transformOrigin: 'center' }}
+   554→   554→                        />
+   555→   555→                      </svg>
+   556→   556→                    </div>
+   557→   557→
+   558→   558→                    {/* Icon */}
+   559→   559→                    <motion.div
+   560→   560→                      className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-[#C5960C] transition-all duration-500 group-hover:scale-110"
+   561→   561→                      initial={{ opacity: 0, y: 20 }}
+   562→   562→                      whileInView={{ opacity: 1, y: 0 }}
+   563→   563→                      viewport={{ once: true, margin: '-50px' }}
+   564→   564→                      transition={{ duration: 0.6, delay: i * 0.15 + 0.3 }}
+   565→   565→                    >
+   566→   566→                      <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
+   567→   567→                    </motion.div>
+   568→   568→
+   569→   569→                    {/* Title */}
+   570→   570→                    <motion.h4
+   571→   571→                      className="font-bold text-white text-lg mb-3 group-hover:text-[#C5960C] transition-colors duration-500"
+   572→   572→                      initial={{ opacity: 0, y: 15 }}
+   573→   573→                      whileInView={{ opacity: 1, y: 0 }}
+   574→   574→                      viewport={{ once: true, margin: '-50px' }}
+   575→   575→                      transition={{ duration: 0.6, delay: i * 0.15 + 0.4 }}
+   576→   576→                    >
+   577→   577→                      {pillar.title}
+   578→   578→                    </motion.h4>
+   579→   579→
+   580→   580→                    {/* Description */}
+   581→   581→                    <motion.p
+   582→   582→                      className="text-white/70 text-sm leading-[1.8] group-hover:text-white/90 transition-colors duration-500"
+   583→   583→                      initial={{ opacity: 0, y: 15 }}
+   584→   584→                      whileInView={{ opacity: 1, y: 0 }}
+   585→   585→                      viewport={{ once: true, margin: '-50px' }}
+   586→   586→                      transition={{ duration: 0.6, delay: i * 0.15 + 0.5 }}
+   587→   587→                    >
+   588→   588→                      {pillar.description}
+   589→   589→                    </motion.p>
+   590→   590→
+   591→   591→                    {/* Bottom accent line — animated */}
+   592→   592→                    <motion.div
+   593→   593→                      className="absolute bottom-0 left-1/2 h-[3px] bg-[#C5960C] rounded-full"
+   594→   594→                      initial={{ width: 0, x: '-50%' }}
+   595→   595→                      whileInView={{ width: '60%', x: '-50%' }}
+   596→   596→                      viewport={{ once: true, margin: '-30px' }}
+   597→   597→                      transition={{ duration: 0.8, delay: i * 0.15 + 0.6, ease: 'easeOut' }}
+   598→   598→                    />
+   599→   599→                  </div>
+   600→   600→                </motion.div>
+   601→   601→              </ScrollReveal>
+   602→   602→            ))}
+   603→   603→          </div>
+   604→   604→        </div>
+   605→   605→      </section>
+   606→   606→
+   607→   607→      {/* NUESTROS CLIENTES COMERCIALES */}
+   608→   608→      <section className="py-16 md:py-20 bg-transparent">
+   609→   609→        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   610→   610→          <ScrollReveal>
+   611→   611→            <div className="text-center mb-14">
+   612→   612→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Confianza Comercial</span>
+   613→   613→              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Nuestros Clientes</h2>
+   614→   614→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   615→   615→              <p className="text-[#2D3748]/70 max-w-xl mx-auto mt-5 leading-[1.7]">
+   616→   616→                Empresas líderes confían en Sertrade Design para materializar sus espacios comerciales.
+   617→   617→              </p>
+   618→   618→            </div>
+   619→   619→          </ScrollReveal>
+   620→   620→
+   621→   621→          {/* Client logos grid */}
+   622→   622→          <ScrollReveal animation="fade-up" staggerDelay={0.1}>
+   623→   623→            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-8 md:gap-12 items-center justify-items-center">
+   624→   624→              {displayPartners.map((client, i) => (
+   625→   625→                <motion.div
+   626→   626→                  key={(client as { _id?: string })._id || i}
+   627→   627→                  className="flex flex-col items-center gap-3 sm:gap-4 group"
+   628→   628→                  whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+   629→   629→                >
+   630→   630→                  <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-xl sm:rounded-2xl bg-white border border-gray-100 shadow-md flex items-center justify-center p-4 sm:p-6 group-hover:shadow-xl group-hover:border-[#004691]/20 transition-all duration-500">
+   631→   631→                    {/* eslint-disable-next-line @next/next/no-img-element */}
+   632→   632→                    <img
+   633→   633→                      src={client.img}
+   634→   634→                      alt={client.alt}
+   635→   635→                      className="w-full h-full object-contain transition-all duration-500 group-hover:opacity-100 opacity-60"
+   636→   636→                      loading="lazy"
+   637→   637→                    />
+   638→   638→                  </div>
+   639→   639→                  <span className="text-[#2D3748]/50 text-[10px] sm:text-xs font-medium uppercase tracking-[0.12em] sm:tracking-[0.15em] group-hover:text-[#004691] transition-colors duration-500">
+   640→   640→                    {client.name}
+   641→   641→                  </span>
+   642→   642→                </motion.div>
+   643→   643→              ))}
+   644→   644→            </div>
+   645→   645→          </ScrollReveal>
+   646→   646→        </div>
+   647→   647→      </section>
+   648→   648→
+   649→   649→      {/* ===== END LIGHT SECTIONS WRAPPER ===== */}
+   650→   650→      </div>
+   651→   651→
+   652→   652→      {/* CTA — Compact */}
+   653→   653→      <ScrollReveal animation="fade">
+   654→   654→        <section className="relative py-14 md:py-16 overflow-hidden">
+   655→   655→          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80)' }} />
+   656→   656→          <div className="absolute inset-0 bg-[#004691]/90" />
+   657→   657→          <div className="relative max-w-4xl mx-auto px-4 text-center">
+   658→   658→            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Comienza tu próximo proyecto con nosotros</h2>
+   659→   659→            <p className="text-white/70 mb-6 max-w-2xl mx-auto text-sm sm:text-base leading-[1.7]">
+   660→   660→              Cada espacio tiene una historia. Permítenos escribir la tuya con diseño, innovación y excelencia.
+   661→   661→            </p>
+   662→   662→            <motion.a
+   663→   663→              href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, quiero solicitar una consulta gratuita para evaluar mi próximo proyecto.')}`}
+   664→   664→              target="_blank"
+   665→   665→              rel="noopener noreferrer"
+   666→   666→              whileHover={{ scale: 1.03 }}
+   667→   667→              whileTap={{ scale: 0.97 }}
+   668→   668→              className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+   669→   669→            >
+   670→   670→              Solicitar Consulta Gratuita <ArrowRight size={18} strokeWidth={2} />
+   671→   671→            </motion.a>
+   672→   672→          </div>
+   673→   673→        </section>
+   674→   674→      </ScrollReveal>
+   675→   675→    </div>
+   676→   676→  );
+   677→   677→}
