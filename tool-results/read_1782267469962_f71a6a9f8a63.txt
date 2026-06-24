@@ -1,0 +1,754 @@
+     1→'use client';
+     2→
+     3→import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+     4→import { useRouter } from 'next/navigation';
+     5→import { motion } from 'framer-motion';
+     6→import {
+     7→  BookOpen,
+     8→  Briefcase,
+     9→  RefreshCw,
+    10→  ThumbsUp,
+    11→  ChevronRight,
+    12→  ArrowRight,
+    13→  Building2,
+    14→  Ruler,
+    15→  Users,
+    16→  Award,
+    17→  HardHat,
+    18→  PencilRuler,
+    19→  ChevronLeft,
+    20→  Clock,
+    21→} from 'lucide-react';
+    22→import ScrollReveal from '@/components/ScrollReveal';
+    23→import StatCard from '@/components/StatCard';
+    24→import ServiciosSection from '@/components/ServiciosSection';
+    25→import type {
+    26→  SanityHeroSlide,
+    27→  SanityStat,
+    28→  SanityService,
+    29→  SanityServiceCategory,
+    30→  SanityProject,
+    31→  SanityPartner,
+    32→} from '@/lib/sanity.client';
+    33→import { getImageUrl, getVideoUrl, plainText } from '@/lib/sanity.client';
+    34→
+    35→/* =============================================
+    36→   PROPS INTERFACE
+    37→   ============================================= */
+    38→interface HomePageProps {
+    39→  heroSlides?: SanityHeroSlide[] | null;
+    40→  stats?: SanityStat[] | null;
+    41→  services?: SanityService[] | null;
+    42→  categories?: SanityServiceCategory[] | null;
+    43→  projects?: SanityProject[] | null;
+    44→  partners?: SanityPartner[] | null;
+    45→}
+    46→
+    47→/* =============================================
+    48→   FALLBACK DATA (used when CMS is not available)
+    49→   ============================================= */
+    50→const fallbackSliderData: Array<{
+    51→  image: string;
+    52→  position: string;
+    53→  videoMp4?: string;
+    54→  videoWebm?: string;
+    55→  poster?: string;
+    56→  mobileFallback?: string;
+    57→  title?: string;
+    58→  subtitle?: string;
+    59→  videoAutoplay?: boolean;
+    60→  videoMuted?: boolean;
+    61→  videoLoop?: boolean;
+    62→}> = [
+    63→  { image: '/images/hero/hero-construction.jpg', position: 'center center' },
+    64→  { image: '/images/hero/hero-electrical.jpg', position: 'center center' },
+    65→  { image: '/images/hero/hero-paseo-antara.jpg', position: 'center center' },
+    66→  { image: '/images/hero/hero-northpark.jpg', position: 'left center' },
+    67→];
+    68→
+    69→const pillars = [
+    70→  { icon: BookOpen, title: 'Conocimiento', description: 'Equipo multidisciplinario con formación continua en tendencias globales de arquitectura comercial.' },
+    71→  { icon: Briefcase, title: 'Experiencia', description: 'Más de una década construyendo proyectos exitosos para las principales marcas del mercado.' },
+    72→  { icon: RefreshCw, title: 'Flexibilidad', description: 'Capacidad de adaptarnos a cada requerimiento, entregando soluciones personalizadas y efectivas.' },
+    73→  { icon: ThumbsUp, title: 'Referencias', description: 'Más de 200 clientes satisfechos avalan nuestro compromiso con la excelencia y la calidad.' },
+    74→];
+    75→
+    76→const fallbackProStats = [
+    77→  { icon: HardHat, value: 5000, prefix: '+', suffix: ' m²', label: 'Construidos' },
+    78→  { icon: PencilRuler, value: 8000, prefix: '+', suffix: ' m²', label: 'Diseñados' },
+    79→  { icon: Clock, value: 10, prefix: '+', suffix: ' Años', label: 'Experiencia' },
+    80→];
+    81→
+    82→const fallbackProjects = [
+    83→  { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', slug: 'plaza-central' },
+    84→  { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', slug: 'clinica-san-rafael' },
+    85→  { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', slug: 'residencial-los-cedros' },
+    86→  { title: 'Oficinas Torre Andina', category: 'Comercial', location: 'Quito, Ecuador', area: '6,000 m²', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80', slug: 'oficinas-torre-andina' },
+    87→  { title: 'Hospital Metropolitano', category: 'Salud', location: 'Guayaquil, Ecuador', area: '22,000 m²', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80', slug: 'hospital-metropolitano' },
+    88→  { title: 'Casa del Lago', category: 'Residencial', location: 'Cusco, Perú', area: '1,800 m²', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', slug: 'casa-del-lago' },
+    89→];
+    90→
+    91→const fallbackPartners = [
+    92→  { name: 'Lima Kombo', img: '/img/clients/lima-kombo.png', alt: 'Lima Kombo - Cocina al Fuego' },
+    93→  { name: 'Mitsubishi Motors', img: '/img/clients/mitsubishi-motors.png', alt: 'Mitsubishi Motors' },
+    94→  { name: 'REDRILSA', img: '/img/clients/redrilsa.png', alt: 'REDRILSA - Remicsa Drilling S.A.' },
+    95→];
+    96→
+    97→export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, services: cmsServices, categories: cmsCategories, projects: cmsProjects, partners: cmsPartners }: HomePageProps) {
+    98→  const [currentSlide, setCurrentSlide] = useState(0);
+    99→  const [mounted, setMounted] = useState(false);
+   100→  const [transitioning, setTransitioning] = useState(false);
+   101→  const [activeStatIndex, setActiveStatIndex] = useState(0);
+   102→  const router = useRouter();
+   103→  const statsSectionRef = useRef<HTMLDivElement>(null);
+   104→
+   105→  /* =============================================
+   106→     MERGE CMS DATA WITH FALLBACKS
+   107→     ============================================= */
+   108→
+   109→  // Hero slides — prefer CMS data, fall back to local
+   110→  const sliderData = useMemo(() => {
+   111→    if (cmsSlides?.length) {
+   112→      return cmsSlides.map(s => ({
+   113→        image: getImageUrl(s.backgroundImage, 1920, 1080) || '',
+   114→        videoMp4: getVideoUrl(s.backgroundVideoMp4) || '',
+   115→        videoWebm: getVideoUrl(s.backgroundVideoWebm) || '',
+   116→        poster: getImageUrl(s.posterImage, 1920, 1080) || getImageUrl(s.backgroundImage, 1920, 1080) || '',
+   117→        mobileFallback: getImageUrl(s.mobileFallbackImage, 800, 1200) || '',
+   118→        position: 'center center' as const,
+   119→        _id: s._id,
+   120→        title: s.title,
+   121→        subtitle: plainText(s.subtitle),
+   122→        videoAutoplay: s.videoAutoplay !== false,
+   123→        videoMuted: s.videoMuted !== false,
+   124→        videoLoop: s.videoLoop !== false,
+   125→      }));
+   126→    }
+   127→    return fallbackSliderData;
+   128→  }, [cmsSlides]);
+   129→
+   130→  // Stats for "Nuestros Números" — prefer CMS
+   131→  const proStats = useMemo(() => {
+   132→    if (cmsStats?.length) {
+   133→      return cmsStats.map(s => ({
+   134→        icon: HardHat,
+   135→        value: s.value,
+   136→        prefix: s.prefix || '',
+   137→        suffix: s.suffix || '',
+   138→        label: s.label,
+   139→        _id: s._id,
+   140→      }));
+   141→    }
+   142→    return fallbackProStats;
+   143→  }, [cmsStats]);
+   144→
+   145→  // Projects for "Proyectos Destacados" — prefer CMS
+   146→  const displayProjects = useMemo(() => {
+   147→    if (cmsProjects?.length) {
+   148→      return cmsProjects.slice(0, 6).map(p => ({
+   149→        title: p.title,
+   150→        category: p.tags?.[0] || 'Proyecto',
+   151→        location: p.location || '',
+   152→        area: p.area ? `${p.area} m²` : '',
+   153→        image: getImageUrl(p.coverImage, 1200, 800) || fallbackProjects[0].image,
+   154→        slug: typeof p.slug === 'string' ? p.slug : (p.slug as { current?: string })?.current || '',
+   155→        _id: p._id,
+   156→      }));
+   157→    }
+   158→    return fallbackProjects;
+   159→  }, [cmsProjects]);
+   160→
+   161→  // Partners — prefer CMS
+   162→  const displayPartners = useMemo(() => {
+   163→    if (cmsPartners?.length) {
+   164→      return cmsPartners.map(p => ({
+   165→        name: p.name,
+   166→        img: getImageUrl(p.logo, 200, 200) || fallbackPartners[0].img,
+   167→        alt: p.name,
+   168→        _id: p._id,
+   169→      }));
+   170→    }
+   171→    return fallbackPartners;
+   172→  }, [cmsPartners]);
+   173→
+   174→  // Check if any slide has video
+   175→  const hasVideo = useMemo(() => sliderData.some(s => s.videoMp4 || s.videoWebm), [sliderData]);
+   176→
+   177→  const nextSlide = useCallback(() => {
+   178→    setCurrentSlide((prev) => (prev + 1) % sliderData.length);
+   179→  }, [sliderData.length]);
+   180→
+   181→  const prevSlide = useCallback(() => {
+   182→    setCurrentSlide((prev) => (prev - 1 + sliderData.length) % sliderData.length);
+   183→  }, [sliderData.length]);
+   184→
+   185→  /* Autoplay slider (images only — skip auto-cycle when video is playing) */
+   186→  useEffect(() => {
+   187→    setMounted(true);
+   188→    if (hasVideo) return; // Don't auto-cycle when video is present
+   189→    const interval = setInterval(nextSlide, 5000);
+   190→    return () => clearInterval(interval);
+   191→  }, [nextSlide, hasVideo]);
+   192→
+   193→  useEffect(() => {
+   194→    const statsInterval = setInterval(() => {
+   195→      setActiveStatIndex((prev) => (prev + 1) % proStats.length);
+   196→    }, 3000);
+   197→    return () => clearInterval(statsInterval);
+   198→  }, [proStats.length]);
+   199→
+   200→  /* Smooth page transition: fade-out then navigate */
+   201→  const navigateWithTransition = (href: string) => {
+   202→    if (transitioning) return;
+   203→    setTransitioning(true);
+   204→    const overlay = document.getElementById('page-transition-overlay');
+   205→    if (overlay) {
+   206→      overlay.style.opacity = '1';
+   207→      overlay.style.pointerEvents = 'auto';
+   208→    }
+   209→    setTimeout(() => {
+   210→      router.push(href);
+   211→    }, 400);
+   212→  };
+   213→
+   214→  return (
+   215→    <div className="relative">
+   216→      {/* Page Transition Overlay */}
+   217→      <div
+   218→        id="page-transition-overlay"
+   219→        className="fixed inset-0 z-[9999] bg-[#004691] pointer-events-none"
+   220→        style={{ opacity: 0, transition: 'opacity 0.4s ease-in-out' }}
+   221→      />
+   222→
+   223→      {/* =============================================
+   224→          HERO — FULL-BLEED VIDEO OR IMAGE
+   225→          When video is set in Sanity it plays immersive full-bleed.
+   226→          Falls back to image carousel when no video.
+   227→          ============================================= */}
+   228→      <section className="relative w-full overflow-hidden" style={{ height: '100vh' }} id="inicio">
+   229→
+   230→        {/* ===== LAYER 1: BACKGROUND MEDIA (z-10) ===== */}
+   231→        {hasVideo ? (
+   232→          /* ── VIDEO MODE: Immersive full-bleed video ── */
+   233→          <div className="absolute inset-0" style={{ zIndex: 10 }}>
+   234→            {sliderData.map((s, index) => (
+   235→              <div
+   236→                key={`vid-${index}`}
+   237→                className="absolute inset-0"
+   238→                style={{
+   239→                  opacity: index === currentSlide ? 1 : 0,
+   240→                  transition: 'opacity 1s ease-in-out',
+   241→                }}
+   242→              >
+   243→                {(s.videoMp4 || s.videoWebm) ? (
+   244→                  <video
+   245→                    key={s.videoMp4 || s.videoWebm}
+   246→                    className="absolute inset-0 w-full h-full object-cover"
+   247→                    autoPlay={s.videoAutoplay}
+   248→                    muted={s.videoMuted}
+   249→                    loop={s.videoLoop}
+   250→                    playsInline
+   251→                    poster={s.poster || undefined}
+   252→                    preload="auto"
+   253→                  >
+   254→                    {s.videoWebm && <source src={s.videoWebm} type="video/webm" />}
+   255→                    {s.videoMp4 && <source src={s.videoMp4} type="video/mp4" />}
+   256→                  </video>
+   257→                ) : s.image ? (
+   258→                  <div
+   259→                    className="absolute inset-0 bg-cover bg-center"
+   260→                    style={{
+   261→                      backgroundImage: `url(${s.image})`,
+   262→                      transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
+   263→                      transition: 'transform 10s ease-out',
+   264→                    }}
+   265→                  />
+   266→                ) : null}
+   267→                {/* Dark overlay for text readability */}
+   268→                <div className="absolute inset-0 bg-[rgba(0,20,50,0.50)]" />
+   269→              </div>
+   270→            ))}
+   271→          </div>
+   272→        ) : (
+   273→          /* ── IMAGE CAROUSEL MODE: Original behavior ── */
+   274→          <>
+   275→            {sliderData.map((s, index) => (
+   276→              <div
+   277→                key={`bg-${index}`}
+   278→                className="absolute inset-0"
+   279→                style={{
+   280→                  opacity: index === currentSlide ? 1 : 0,
+   281→                  zIndex: index === currentSlide ? 10 : 1,
+   282→                  transition: 'opacity 1s ease-in-out',
+   283→                }}
+   284→              >
+   285→                <div
+   286→                  className="absolute inset-0 bg-cover"
+   287→                  style={{
+   288→                    backgroundImage: `url(${s.image})`,
+   289→                    backgroundPosition: s.position || 'center center',
+   290→                    transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
+   291→                    transition: 'transform 10s ease-out',
+   292→                  }}
+   293→                />
+   294→                {/* Dark blue overlay for text readability */}
+   295→                <div className="absolute inset-0 bg-[rgba(0,20,50,0.60)]" />
+   296→              </div>
+   297→            ))}
+   298→          </>
+   299→        )}
+   300→
+   301→        {/* ===== LAYER 2: STATIC TEXT — VERTICALLY CENTERED (z-20) ===== */}
+   302→        <div
+   303→          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+   304→          style={{ zIndex: 20 }}
+   305→        >
+   306→          <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-5xl mx-auto">
+   307→            <div className="flex flex-col items-center justify-center">
+   308→
+   309→              {/* Main Title — from CMS hero slide or hardcoded brand */}
+   310→              <h2
+   311→                style={{
+   312→                  opacity: mounted ? 1 : 0,
+   313→                  transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+   314→                  transition: 'opacity 0.9s ease-out, transform 0.9s ease-out',
+   315→                  transitionDelay: '0.3s',
+   316→                }}
+   317→                className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-extrabold text-white mb-4 leading-[1.02] tracking-tight uppercase text-shadow-hero"
+   318→              >
+   319→                {cmsSlides?.[currentSlide]?.title || 'SERTRADE'}
+   320→                <span className="block mt-0.5">PROJECTS</span>
+   321→              </h2>
+   322→
+   323→              {/* Subtitle — from CMS hero slide or hardcoded */}
+   324→              <div
+   325→                style={{
+   326→                  opacity: mounted ? 1 : 0,
+   327→                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+   328→                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+   329→                  transitionDelay: '0.5s',
+   330→                }}
+   331→                className="mb-2"
+   332→              >
+   333→                <span className="text-[#E5E7EB] text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
+   334→                  {plainText(cmsSlides?.[currentSlide]?.subtitle) || 'Servicios de Arquitectura y Servicios Generales'}
+   335→                </span>
+   336→              </div>
+   337→
+   338→              {/* Tagline — DISEÑO Y EJECUCIÓN */}
+   339→              <div
+   340→                style={{
+   341→                  opacity: mounted ? 1 : 0,
+   342→                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+   343→                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+   344→                  transitionDelay: '0.65s',
+   345→                }}
+   346→                className="mb-8"
+   347→              >
+   348→                <span className="text-[#E5E7EB] text-[10px] sm:text-[11px] tracking-[0.35em] uppercase font-light">
+   349→                  Diseño y Ejecución
+   350→                </span>
+   351→              </div>
+   352→
+   353→              {/* CTA BUTTONS — Gold primary + Outlined ghost secondary */}
+   354→              <div
+   355→                className="hero-btn-stack flex items-center gap-4 sm:gap-5 pointer-events-auto"
+   356→                style={{
+   357→                  opacity: mounted ? 1 : 0,
+   358→                  transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+   359→                  transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+   360→                  transitionDelay: '0.8s',
+   361→                }}
+   362→              >
+   363→                {/* PRIMARY CTA — VER PROYECTOS (gold) */}
+   364→                <button
+   365→                  onClick={() => navigateWithTransition('/proyectos')}
+   366→                  className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.03] transition-all duration-300"
+   367→                >
+   368→                  VER PROYECTOS <ArrowRight size={18} strokeWidth={2} />
+   369→                </button>
+   370→
+   371→                {/* SECONDARY CTA — CONTACTO (outlined ghost) */}
+   372→                <a
+   373→                  href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, estoy en la página de inicio de Sertrade y quiero agendar una reunión para presentarles mi proyecto.')}`}
+   374→                  target="_blank"
+   375→                  rel="noopener noreferrer"
+   376→                  className="px-8 py-3.5 border border-white/30 text-white rounded-[8px] font-medium inline-flex items-center gap-2 hover:bg-white/10 transition-all duration-300"
+   377→                >
+   378→                  CONTACTO
+   379→                </a>
+   380→              </div>
+   381→            </div>
+   382→          </div>
+   383→        </div>
+   384→
+   385→        {/* ===== LAYER 3: NAVIGATION ARROWS — hidden on single video ===== */}
+   386→        {sliderData.length > 1 && !hasVideo && (
+   387→          <>
+   388→            <button
+   389→              onClick={prevSlide}
+   390→              className="hero-arrow hero-arrow-left hidden sm:flex"
+   391→              aria-label="Anterior"
+   392→            >
+   393→              <ChevronLeft size={24} strokeWidth={1.5} />
+   394→            </button>
+   395→            <button
+   396→              onClick={nextSlide}
+   397→              className="hero-arrow hero-arrow-right hidden sm:flex"
+   398→              aria-label="Siguiente"
+   399→            >
+   400→              <ChevronRight size={24} strokeWidth={1.5} />
+   401→            </button>
+   402→          </>
+   403→        )}
+   404→
+   405→        {/* Slider Dots (z-40, bottom center) — hidden on single video */}
+   406→        {sliderData.length > 1 && (
+   407→          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ zIndex: 40 }}>
+   408→            {sliderData.map((_, index) => (
+   409→              <button key={index} onClick={() => setCurrentSlide(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'}`} aria-label={`Ir a slide ${index + 1}`} />
+   410→            ))}
+   411→          </div>
+   412→        )}
+   413→
+   414→        {/* Slide Counter (z-40, bottom right) — hidden on single video */}
+   415→        {sliderData.length > 1 && (
+   416→          <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block" style={{ zIndex: 40 }}>
+   417→            <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
+   418→            <span className="mx-2">/</span>
+   419→            <span>{String(sliderData.length).padStart(2, '0')}</span>
+   420→          </div>
+   421→        )}
+   422→
+   423→      </section>
+   424→
+   425→      {/* ===== LIGHT SECTIONS WRAPPER — Single continuous brand pattern ===== */}
+   426→      <div className="brand-pattern-wrapper">
+   427→
+   428→      {/* QUIÉNES SOMOS */}
+   429→      <section
+   430→        id="nosotros"
+   431→        className="pt-10 pb-20 md:pt-10 md:pb-24"
+   432→        style={{
+   433→          background: 'linear-gradient(to bottom, #001C3D 0px, #001C3D 4px, rgba(0,28,61,0.6) 11px, transparent 11px, transparent 100%)',
+   434→        }}
+   435→      >
+   436→        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   437→          <ScrollReveal>
+   438→            <div className="text-center mb-16">
+   439→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Quiénes Somos</span>
+   440→              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-5 text-shadow-pro">Nosotros</h2>
+   441→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   442→              <p className="text-[#2D3748] max-w-2xl mx-auto mt-6 leading-[1.7]">
+   443→                Sertrade Design es un estudio de arquitectura especializado en el diseño de espacios comerciales,
+   444→                de salud y residenciales. Nuestro enfoque combina creatividad, funcionalidad y sostenibilidad
+   445→                para crear entornos que transforman la experiencia de quienes los habitan.
+   446→              </p>
+   447→            </div>
+   448→          </ScrollReveal>
+   449→
+   450→          {/* Stats */}
+   451→          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-20">
+   452→            {[
+   453→              { number: '200+', label: 'Proyectos Entregados', icon: Building2 },
+   454→              { number: '14+', label: 'Años de Experiencia', icon: Award },
+   455→              { number: '50+', label: 'Profesionales', icon: Users },
+   456→              { number: '3', label: 'Países', icon: Ruler },
+   457→            ].map((stat, i) => (
+   458→              <ScrollReveal key={i} delay={i * 0.1} animation="scale">
+   459→                <div className="nosotros-card">
+   460→                  <div className="nosotros-card-icon">
+   461→                    <stat.icon size={36} strokeWidth={1.5} />
+   462→                  </div>
+   463→                  <div className="nosotros-card-number">{stat.number}</div>
+   464→                  <div className="nosotros-card-label">{stat.label}</div>
+   465→                </div>
+   466→              </ScrollReveal>
+   467→            ))}
+   468→          </div>
+   469→
+   470→        </div>
+   471→      </section>
+   472→
+   473→      {/* NUESTROS SERVICIOS */}
+   474→      <ServiciosSection services={cmsServices} categories={cmsCategories} />
+   475→
+   476→      {/* NUESTROS NÚMEROS — Animated Counters with Autoplay Highlight */}
+   477→      <section className="py-14 md:py-16 bg-transparent" ref={statsSectionRef} id="numeros">
+   478→        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   479→          <ScrollReveal>
+   480→            <div className="text-center mt-4 mb-12">
+   481→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Nuestros Números</span>
+   482→              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Resultados que Hablan</h2>
+   483→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   484→            </div>
+   485→          </ScrollReveal>
+   486→
+   487→          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+   488→            {proStats.map((stat, i) => (
+   489→              <StatCard
+   490→                key={(stat as { _id?: string })._id || i}
+   491→                icon={stat.icon}
+   492→                value={stat.value}
+   493→                prefix={stat.prefix}
+   494→                suffix={stat.suffix}
+   495→                label={stat.label}
+   496→                delay={i * 0.3}
+   497→                isActive={activeStatIndex === i}
+   498→              />
+   499→            ))}
+   500→          </div>
+   501→        </div>
+   502→      </section>
+   503→
+   504→      {/* PROYECTOS DESTACADOS */}
+   505→      <section className="py-14 md:py-20 bg-transparent" id="portafolio">
+   506→        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   507→          <ScrollReveal>
+   508→            <div className="text-center mb-12 sm:mb-12">
+   509→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Portafolio</span>
+   510→              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Proyectos Destacados</h2>
+   511→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   512→            </div>
+   513→          </ScrollReveal>
+   514→        </div>
+   515→
+   516→        {/* Full-width grid on mobile, padded on desktop */}
+   517→        <div className="max-w-7xl mx-auto">
+   518→          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 sm:gap-6 md:gap-8">
+   519→            {displayProjects.map((project, i) => (
+   520→              <ScrollReveal key={project.slug || i} delay={i * 0.08}>
+   521→                <motion.div
+   522→                  className="relative w-full h-[450px] sm:h-[550px] md:h-[600px] overflow-hidden group bg-black cursor-pointer rounded-none sm:rounded-xl"
+   523→                  whileHover={{ y: -6, boxShadow: '0 25px 60px rgba(0,0,0,0.35)', transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+   524→                  onClick={() => navigateWithTransition(`/proyectos#${project.slug}`)}
+   525→                >
+   526→                  {/* Full-bleed image */}
+   527→                  {/* eslint-disable-next-line @next/next/no-img-element */}
+   528→                  <img
+   529→                    src={project.image}
+   530→                    alt={project.title}
+   531→                    className="w-full h-full object-cover opacity-85 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"
+   532→                    loading="lazy"
+   533→                  />
+   534→                  {/* Gradient overlay — text contrast backdrop */}
+   535→                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 flex flex-col justify-end p-6 md:p-8 text-center">
+   536→                    {/* Category tag */}
+   537→                    <span className="inline-block self-center px-3 py-1 bg-[#C5960C] text-white text-[10px] font-bold uppercase tracking-[0.15em] rounded-full mb-3">
+   538→                      {project.category}
+   539→                    </span>
+   540→                    {/* Title */}
+   541→                    <h3 className="text-white font-bold text-lg md:text-xl leading-tight uppercase tracking-wide drop-shadow-lg">
+   542→                      {project.title}
+   543→                    </h3>
+   544→                    {/* Location + Area */}
+   545→                    <div className="flex items-center justify-center gap-3 text-white/70 text-xs mt-2">
+   546→                      <span>{project.location}</span>
+   547→                      <span className="w-1 h-1 rounded-full bg-white/40" />
+   548→                      <span>{project.area}</span>
+   549→                    </div>
+   550→                  </div>
+   551→                </motion.div>
+   552→              </ScrollReveal>
+   553→            ))}
+   554→          </div>
+   555→        </div>
+   556→
+   557→        {/* Ver más — Gold CTA */}
+   558→        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   559→          <ScrollReveal>
+   560→            <div className="text-center mt-14">
+   561→              <motion.button
+   562→                onClick={() => navigateWithTransition('/proyectos')}
+   563→                whileHover={{ scale: 1.03 }}
+   564→                whileTap={{ scale: 0.97 }}
+   565→                className="px-10 py-4 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+   566→              >
+   567→                Ver Todos los Proyectos <ArrowRight size={18} strokeWidth={2} />
+   568→              </motion.button>
+   569→            </div>
+   570→          </ScrollReveal>
+   571→        </div>
+   572→      </section>
+   573→
+   574→      {/* NUESTROS PILARES — Dynamic Professional Design */}
+   575→      <section className="relative py-16 md:py-24 overflow-hidden" id="pilares" style={{ background: 'linear-gradient(135deg, #004691 0%, #003266 50%, #001C3D 100%)' }}>
+   576→        {/* Floating geometric circles — decorative */}
+   577→        <motion.div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+   578→          {[{ size: 180, x: '8%', y: '15%', delay: 0 }, { size: 120, x: '75%', y: '10%', delay: 1.5 }, { size: 90, x: '60%', y: '70%', delay: 3 }, { size: 140, x: '20%', y: '75%', delay: 2 }, { size: 60, x: '90%', y: '50%', delay: 0.8 }, { size: 200, x: '40%', y: '-5%', delay: 4 }, { size: 70, x: '5%', y: '55%', delay: 1.2 }].map((c, i) => (
+   579→            <motion.div
+   580→              key={i}
+   581→              className="absolute rounded-full"
+   582→              style={{ width: c.size, height: c.size, left: c.x, top: c.y, border: '1px solid rgba(255,255,255,0.08)', background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)' }}
+   583→              animate={{ y: [0, -12, 0], scale: [1, 1.03, 1], opacity: [0.5, 0.8, 0.5] }}
+   584→              transition={{ repeat: Infinity, duration: 6 + i * 0.8, ease: 'easeInOut', delay: c.delay }}
+   585→            />
+   586→          ))}
+   587→        </motion.div>
+   588→
+   589→        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative" style={{ zIndex: 1 }}>
+   590→          {/* Header */}
+   591→          <ScrollReveal>
+   592→            <div className="text-center mb-16 md:mb-20">
+   593→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Lo que nos define</span>
+   594→              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3 mb-5">Nuestros Pilares</h2>
+   595→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   596→            </div>
+   597→          </ScrollReveal>
+   598→
+   599→          {/* Pillars Grid */}
+   600→          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+   601→            {pillars.map((pillar, i) => (
+   602→              <ScrollReveal key={i} delay={i * 0.15}>
+   603→                <motion.div
+   604→                  className="group relative"
+   605→                  whileHover={{ y: -10, transition: { type: 'spring', stiffness: 200, damping: 18 } }}
+   606→                >
+   607→                  {/* Card */}
+   608→                  <div className="relative p-7 md:p-8 rounded-2xl border border-white/10 bg-white/[0.06] backdrop-blur-sm transition-all duration-500 group-hover:bg-white/[0.12] group-hover:border-white/20 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] h-full">
+   609→
+   610→                    {/* Number — large decorative */}
+   611→                    <motion.div
+   612→                      className="absolute -top-3 -left-2 w-10 h-10 rounded-full bg-[#C5960C] flex items-center justify-center text-white font-black text-sm shadow-lg"
+   613→                      initial={{ scale: 0, rotate: -90 }}
+   614→                      whileInView={{ scale: 1, rotate: 0 }}
+   615→                      viewport={{ once: true, margin: '-50px' }}
+   616→                      transition={{ type: 'spring', stiffness: 300, damping: 15, delay: i * 0.15 + 0.2 }}
+   617→                    >
+   618→                      {String(i + 1).padStart(2, '0')}
+   619→                    </motion.div>
+   620→
+   621→                    {/* Rotating arc border — decorative ring */}
+   622→                    <div className="absolute -top-1 -right-1 w-12 h-12 pointer-events-none">
+   623→                      <svg viewBox="0 0 48 48" className="w-full h-full">
+   624→                        <motion.circle
+   625→                          cx="24" cy="24" r="20" fill="none" stroke="rgba(197,150,12,0.3)" strokeWidth="1.5" strokeLinecap="round"
+   626→                          strokeDasharray="40 90"
+   627→                          initial={{ rotate: 0 }}
+   628→                          animate={{ rotate: 360 }}
+   629→                          transition={{ repeat: Infinity, duration: 12 + i * 2, ease: 'linear' }}
+   630→                          style={{ transformOrigin: 'center' }}
+   631→                        />
+   632→                      </svg>
+   633→                    </div>
+   634→
+   635→                    {/* Icon */}
+   636→                    <motion.div
+   637→                      className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-[#C5960C] transition-all duration-500 group-hover:scale-110"
+   638→                      initial={{ opacity: 0, y: 20 }}
+   639→                      whileInView={{ opacity: 1, y: 0 }}
+   640→                      viewport={{ once: true, margin: '-50px' }}
+   641→                      transition={{ duration: 0.6, delay: i * 0.15 + 0.3 }}
+   642→                    >
+   643→                      <pillar.icon size={26} strokeWidth={1.5} className="text-white" />
+   644→                    </motion.div>
+   645→
+   646→                    {/* Title */}
+   647→                    <motion.h4
+   648→                      className="font-bold text-white text-lg mb-3 group-hover:text-[#C5960C] transition-colors duration-500"
+   649→                      initial={{ opacity: 0, y: 15 }}
+   650→                      whileInView={{ opacity: 1, y: 0 }}
+   651→                      viewport={{ once: true, margin: '-50px' }}
+   652→                      transition={{ duration: 0.6, delay: i * 0.15 + 0.4 }}
+   653→                    >
+   654→                      {pillar.title}
+   655→                    </motion.h4>
+   656→
+   657→                    {/* Description */}
+   658→                    <motion.p
+   659→                      className="text-white/70 text-sm leading-[1.8] group-hover:text-white/90 transition-colors duration-500"
+   660→                      initial={{ opacity: 0, y: 15 }}
+   661→                      whileInView={{ opacity: 1, y: 0 }}
+   662→                      viewport={{ once: true, margin: '-50px' }}
+   663→                      transition={{ duration: 0.6, delay: i * 0.15 + 0.5 }}
+   664→                    >
+   665→                      {pillar.description}
+   666→                    </motion.p>
+   667→
+   668→                    {/* Bottom accent line — animated */}
+   669→                    <motion.div
+   670→                      className="absolute bottom-0 left-1/2 h-[3px] bg-[#C5960C] rounded-full"
+   671→                      initial={{ width: 0, x: '-50%' }}
+   672→                      whileInView={{ width: '60%', x: '-50%' }}
+   673→                      viewport={{ once: true, margin: '-30px' }}
+   674→                      transition={{ duration: 0.8, delay: i * 0.15 + 0.6, ease: 'easeOut' }}
+   675→                    />
+   676→                  </div>
+   677→                </motion.div>
+   678→              </ScrollReveal>
+   679→            ))}
+   680→          </div>
+   681→        </div>
+   682→      </section>
+   683→
+   684→      {/* NUESTROS CLIENTES COMERCIALES */}
+   685→      <section className="py-16 md:py-20 bg-transparent" id="clientes">
+   686→        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+   687→          <ScrollReveal>
+   688→            <div className="text-center mb-14">
+   689→              <span className="text-[#C5960C] text-sm font-semibold tracking-[0.2em] uppercase">Confianza Comercial</span>
+   690→              <h2 className="text-3xl sm:text-4xl font-bold text-[#004691] mt-3 mb-4 text-shadow-pro">Nuestros Clientes</h2>
+   691→              <div className="w-12 h-1 bg-[#C5960C] mx-auto rounded-full" />
+   692→              <p className="text-[#2D3748]/70 max-w-xl mx-auto mt-5 leading-[1.7]">
+   693→                Empresas líderes confían en Sertrade Design para materializar sus espacios comerciales.
+   694→              </p>
+   695→            </div>
+   696→          </ScrollReveal>
+   697→
+   698→          {/* Client logos grid */}
+   699→          <ScrollReveal animation="fade-up" staggerDelay={0.1}>
+   700→            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-8 md:gap-12 items-center justify-items-center">
+   701→              {displayPartners.map((client, i) => (
+   702→                <motion.div
+   703→                  key={(client as { _id?: string })._id || i}
+   704→                  className="flex flex-col items-center gap-3 sm:gap-4 group"
+   705→                  whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+   706→                >
+   707→                  <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-xl sm:rounded-2xl bg-white border border-gray-100 shadow-md flex items-center justify-center p-4 sm:p-6 group-hover:shadow-xl group-hover:border-[#004691]/20 transition-all duration-500">
+   708→                    {/* eslint-disable-next-line @next/next/no-img-element */}
+   709→                    <img
+   710→                      src={client.img}
+   711→                      alt={client.alt}
+   712→                      className="w-full h-full object-contain transition-all duration-500 group-hover:opacity-100 opacity-60"
+   713→                      loading="lazy"
+   714→                    />
+   715→                  </div>
+   716→                  <span className="text-[#2D3748]/50 text-[10px] sm:text-xs font-medium uppercase tracking-[0.12em] sm:tracking-[0.15em] group-hover:text-[#004691] transition-colors duration-500">
+   717→                    {client.name}
+   718→                  </span>
+   719→                </motion.div>
+   720→              ))}
+   721→            </div>
+   722→          </ScrollReveal>
+   723→        </div>
+   724→      </section>
+   725→
+   726→      {/* ===== END LIGHT SECTIONS WRAPPER ===== */}
+   727→      </div>
+   728→
+   729→      {/* CTA — Compact */}
+   730→      <ScrollReveal animation="fade">
+   731→        <section className="relative py-14 md:py-16 overflow-hidden">
+   732→          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80)' }} />
+   733→          <div className="absolute inset-0 bg-[#004691]/90" />
+   734→          <div className="relative max-w-4xl mx-auto px-4 text-center">
+   735→            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Comienza tu próximo proyecto con nosotros</h2>
+   736→            <p className="text-white/70 mb-6 max-w-2xl mx-auto text-sm sm:text-base leading-[1.7]">
+   737→              Cada espacio tiene una historia. Permítenos escribir la tuya con diseño, innovación y excelencia.
+   738→            </p>
+   739→            <motion.a
+   740→              href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola Sertrade Design, quiero solicitar una consulta gratuita para evaluar mi próximo proyecto.')}`}
+   741→              target="_blank"
+   742→              rel="noopener noreferrer"
+   743→              whileHover={{ scale: 1.03 }}
+   744→              whileTap={{ scale: 0.97 }}
+   745→              className="px-8 py-3.5 bg-[#d4a017] text-[#003466] rounded-[8px] font-semibold inline-flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+   746→            >
+   747→              Solicitar Consulta Gratuita <ArrowRight size={18} strokeWidth={2} />
+   748→            </motion.a>
+   749→          </div>
+   750→        </section>
+   751→      </ScrollReveal>
+   752→    </div>
+   753→  );
+   754→}
