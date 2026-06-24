@@ -17,7 +17,7 @@ function createSanityClient(options?: { perspective?: "published" | "previewDraf
 }
 
 let _publishedClient: SanityClient | null = null;
-function getPublishedClient(): SanityClient | null {
+export function getPublishedClient(): SanityClient | null {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
   if (!projectId) return null;
   if (!_publishedClient) _publishedClient = createSanityClient({ perspective: "published" });
