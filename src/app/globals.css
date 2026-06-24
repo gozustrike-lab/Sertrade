@@ -200,7 +200,7 @@
     padding: 0;
   }
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-tap-highlight-color: transparent;
   }
   /* Ensure no browser defaults push header down */

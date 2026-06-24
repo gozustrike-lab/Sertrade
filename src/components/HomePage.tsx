@@ -30,7 +30,7 @@ import type {
   SanityProject,
   SanityPartner,
 } from '@/lib/sanity.client';
-import { getImageUrl, plainText } from '@/lib/sanity.client';
+import { getImageUrl, getVideoUrl, plainText } from '@/lib/sanity.client';
 
 /* =============================================
    PROPS INTERFACE
@@ -47,7 +47,19 @@ interface HomePageProps {
 /* =============================================
    FALLBACK DATA (used when CMS is not available)
    ============================================= */
-const fallbackSliderData = [
+const fallbackSliderData: Array<{
+  image: string;
+  position: string;
+  videoMp4?: string;
+  videoWebm?: string;
+  poster?: string;
+  mobileFallback?: string;
+  title?: string;
+  subtitle?: string;
+  videoAutoplay?: boolean;
+  videoMuted?: boolean;
+  videoLoop?: boolean;
+}> = [
   { image: '/images/hero/hero-construction.jpg', position: 'center center' },
   { image: '/images/hero/hero-electrical.jpg', position: 'center center' },
   { image: '/images/hero/hero-paseo-antara.jpg', position: 'center center' },
@@ -94,15 +106,22 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
      MERGE CMS DATA WITH FALLBACKS
      ============================================= */
 
-  // Hero slides — prefer CMS images, fall back to local
+  // Hero slides — prefer CMS data, fall back to local
   const sliderData = useMemo(() => {
     if (cmsSlides?.length) {
       return cmsSlides.map(s => ({
-        image: getImageUrl(s.backgroundImage, 1920, 1080) || fallbackSliderData[0].image,
+        image: getImageUrl(s.backgroundImage, 1920, 1080) || '',
+        videoMp4: getVideoUrl(s.backgroundVideoMp4) || '',
+        videoWebm: getVideoUrl(s.backgroundVideoWebm) || '',
+        poster: getImageUrl(s.posterImage, 1920, 1080) || getImageUrl(s.backgroundImage, 1920, 1080) || '',
+        mobileFallback: getImageUrl(s.mobileFallbackImage, 800, 1200) || '',
         position: 'center center' as const,
         _id: s._id,
         title: s.title,
         subtitle: plainText(s.subtitle),
+        videoAutoplay: s.videoAutoplay !== false,
+        videoMuted: s.videoMuted !== false,
+        videoLoop: s.videoLoop !== false,
       }));
     }
     return fallbackSliderData;
@@ -152,6 +171,9 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
     return fallbackPartners;
   }, [cmsPartners]);
 
+  // Check if any slide has video
+  const hasVideo = useMemo(() => sliderData.some(s => s.videoMp4 || s.videoWebm), [sliderData]);
+
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % sliderData.length);
   }, [sliderData.length]);
@@ -160,12 +182,13 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
     setCurrentSlide((prev) => (prev - 1 + sliderData.length) % sliderData.length);
   }, [sliderData.length]);
 
-  /* Autoplay highlight for Nuestros Números — cycles every 3s */
+  /* Autoplay slider (images only — skip auto-cycle when video is playing) */
   useEffect(() => {
     setMounted(true);
+    if (hasVideo) return; // Don't auto-cycle when video is present
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
-  }, [nextSlide]);
+  }, [nextSlide, hasVideo]);
 
   useEffect(() => {
     const statsInterval = setInterval(() => {
@@ -198,37 +221,82 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
       />
 
       {/* =============================================
-          HERO SLIDER — CENTERED LAYOUT
-            LAYER 1 (z-10): Background images — opacity fade
-            LAYER 2 (z-20): Text content — 100% STATIC, centered
-            LAYER 3 (z-30): Arrows + Dots
+          HERO — FULL-BLEED VIDEO OR IMAGE
+          When video is set in Sanity it plays immersive full-bleed.
+          Falls back to image carousel when no video.
           ============================================= */}
-      <section className="relative w-full overflow-hidden" style={{ height: '100vh' }}>
+      <section className="relative w-full overflow-hidden" style={{ height: '100vh' }} id="inicio">
 
-        {/* ===== LAYER 1: BACKGROUND IMAGES (z-10) ===== */}
-        {sliderData.map((s, index) => (
-          <div
-            key={`bg-${index}`}
-            className="absolute inset-0"
-            style={{
-              opacity: index === currentSlide ? 1 : 0,
-              zIndex: index === currentSlide ? 10 : 1,
-              transition: 'opacity 1s ease-in-out',
-            }}
-          >
-            <div
-              className="absolute inset-0 bg-cover"
-              style={{
-                backgroundImage: `url(${s.image})`,
-                backgroundPosition: s.position || 'center center',
-                transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
-                transition: 'transform 10s ease-out',
-              }}
-            />
-            {/* Dark blue overlay for text readability */}
-            <div className="absolute inset-0 bg-[rgba(0,20,50,0.60)]" />
+        {/* ===== LAYER 1: BACKGROUND MEDIA (z-10) ===== */}
+        {hasVideo ? (
+          /* ── VIDEO MODE: Immersive full-bleed video ── */
+          <div className="absolute inset-0" style={{ zIndex: 10 }}>
+            {sliderData.map((s, index) => (
+              <div
+                key={`vid-${index}`}
+                className="absolute inset-0"
+                style={{
+                  opacity: index === currentSlide ? 1 : 0,
+                  transition: 'opacity 1s ease-in-out',
+                }}
+              >
+                {(s.videoMp4 || s.videoWebm) ? (
+                  <video
+                    key={s.videoMp4 || s.videoWebm}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    autoPlay={s.videoAutoplay}
+                    muted={s.videoMuted}
+                    loop={s.videoLoop}
+                    playsInline
+                    poster={s.poster || undefined}
+                    preload="auto"
+                  >
+                    {s.videoWebm && <source src={s.videoWebm} type="video/webm" />}
+                    {s.videoMp4 && <source src={s.videoMp4} type="video/mp4" />}
+                  </video>
+                ) : s.image ? (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{
+                      backgroundImage: `url(${s.image})`,
+                      transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
+                      transition: 'transform 10s ease-out',
+                    }}
+                  />
+                ) : null}
+                {/* Dark overlay for text readability */}
+                <div className="absolute inset-0 bg-[rgba(0,20,50,0.50)]" />
+              </div>
+            ))}
           </div>
-        ))}
+        ) : (
+          /* ── IMAGE CAROUSEL MODE: Original behavior ── */
+          <>
+            {sliderData.map((s, index) => (
+              <div
+                key={`bg-${index}`}
+                className="absolute inset-0"
+                style={{
+                  opacity: index === currentSlide ? 1 : 0,
+                  zIndex: index === currentSlide ? 10 : 1,
+                  transition: 'opacity 1s ease-in-out',
+                }}
+              >
+                <div
+                  className="absolute inset-0 bg-cover"
+                  style={{
+                    backgroundImage: `url(${s.image})`,
+                    backgroundPosition: s.position || 'center center',
+                    transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
+                    transition: 'transform 10s ease-out',
+                  }}
+                />
+                {/* Dark blue overlay for text readability */}
+                <div className="absolute inset-0 bg-[rgba(0,20,50,0.60)]" />
+              </div>
+            ))}
+          </>
+        )}
 
         {/* ===== LAYER 2: STATIC TEXT — VERTICALLY CENTERED (z-20) ===== */}
         <div
@@ -314,35 +382,43 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
           </div>
         </div>
 
-        {/* ===== LAYER 3: NAVIGATION ARROWS (z-35) ===== */}
-        <button
-          onClick={prevSlide}
-          className="hero-arrow hero-arrow-left hidden sm:flex"
-          aria-label="Anterior"
-        >
-          <ChevronLeft size={24} strokeWidth={1.5} />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="hero-arrow hero-arrow-right hidden sm:flex"
-          aria-label="Siguiente"
-        >
-          <ChevronRight size={24} strokeWidth={1.5} />
-        </button>
+        {/* ===== LAYER 3: NAVIGATION ARROWS — hidden on single video ===== */}
+        {sliderData.length > 1 && !hasVideo && (
+          <>
+            <button
+              onClick={prevSlide}
+              className="hero-arrow hero-arrow-left hidden sm:flex"
+              aria-label="Anterior"
+            >
+              <ChevronLeft size={24} strokeWidth={1.5} />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="hero-arrow hero-arrow-right hidden sm:flex"
+              aria-label="Siguiente"
+            >
+              <ChevronRight size={24} strokeWidth={1.5} />
+            </button>
+          </>
+        )}
 
-        {/* Slider Dots (z-40, bottom center) */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ zIndex: 40 }}>
-          {sliderData.map((_, index) => (
-            <button key={index} onClick={() => setCurrentSlide(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'}`} aria-label={`Ir a slide ${index + 1}`} />
-          ))}
-        </div>
+        {/* Slider Dots (z-40, bottom center) — hidden on single video */}
+        {sliderData.length > 1 && (
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ zIndex: 40 }}>
+            {sliderData.map((_, index) => (
+              <button key={index} onClick={() => setCurrentSlide(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-[#d4a017]' : 'w-2 bg-white/40 hover:bg-white/60'}`} aria-label={`Ir a slide ${index + 1}`} />
+            ))}
+          </div>
+        )}
 
-        {/* Slide Counter (z-40, bottom right) */}
-        <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block" style={{ zIndex: 40 }}>
-          <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
-          <span className="mx-2">/</span>
-          <span>{String(sliderData.length).padStart(2, '0')}</span>
-        </div>
+        {/* Slide Counter (z-40, bottom right) — hidden on single video */}
+        {sliderData.length > 1 && (
+          <div className="absolute bottom-8 right-8 text-white/50 text-sm font-medium hidden sm:block" style={{ zIndex: 40 }}>
+            <span className="text-white text-2xl font-bold">{String(currentSlide + 1).padStart(2, '0')}</span>
+            <span className="mx-2">/</span>
+            <span>{String(sliderData.length).padStart(2, '0')}</span>
+          </div>
+        )}
 
       </section>
 
