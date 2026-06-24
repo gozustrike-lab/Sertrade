@@ -75,21 +75,25 @@ export function getImageUrl(image: SanityImage | null | undefined, width = 800, 
 
 export function getVideoUrl(file: SanityFile | null | undefined): string | null {
   if (!file || !file.asset) return null;
-  // When the query resolves asset-> { url }, use the direct URL
-  if (file.asset.url) return file.asset.url;
-  // Fallback: construct URL from _id or _ref (raw asset reference)
+  const asset = file.asset as any;
+  // 1. Use the direct URL from Sanity (most reliable, auto-generated)
+  if (asset.url) return asset.url;
+  // 2. Construct CDN URL from resolved asset fields
   try {
-    const assetId = (file.asset as any)._id || file.asset._ref || "";
-    // Extract the actual asset ID (last part after dashes)
-    const idParts = assetId.split("-");
-    // Sanity asset IDs look like: file-abc123def456-mp4 or just abc123def456
-    const fileId = idParts[0] === "file" ? idParts.slice(1).join("-") : idParts.join("-");
-    // Determine extension from asset ID or default to mp4
-    const ext = assetId.includes(".") ? assetId.split(".").pop() : "mp4";
     const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
     const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
     if (!projectId) return null;
-    // Correct CDN format: files/{projectId}/{dataset}/{assetId}/{filename}
-    return `https://cdn.sanity.io/files/${projectId}/${dataset}/${fileId}.${ext}`;
+    // Full asset ID: e.g. "file-abc123def456-mp4"
+    const assetId = asset._id || asset._ref || "";
+    if (!assetId) return null;
+    // If we have the original filename, construct full CDN path
+    const originalFilename = asset.originalFilename || "";
+    // CDN format: files/{projectId}/{dataset}/{fullAssetId}/{originalFilename}
+    // This 302-redirects to the actual file — works reliably
+    if (originalFilename) {
+      return `https://cdn.sanity.io/files/${projectId}/${dataset}/${assetId}/${encodeURIComponent(originalFilename)}`;
+    }
+    // Without filename, use asset ID alone (redirect still works)
+    return `https://cdn.sanity.io/files/${projectId}/${dataset}/${assetId}`;
   } catch { return null; }
 }

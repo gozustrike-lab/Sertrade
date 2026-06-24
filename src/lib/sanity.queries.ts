@@ -1,5 +1,5 @@
 const IMAGE_FIELDS = `asset->, alt, caption, hotspot, crop`;
-const FILE_FIELDS = `asset-> { _id, url, mimeType }`;
+const FILE_FIELDS = `asset-> { _id, url, mimeType, path, originalFilename }`;
 
 export const ALL_SERVICE_CATEGORIES_QUERY = `*[_type == "serviceCategory"] | order(order asc) { _id, name, "slug": slug.current, description, icon, color, order }`;
 export const ALL_SERVICES_QUERY = `*[_type == "service"] | order(order asc) { _id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, description, category-> { _id, name, "slug": slug.current, icon, color }, subservices[] { title, description, image { ${IMAGE_FIELDS} } }, featured, order }`;
