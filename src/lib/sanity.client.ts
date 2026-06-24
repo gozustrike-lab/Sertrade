@@ -77,10 +77,19 @@ export function getVideoUrl(file: SanityFile | null | undefined): string | null 
   if (!file || !file.asset) return null;
   // When the query resolves asset-> { url }, use the direct URL
   if (file.asset.url) return file.asset.url;
-  // Fallback: construct URL from _ref (raw asset reference)
+  // Fallback: construct URL from _id or _ref (raw asset reference)
   try {
-    const ref = file.asset._ref || ""; const parts = ref.split("-"); parts[0] = "file"; const [, , ...idParts] = parts; const id = idParts.join("-");
-    const cdnBase = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ? `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_DATASET || "production"}/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}` : "";
-    return `${cdnBase}/${id}.${(file.asset._ref.split(".").pop()) || "mp4"}`;
+    const assetId = (file.asset as any)._id || file.asset._ref || "";
+    // Extract the actual asset ID (last part after dashes)
+    const idParts = assetId.split("-");
+    // Sanity asset IDs look like: file-abc123def456-mp4 or just abc123def456
+    const fileId = idParts[0] === "file" ? idParts.slice(1).join("-") : idParts.join("-");
+    // Determine extension from asset ID or default to mp4
+    const ext = assetId.includes(".") ? assetId.split(".").pop() : "mp4";
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+    if (!projectId) return null;
+    // Correct CDN format: files/{projectId}/{dataset}/{assetId}/{filename}
+    return `https://cdn.sanity.io/files/${projectId}/${dataset}/${fileId}.${ext}`;
   } catch { return null; }
 }
