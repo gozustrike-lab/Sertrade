@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { VisualEditing } from "@/components/VisualEditing";
-import { SanityLive } from "@/sanity/live";
+import { SanityLiveWithToken } from "@/components/SanityLiveWithToken";
 import LayoutShell from "@/components/LayoutShell";
 import { fetchCMS } from "@/lib/fetchCMS";
 import { SITE_SETTINGS_QUERY } from "@/lib/sanity.queries";
@@ -98,7 +98,7 @@ export default async function RootLayout({
         <meta name="theme-color" content="#004691" />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <SanityLive includeDrafts />
+        <SanityLiveWithToken includeDrafts />
         <LayoutShell siteSettings={siteSettings}>{children}</LayoutShell>
         <VisualEditing />
       </body>
