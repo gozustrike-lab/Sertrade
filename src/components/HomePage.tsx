@@ -249,13 +249,37 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
                 {(s.videoMp4 || s.videoWebm) ? (
                   <video
                     key={s.videoMp4 || s.videoWebm}
+                    ref={(el) => {
+                      if (el) {
+                        // Programmatic play — required by Safari, iOS Safari, Chrome Android
+                        const tryPlay = () => {
+                          if (el.paused) {
+                            el.play().catch(() => {});
+                          }
+                        };
+                        // Try immediately
+                        tryPlay();
+                        // Also try on canplay (metadata loaded, ready to play)
+                        el.addEventListener('canplay', tryPlay, { once: true });
+                        // Also try on loadeddata (first frame available)
+                        el.addEventListener('loadeddata', tryPlay, { once: true });
+                      }
+                    }}
                     className="absolute inset-0 w-full h-full object-cover"
-                    autoPlay={s.videoAutoplay}
-                    muted={s.videoMuted}
-                    loop={s.videoLoop}
+                    autoPlay
+                    muted
+                    loop
                     playsInline
                     poster={s.poster || undefined}
                     preload="auto"
+                    onError={(e) => {
+                      console.warn('[Hero Video] Playback error, trying fallback play:', e);
+                      const video = e.currentTarget;
+                      // Retry play after short delay
+                      setTimeout(() => {
+                        video.play().catch(() => {});
+                      }, 500);
+                    }}
                     {...(s._id ? ve(s._id, 'heroSlide', 'backgroundVideoMp4') : {})}
                   >
                     {s.videoWebm && <source src={s.videoWebm} type="video/webm" />}
