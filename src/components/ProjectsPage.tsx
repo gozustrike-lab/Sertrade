@@ -5,6 +5,7 @@ import {
   MapPin, Maximize2, Calendar, Building2, Eye, ArrowRight, MessageCircle,
   ChevronLeft, ChevronRight, Play, X, Ruler, Briefcase, Users,
 } from 'lucide-react';
+import Link from 'next/link';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
@@ -361,10 +362,12 @@ function ProjectCard({
           BLOCK 3: TECHNICAL SHEET — Compact V4 Premium
           ══════════════════════════════════════════════ */}
       <div className="mt-6 md:mt-8 w-full">
-        {/* Massive uppercase title */}
-        <h2 className="text-[#004691] text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black tracking-tight uppercase leading-[1.05] mb-1">
-          {project.title}
-        </h2>
+        {/* Massive uppercase title — clickable link to detail page */}
+        <Link href={`/proyectos/${project.slug}`} className="block group/title">
+          <h2 className="text-[#004691] text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black tracking-tight uppercase leading-[1.05] mb-1 group-hover/title:text-[#d4a017] transition-colors duration-300">
+            {project.title}
+          </h2>
+        </Link>
 
         {/* Category + Year */}
         <div className="flex items-center gap-3 mb-4 md:mb-6">
