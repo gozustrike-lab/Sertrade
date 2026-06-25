@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 import "./globals.css";
+import { VisualEditing } from "@/components/VisualEditing";
+import { SanityLiveWithToken } from "@/components/SanityLiveWithToken";
 import LayoutShell from "@/components/LayoutShell";
 import { fetchCMS } from "@/lib/fetchCMS";
 import { SITE_SETTINGS_QUERY } from "@/lib/sanity.queries";
@@ -85,18 +88,21 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const siteSettings = await getSiteSettings();
+  const { isEnabled: isDraftMode } = await draftMode();
 
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+        <link rel="icon" type="text/png" sizes="64x64" href="/favicon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <meta name="msapplication-TileColor" content="#004691" />
         <meta name="theme-color" content="#004691" />
       </head>
       <body className="antialiased bg-background text-foreground">
+        {isDraftMode && <SanityLiveWithToken includeDrafts />}
         <LayoutShell siteSettings={siteSettings}>{children}</LayoutShell>
+        {isDraftMode && <VisualEditing />}
       </body>
     </html>
   );
