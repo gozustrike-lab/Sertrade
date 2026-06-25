@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 import "./globals.css";
 import { VisualEditing } from "@/components/VisualEditing";
 import { SanityLiveWithToken } from "@/components/SanityLiveWithToken";
@@ -87,6 +88,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const siteSettings = await getSiteSettings();
+  const { isEnabled: isDraftMode } = await draftMode();
 
   return (
     <html lang="es" suppressHydrationWarning>
@@ -98,9 +100,9 @@ export default async function RootLayout({
         <meta name="theme-color" content="#004691" />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <SanityLiveWithToken includeDrafts />
+        {isDraftMode && <SanityLiveWithToken includeDrafts />}
         <LayoutShell siteSettings={siteSettings}>{children}</LayoutShell>
-        <VisualEditing />
+        {isDraftMode && <VisualEditing />}
       </body>
     </html>
   );

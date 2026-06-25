@@ -6,6 +6,7 @@ import { PencilRuler, Wrench, Zap } from 'lucide-react';
 import Link from 'next/link';
 import type { SanityService, SanityServiceCategory } from '@/lib/sanity.client';
 import { getImageUrl, plainText } from '@/lib/sanity.client';
+import { ve } from '@/lib/ve';
 
 /* =============================================
    PROPS
@@ -146,6 +147,7 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
                 onMouseEnter={() => handleMouseEnter(card.id)}
                 onMouseLeave={handleMouseLeave}
                 onClick={() => handleTap(card.id)}
+                {...((card as { _id?: string })._id ? ve((card as { _id?: string })._id!, 'serviceCategory', 'name') : {})}
               >
                 <motion.div
                   className="relative w-full h-full"

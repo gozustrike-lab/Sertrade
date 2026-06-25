@@ -31,6 +31,7 @@ import type {
   SanityPartner,
 } from '@/lib/sanity.client';
 import { getImageUrl, getVideoUrl, plainText } from '@/lib/sanity.client';
+import { ve } from '@/lib/ve';
 
 /* =============================================
    PROPS INTERFACE
@@ -59,6 +60,7 @@ const fallbackSliderData: Array<{
   videoAutoplay?: boolean;
   videoMuted?: boolean;
   videoLoop?: boolean;
+  _id?: string;
 }> = [
   { image: '/images/hero/hero-construction.jpg', position: 'center center' },
   { image: '/images/hero/hero-electrical.jpg', position: 'center center' },
@@ -79,7 +81,7 @@ const fallbackProStats = [
   { icon: Clock, value: 10, prefix: '+', suffix: ' Años', label: 'Experiencia' },
 ];
 
-const fallbackProjects = [
+const fallbackProjects: Array<{ title: string; category: string; location: string; area: string; image: string; slug: string; _id?: string }> = [
   { title: 'Centro Comercial Plaza Central', category: 'Comercial', location: 'Lima, Perú', area: '15,000 m²', image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80', slug: 'plaza-central' },
   { title: 'Clínica San Rafael', category: 'Salud', location: 'Bogotá, Colombia', area: '8,500 m²', image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80', slug: 'clinica-san-rafael' },
   { title: 'Residencial Los Cedros', category: 'Residencial', location: 'La Molina, Lima', area: '3,200 m²', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', slug: 'residencial-los-cedros' },
@@ -230,7 +232,11 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
         {/* ===== LAYER 1: BACKGROUND MEDIA (z-10) ===== */}
         {hasVideo ? (
           /* ── VIDEO MODE: Immersive full-bleed video ── */
-          <div className="absolute inset-0" style={{ zIndex: 10 }}>
+          <div
+            className="absolute inset-0"
+            style={{ zIndex: 10 }}
+            {...(sliderData[currentSlide]?._id ? ve(sliderData[currentSlide]._id, 'heroSlide', 'backgroundVideoMp4') : {})}
+          >
             {sliderData.map((s, index) => (
               <div
                 key={`vid-${index}`}
@@ -250,6 +256,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
                     playsInline
                     poster={s.poster || undefined}
                     preload="auto"
+                    {...(s._id ? ve(s._id, 'heroSlide', 'backgroundVideoMp4') : {})}
                   >
                     {s.videoWebm && <source src={s.videoWebm} type="video/webm" />}
                     {s.videoMp4 && <source src={s.videoMp4} type="video/mp4" />}
@@ -308,6 +315,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
 
               {/* Main Title — from CMS hero slide or hardcoded brand */}
               <h2
+                {...(cmsSlides?.[currentSlide]?._id ? ve(cmsSlides[currentSlide]._id, 'heroSlide', 'title') : {})}
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -330,7 +338,10 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
                 }}
                 className="mb-2"
               >
-                <span className="text-[#E5E7EB] text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light">
+                <span
+                className="text-[#E5E7EB] text-[11px] sm:text-xs tracking-[0.3em] uppercase font-light"
+                {...(cmsSlides?.[currentSlide]?._id ? ve(cmsSlides[currentSlide]._id, 'heroSlide', 'subtitle') : {})}
+              >
                   {plainText(cmsSlides?.[currentSlide]?.subtitle) || 'Servicios de Arquitectura y Servicios Generales'}
                 </span>
               </div>
@@ -486,16 +497,20 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {proStats.map((stat, i) => (
-              <StatCard
+              <div
                 key={(stat as { _id?: string })._id || i}
-                icon={stat.icon}
-                value={stat.value}
-                prefix={stat.prefix}
-                suffix={stat.suffix}
-                label={stat.label}
-                delay={i * 0.3}
-                isActive={activeStatIndex === i}
-              />
+                {...((stat as { _id?: string })._id ? ve((stat as { _id?: string })._id!, 'stat', 'value') : {})}
+              >
+                <StatCard
+                  icon={stat.icon}
+                  value={stat.value}
+                  prefix={stat.prefix}
+                  suffix={stat.suffix}
+                  label={stat.label}
+                  delay={i * 0.3}
+                  isActive={activeStatIndex === i}
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -522,6 +537,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
                   className="relative w-full h-[450px] sm:h-[550px] md:h-[600px] overflow-hidden group bg-black cursor-pointer rounded-none sm:rounded-xl"
                   whileHover={{ y: -6, boxShadow: '0 25px 60px rgba(0,0,0,0.35)', transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                   onClick={() => navigateWithTransition(`/proyectos#${project.slug}`)}
+                  {...(project._id ? ve(project._id, 'project', 'title') : {})}
                 >
                   {/* Full-bleed image */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -703,6 +719,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
                   key={(client as { _id?: string })._id || i}
                   className="flex flex-col items-center gap-3 sm:gap-4 group"
                   whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                  {...((client as { _id?: string })._id ? ve((client as { _id?: string })._id!, 'partner', 'name') : {})}
                 >
                   <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-xl sm:rounded-2xl bg-white border border-gray-100 shadow-md flex items-center justify-center p-4 sm:p-6 group-hover:shadow-xl group-hover:border-[#004691]/20 transition-all duration-500">
                     {/* eslint-disable-next-line @next/next/no-img-element */}

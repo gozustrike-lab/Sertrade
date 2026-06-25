@@ -10,6 +10,7 @@ import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
 import type { SanityProject } from '@/lib/sanity.client';
 import { getImageUrl, plainText } from '@/lib/sanity.client';
+import { ve } from '@/lib/ve';
 
 /* ═══════════════════════════════════════════════════
    PROPS
@@ -208,7 +209,7 @@ function ProjectCard({
   ];
 
   return (
-    <article id={`project-${project.slug}`} className="group w-full max-w-7xl mx-auto">
+    <article id={`project-${project.slug}`} className="group w-full max-w-7xl mx-auto" {...(project._id ? ve(project._id, 'project', 'title') : {})}>
       {/* ══════════════════════════════════════════════
           BLOCK 1: HYBRID GRID — Main 70% + Video 30% — Full Bleed
           ══════════════════════════════════════════════ */}

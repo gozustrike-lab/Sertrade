@@ -7,6 +7,7 @@ import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
 import type { SanityService, SanityServiceCategory } from '@/lib/sanity.client';
 import { getImageUrl, plainText } from '@/lib/sanity.client';
+import { ve } from '@/lib/ve';
 
 /* ═══════════════════════════════════════════════════
    PROPS
@@ -140,6 +141,7 @@ function ServiceModule({ module, onOpenLightbox }: {
       <div
         className="relative w-full h-[220px] md:h-[280px] bg-cover bg-center flex flex-col justify-center items-center overflow-hidden rounded-none"
         style={{ backgroundImage: `url(${module.coverImage})` }}
+        {...((module as { _id?: string })._id ? ve((module as { _id?: string })._id!, 'serviceCategory', 'name') : {})}
       >
         {/* Dark overlay + cinematic blur */}
         <div className="absolute inset-0 bg-black/55" />
@@ -189,6 +191,7 @@ function ServiceModule({ module, onOpenLightbox }: {
             key={cardIdx}
             className="flex flex-col shrink-0 w-screen md:w-auto md:min-w-0 md:shrink whitespace-normal cursor-pointer snap-center md:snap-none"
             onClick={() => handleCardClick(cardIdx)}
+            {...((card as { _id?: string })._id ? ve((card as { _id?: string })._id!, 'service', 'title') : {})}
           >
             {/* Tall vertical image — Portrait Pro + clickable overlay */}
             <div className="w-full h-[480px] md:h-[560px] overflow-hidden rounded-none relative group/img">
