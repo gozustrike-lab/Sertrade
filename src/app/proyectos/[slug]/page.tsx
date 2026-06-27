@@ -2,9 +2,7 @@ import { fetchCMS } from '@/lib/fetchCMS';
 import { ALL_PROJECTS_QUERY, projectBySlugQuery } from '@/lib/sanity.queries';
 import type { SanityProject } from '@/lib/sanity.client';
 import type { Metadata } from 'next';
-import { normalizeProject, getFallbackBySlug, getFallbackSlugs } from '@/lib/projectHelpers';
-import type { ProjectData } from '@/lib/projectHelpers';
-import ProjectDetailPage from '@/components/ProjectDetailPage';
+import ProjectDetailPage, { normalizeProject, getFallbackBySlug, getFallbackSlugs } from '@/components/ProjectDetailPage';
 
 export const revalidate = 0;
 
