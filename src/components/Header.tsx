@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { Menu, X, ArrowRight, Phone, Mail } from 'lucide-react';
+import { ve } from '@/lib/ve';
+import type { SanitySiteSettings } from '@/lib/sanity.client';
 
 /* =============================================
    NAV ITEMS — Centered menu
@@ -71,7 +73,7 @@ const socialLinks = [
   },
 ];
 
-export default function Header() {
+export default function Header({ siteSettings }: { siteSettings?: SanitySiteSettings | null }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -160,7 +162,7 @@ export default function Header() {
 
           {/* ====== LOGO (LEFT) ====== */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0 transition-all duration-[400ms] ease-in-out">
-            <div className="transition-transform duration-300 ease-in-out opacity-100">
+            <div className="transition-transform duration-300 ease-in-out opacity-100" {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'logoWhite') : {})}>
               <BrandLogo className={logoHeightPC} />
             </div>
             <div className="hidden sm:flex flex-col transition-all duration-[400ms] ease-in-out">
@@ -250,7 +252,7 @@ export default function Header() {
                 {/* Close Button */}
                 <div className="flex items-center justify-between px-6 pt-5 pb-4">
                   <div className="flex items-center gap-2.5">
-                    <div className="opacity-100">
+                    <div className="opacity-100" {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'logoWhite') : {})}>
                       <BrandLogo className="h-9 sm:h-10" />
                     </div>
                     <span className="text-white font-bold text-base tracking-wide">SERTRADE</span>
@@ -333,11 +335,11 @@ export default function Header() {
                     transition={{ type: 'spring', stiffness: 200, damping: 25, delay: 0.38 }}
                     className="space-y-2.5 pt-2"
                   >
-                    <a href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, quiero información sobre sus servicios.')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/50 hover:text-white/80 text-sm transition-colors">
+                    <a href={`https://wa.me/51944106163?text=${encodeURIComponent('Hola, quiero información sobre sus servicios.')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/50 hover:text-white/80 text-sm transition-colors" {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'phone') : {})}>
                       <Phone size={14} strokeWidth={1.5} />
                       <span>+51 944 106 163</span>
                     </a>
-                    <a href="mailto:info@sertradedesign.com" className="flex items-center gap-3 text-white/50 hover:text-white/80 text-sm transition-colors">
+                    <a href="mailto:info@sertradedesign.com" className="flex items-center gap-3 text-white/50 hover:text-white/80 text-sm transition-colors" {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'email') : {})}>
                       <Mail size={14} strokeWidth={1.5} />
                       <span>info@sertradedesign.com</span>
                     </a>

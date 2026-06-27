@@ -321,6 +321,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
                     transform: index === currentSlide ? 'scale(1)' : 'scale(1.08)',
                     transition: 'transform 10s ease-out',
                   }}
+                  {...(s._id ? ve(s._id, 'heroSlide', 'backgroundImage') : {})}
                 />
                 {/* Dark blue overlay for text readability */}
                 <div className="absolute inset-0 bg-[rgba(0,20,50,0.60)]" />
@@ -570,6 +571,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
                     alt={project.title}
                     className="w-full h-full object-cover opacity-85 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"
                     loading="lazy"
+                    {...(project._id ? ve(project._id, 'project', 'coverImage') : {})}
                   />
                   {/* Gradient overlay — text contrast backdrop */}
                   <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 flex flex-col justify-end p-6 md:p-8 text-center">
@@ -745,7 +747,7 @@ export default function HomePage({ heroSlides: cmsSlides, stats: cmsStats, servi
                   whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                   {...((client as { _id?: string })._id ? ve((client as { _id?: string })._id!, 'partner', 'name') : {})}
                 >
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-xl sm:rounded-2xl bg-white border border-gray-100 shadow-md flex items-center justify-center p-4 sm:p-6 group-hover:shadow-xl group-hover:border-[#004691]/20 transition-all duration-500">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-xl sm:rounded-2xl bg-white border border-gray-100 shadow-md flex items-center justify-center p-4 sm:p-6 group-hover:shadow-xl group-hover:border-[#004691]/20 transition-all duration-500" {...((client as { _id?: string })._id ? ve((client as { _id?: string })._id!, 'partner', 'logo') : {})}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={client.img}

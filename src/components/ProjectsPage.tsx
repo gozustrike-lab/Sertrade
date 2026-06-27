@@ -219,6 +219,7 @@ function ProjectCard({
         <div
           className="relative overflow-hidden w-[70%] h-full cursor-pointer rounded-none"
           onClick={() => openLightboxFn(project.images, 0)}
+          {...(project._id ? ve(project._id, 'project', 'coverImage') : {})}
         >
           <motion.div
             className="w-full h-full"
@@ -334,7 +335,7 @@ function ProjectCard({
       {/* ══════════════════════════════════════════════
           BLOCK 2: SECONDARY GALLERY — 4x25% Full Bleed Seamless
           ══════════════════════════════════════════════ */}
-      <div className="grid grid-cols-4 gap-0 w-full h-[100px] sm:h-[140px] md:h-[180px]">
+      <div className="grid grid-cols-4 gap-0 w-full h-[100px] sm:h-[140px] md:h-[180px]" {...(project._id ? ve(project._id, 'project', 'gallery') : {})}>
         {project.images.map((img, i) => (
           <div
             key={i}
@@ -381,7 +382,7 @@ function ProjectCard({
         {/* Description + Specs — 12-column grid, compact gaps */}
         <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-start">
           {/* Left Block: Description — 7 cols */}
-          <div className="md:col-span-7 text-left text-gray-700 text-sm md:text-[14.5px] leading-snug space-y-1.5 mt-0">
+          <div className="md:col-span-7 text-left text-gray-700 text-sm md:text-[14.5px] leading-snug space-y-1.5 mt-0" {...(project._id ? ve(project._id, 'project', 'description') : {})}>
             <p className="font-medium">
               {project.description}
             </p>

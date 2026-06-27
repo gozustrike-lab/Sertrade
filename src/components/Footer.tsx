@@ -10,6 +10,8 @@ import {
   Linkedin,
   Send,
 } from 'lucide-react';
+import { ve } from '@/lib/ve';
+import type { SanitySiteSettings } from '@/lib/sanity.client';
 
 /* =============================================
    LIBRO DE RECLAMACIONES ICON (Peruvian)
@@ -52,7 +54,7 @@ const legalLinks = [
   { label: 'Política de Cookies', href: '/' },
 ];
 
-export default function Footer() {
+export default function Footer({ siteSettings }: { siteSettings?: SanitySiteSettings | null }) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -89,6 +91,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm font-semibold text-white hover:text-[#D4AF37] transition-colors"
+                  {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'phone') : {})}
                 >
                   +51 944 106 163
                 </a>
@@ -111,7 +114,7 @@ export default function Footer() {
               <h4 className="text-[11px] font-bold tracking-[0.25em] uppercase text-white mb-2">
                 Ubicación
               </h4>
-              <p className="text-white text-base md:text-lg font-black tracking-wide leading-snug max-w-[280px] uppercase drop-shadow-sm">
+              <p className="text-white text-base md:text-lg font-black tracking-wide leading-snug max-w-[280px] uppercase drop-shadow-sm" {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'address') : {})}>
                 Av. Guillermo Dansey 825,
                 Lima 15082
               </p>
@@ -158,7 +161,7 @@ export default function Footer() {
 
             {/* Column 1 — BRAND & SOCIALS */}
             <div>
-              <div className="flex items-center gap-2.5 mb-3">
+              <div className="flex items-center gap-2.5 mb-3" {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'companyName') : {})}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/sertrade-logo.png"
@@ -166,10 +169,10 @@ export default function Footer() {
                   className="h-7 w-auto object-contain"
                 />
               </div>
-              <p className="text-gray-500 text-[11px] leading-[1.65] mb-4 max-w-[220px]">
+              <p className="text-gray-500 text-[11px] leading-[1.65] mb-4 max-w-[220px]" {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'slogan') : {})}>
                 Estudio de arquitectura especializado en diseño y ejecución de espacios comerciales, de salud y residenciales.
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2" {...(siteSettings?._id ? ve(siteSettings._id, 'siteSettings', 'whatsapp') : {})}>
                 {[Facebook, Instagram, Linkedin].map((Icon, i) => (
                   <a
                     key={i}

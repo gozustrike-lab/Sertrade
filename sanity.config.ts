@@ -77,7 +77,7 @@ export default defineConfig({
           project: defineLocations({ type: "project", resolve: (doc) => ({ locations: [{ title: "Proyectos", href: "/proyectos" }, { title: `Proyecto: ${doc.title || ""}`, href: `/proyectos/${doc.slug?.current || doc.slug || ""}` }] }) }),
           teamMember: defineLocations({ type: "teamMember", resolve: () => ({ locations: [{ title: "Nosotros", href: "/#nosotros" }] }) }),
           testimonial: defineLocations({ type: "testimonial", resolve: () => ({ locations: [{ title: "Inicio", href: "/" }] }) }),
-          siteSettings: defineLocations({ type: "siteSettings", resolve: () => ({ locations: [{ title: "Inicio", href: "/#inicio" }, { title: "Nosotros", href: "/#nosotros" }, { title: "Contacto", href: "/#contacto" }] }) }),
+          siteSettings: defineLocations({ type: "siteSettings", resolve: () => ({ locations: [{ title: "Inicio (Header + Hero)", href: "/" }, { title: "Nosotros", href: "/#nosotros" }, { title: "Contacto (Footer)", href: "/#contacto" }, { title: "Servicios", href: "/servicios" }, { title: "Proyectos", href: "/proyectos" }] }) }),
         },
       },
     }),

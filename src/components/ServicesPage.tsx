@@ -201,6 +201,7 @@ function ServiceModule({ module, onOpenLightbox }: {
                 alt={card.title}
                 className="w-full h-[480px] md:h-[560px] object-cover rounded-none block transition-transform duration-700 ease-out group-hover/img:scale-105"
                 loading="lazy"
+                {...((card as { _id?: string })._id ? ve((card as { _id?: string })._id!, 'service', 'coverImage') : {})}
               />
               {/* Zoom hint overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-all duration-300 flex items-center justify-center">
@@ -211,7 +212,7 @@ function ServiceModule({ module, onOpenLightbox }: {
             </div>
 
             {/* Immersive centered text block */}
-            <div className="space-y-1 mt-3 text-center">
+            <div className="space-y-1 mt-3 text-center" {...((card as { _id?: string })._id ? ve((card as { _id?: string })._id!, 'service', 'description') : {})}>
               <h4 className="text-gray-900 text-sm md:text-base font-bold tracking-wide uppercase">
                 {card.title}
               </h4>

@@ -14,9 +14,9 @@ export default function LayoutShell({ children, siteSettings }: { children: Reac
     <>
       <Preloader />
       <div className="min-h-screen flex flex-col bg-white">
-        <Header />
+        <Header siteSettings={siteSettings} />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer siteSettings={siteSettings} />
         <WhatsAppButton />
       </div>
     </>

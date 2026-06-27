@@ -9,133 +9,15 @@ import {
 } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
-import { getImageUrl, plainText } from '@/lib/sanity.client';
 import { ve } from '@/lib/ve';
-import type { SanityProject } from '@/lib/sanity.client';
+import type { ProjectData } from '@/lib/projectHelpers';
 
 /* ═══════════════════════════════════════════════════
-   TYPES
+   COMPONENT PROPS
    ═══════════════════════════════════════════════════ */
-interface ProjectData {
-  _id?: string;
-  title: string;
-  slug: string;
-  category: string;
-  location: string;
-  area: string;
-  year: string;
-  client: string;
-  status: string;
-  description: string;
-  images: string[];
-}
-
 interface ProjectDetailPageProps {
   project: ProjectData | null;
   moreProjects: ProjectData[];
-}
-
-/* ═══════════════════════════════════════════════════
-   FALLBACK PROJECTS (same data as ProjectsPage for consistency)
-   ═══════════════════════════════════════════════════ */
-const fallbackProjects: Omit<ProjectData, '_id'>[] = [
-  {
-    slug: 'plaza-central', title: 'Centro Comercial Plaza Central', category: 'Comercial',
-    location: 'Lima, Perú', area: '15,000 m²', year: '2023', client: 'Inversiones SAC', status: 'Completado',
-    description: 'Un complejo comercial de tres niveles que integra retail, entretenimiento y gastronomía bajo un concepto arquitectónico moderno y sostenible. El diseño prioriza la circulación fluida y la experiencia del visitante con espacios abiertos iluminados naturalmente. La fachada combina paneles de vidrio templado con elementos de concreto expuesto, creando una identidad visual contemporánea que se integra con el entorno urbano del distrito financiero.',
-    images: [
-      'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&q=80',
-      'https://images.unsplash.com/photo-1567449303078-57ad995bd329?w=800&q=80',
-      'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80',
-      'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=800&q=80',
-    ],
-  },
-  {
-    slug: 'clinica-san-rafael', title: 'Clínica San Rafael', category: 'Salud',
-    location: 'Bogotá, Colombia', area: '8,500 m²', year: '2022', client: 'Grupo Salud Integral', status: 'Completado',
-    description: 'Una clínica de alta complejidad diseñada para optimizar los flujos clínicos y ofrecer un ambiente terapéutico. Las áreas de espera se concibieron como jardines interiores que promueven la calma y el bienestar de pacientes y acompañantes. La iluminación natural controlada y los materiales antimicrobianos garantizan un espacio que equilibra funcionalidad hospitalaria con confort humano.',
-    images: [
-      'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1200&q=80',
-      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
-      'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&q=80',
-      'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
-    ],
-  },
-  {
-    slug: 'residencial-los-cedros', title: 'Residencial Los Cedros', category: 'Residencial',
-    location: 'La Molina, Lima', area: '3,200 m²', year: '2024', client: 'Privado', status: 'En Proceso',
-    description: 'Vivienda unifamiliar contemporánea que fusiona la calidez del hogar con líneas arquitectónicas audaces. Grandes ventanales de piso a techo conectan el interior con el jardín, creando una experiencia de vida íntegra con la naturaleza circundante. La cubierta verde inclinada y los sistemas de captación pluvial reflejan un compromiso con la sostenibilidad ambiental.',
-    images: [
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
-      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80',
-    ],
-  },
-  {
-    slug: 'oficinas-torre-andina', title: 'Oficinas Torre Andina', category: 'Comercial',
-    location: 'Quito, Ecuador', area: '6,000 m²', year: '2023', client: 'Corporación Andina', status: 'Completado',
-    description: 'Torre de oficinas corporativas con certificación LEED Gold. El diseño incorpora bioclimatismo, paneles solares y jardines verticales. Los espacios de coworking y terrazas verdes fomentan la colaboración y el bienestar laboral. La estructura de acero y vidrio de alta eficiencia térmica reduce el consumo energético en un 35% comparado con edificaciones convencionales.',
-    images: [
-      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80',
-      'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&q=80',
-      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80',
-      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80',
-    ],
-  },
-  {
-    slug: 'hospital-metropolitano', title: 'Hospital Metropolitano', category: 'Salud',
-    location: 'Guayaquil, Ecuador', area: '22,000 m²', year: '2024', client: 'Ministerio de Salud', status: 'En Proceso',
-    description: 'Proyecto hospitalario de gran escala con 200 camas. El diseño modular permite futuras ampliaciones, mientras que la eficiencia energética y la iluminación natural son pilares fundamentales de la concepción espacial. Los pasillos amplios, las zonas de descanso interior y la señalización visual basada en colores naturales facilitan la orientación de pacientes y visitantes.',
-    images: [
-      'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80',
-      'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
-      'https://images.unsplash.com/photo-1551076805-e1869033e561?w=800&q=80',
-      'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80',
-    ],
-  },
-  {
-    slug: 'casa-del-lago', title: 'Casa del Lago', category: 'Residencial',
-    location: 'Cusco, Perú', area: '1,800 m²', year: '2023', client: 'Privado', status: 'Completado',
-    description: 'Residencia de lujo junto al lago que integra materiales locales como piedra andina y madera de eucalipto en un diseño contemporáneo. La casa se organiza en volúmenes escalonados que se adaptan a la topografía del terreno. El sistema de calefacción radiante y la orientación solar pasiva permiten confort térmico durante todo el año en altitud.',
-    images: [
-      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80',
-      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80',
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80',
-      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80',
-    ],
-  },
-];
-
-/* ═══════════════════════════════════════════════════
-   EXPORT: normalize a SanityProject into ProjectData
-   ═══════════════════════════════════════════════════ */
-export function normalizeProject(p: SanityProject): ProjectData {
-  const slug = typeof p.slug === 'string' ? p.slug : (p.slug as { current?: string })?.current || '';
-  const galleryUrls = p.gallery?.map(img => getImageUrl(img, 1200, 800) || '').filter(Boolean) || [];
-  const coverUrl = getImageUrl(p.coverImage, 1200, 800) || '';
-  const images = galleryUrls.length > 0 ? galleryUrls : (coverUrl ? [coverUrl] : fallbackProjects[0].images);
-  return {
-    _id: p._id,
-    title: p.title,
-    slug,
-    category: p.tags?.[0] || 'Proyecto',
-    location: p.location || '',
-    area: p.area ? `${p.area} m²` : '',
-    year: p.year || '',
-    client: p.client || '',
-    status: p.status === 'completed' ? 'Completado' : p.status === 'in-progress' ? 'En Proceso' : 'Planificado',
-    description: plainText(p.description) || '',
-    images,
-  };
-}
-
-export function getFallbackBySlug(slug: string): ProjectData | undefined {
-  return fallbackProjects.find(p => p.slug === slug);
-}
-
-export function getFallbackSlugs(): string[] {
-  return fallbackProjects.map(p => p.slug);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -199,6 +81,7 @@ export default function ProjectDetailPage({ project, moreProjects }: ProjectDeta
           animate={{ scale: 1 }}
           transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0"
+          {...(project._id ? ve(project._id, 'project', 'coverImage') : {})}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -245,6 +128,7 @@ export default function ProjectDetailPage({ project, moreProjects }: ProjectDeta
               {/* Title */}
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.05]"
                 style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
+                {...(project._id ? ve(project._id, 'project', 'title') : {})}
               >
                 {project.title}
               </h1>
@@ -276,7 +160,7 @@ export default function ProjectDetailPage({ project, moreProjects }: ProjectDeta
             {/* Description — 7 columns */}
             <ScrollReveal animation="fade-up" className="lg:col-span-7">
               <h2 className="text-[#004691] text-lg md:text-xl font-bold uppercase tracking-wide mb-4">Sobre el Proyecto</h2>
-              <div className="text-gray-700 text-sm md:text-[15px] leading-relaxed space-y-3">
+              <div className="text-gray-700 text-sm md:text-[15px] leading-relaxed space-y-3" {...(project._id ? ve(project._id, 'project', 'description') : {})}>
                 {project.description.split('\n').filter(Boolean).map((paragraph, i) => (
                   <p key={i}>{paragraph}</p>
                 ))}
@@ -317,7 +201,7 @@ export default function ProjectDetailPage({ project, moreProjects }: ProjectDeta
               <h2 className="text-[#004691] text-lg md:text-xl font-bold uppercase tracking-wide mb-6">Galería</h2>
             </ScrollReveal>
             <ScrollReveal animation="fade-up" delay={0.1}>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4" {...(project._id ? ve(project._id, 'project', 'gallery') : {})}>
                 {project.images.map((img, i) => (
                   <motion.div
                     key={i}
@@ -362,7 +246,7 @@ export default function ProjectDetailPage({ project, moreProjects }: ProjectDeta
         <section className="py-8 md:py-12 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollReveal animation="fade-up">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4" {...(project._id ? ve(project._id, 'project', 'gallery') : {})}>
                 {project.images.slice(0, 2).map((img, i) => (
                   <motion.div
                     key={`wide-${i}`}
@@ -416,9 +300,10 @@ export default function ProjectDetailPage({ project, moreProjects }: ProjectDeta
                     whileHover={{ y: -4 }}
                     className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 hover:border-[#d4a017]/30 transition-all duration-400 cursor-pointer"
                     onClick={() => router.push(`/proyectos/${p.slug}`)}
+                    {...(p._id ? ve(p._id, 'project', 'title') : {})}
                   >
                     {/* Card image */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-gray-200">
+                    <div className="relative aspect-[16/10] overflow-hidden bg-gray-200" {...(p._id ? ve(p._id, 'project', 'coverImage') : {})}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={p.images[0] || ''}
