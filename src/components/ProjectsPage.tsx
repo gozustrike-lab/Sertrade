@@ -307,7 +307,7 @@ function ProjectCard({
         {/* RIGHT: Video Container — 30% — Same height */}
         <div
           className="relative overflow-hidden w-[30%] h-full bg-[#001C3D] rounded-none"
-          {...(project._id ? ve(project._id, 'project', project.video ? 'videoMp4' : 'gallery') : {})}
+          {...(project._id ? ve(project._id, 'project', 'videoMp4') : {})}
         >
           {project.video ? (
             <>
@@ -316,39 +316,33 @@ function ProjectCard({
                 key={project.video}
                 ref={(el) => {
                   if (!el) return;
-                  // Programmatic play fallback for Safari/iOS
                   const tryPlay = () => { if (el.paused) el.play().catch(() => {}); };
                   tryPlay();
                   el.addEventListener('canplay', tryPlay, { once: true });
                   el.addEventListener('loadeddata', tryPlay, { once: true });
-                  // IntersectionObserver: autoplay when scrolled into view, pause when out
                   const observer = new IntersectionObserver(
                     (entries) => {
                       entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                          el.play().catch(() => {});
-                        } else {
-                          el.pause();
-                        }
+                        if (entry.isIntersecting) { el.play().catch(() => {}); }
+                        else { el.pause(); }
                       });
                     },
                     { threshold: 0.4 }
                   );
                   observer.observe(el);
-                  // Store observer for cleanup — stored as a property on the element
                   (el as HTMLVideoElement & { _veObserver?: IntersectionObserver })._veObserver = observer;
                 }}
                 className="w-full h-full object-cover rounded-none"
                 autoPlay muted loop playsInline
                 poster={project.images[1]}
                 preload="auto"
-                onClick={() => setVideoOpen(true)}
+                onClick={(e) => { e.stopPropagation(); setVideoOpen(true); }}
               >
                 <source src={project.video} />
                 {project.videoWebmUrl && <source src={project.videoWebmUrl} />}
               </video>
 
-              {/* Semi-transparent overlay for status badge and label */}
+              {/* Semi-transparent overlay for status badge */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
 
               {/* Video label */}
@@ -361,16 +355,17 @@ function ProjectCard({
             </>
           ) : (
             <>
-              {/* Fallback: no video — show poster image + play icon (for YouTube/Vimeo) */}
+              {/* Fallback: no video — show poster image + play icon */}
               <img
                 src={project.images[1]}
                 alt={`${project.title} — Video`}
                 className="w-full h-full object-cover rounded-none opacity-60 group-hover/video:opacity-40 transition-opacity duration-500 cursor-pointer"
                 loading="lazy"
                 draggable={false}
+                onClick={(e) => { e.stopPropagation(); setVideoOpen(true); }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10 cursor-pointer" onClick={() => setVideoOpen(true)} />
-              <div className="absolute inset-0 flex items-center justify-center cursor-pointer" onClick={() => setVideoOpen(true)}>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10 cursor-pointer" onClick={(e) => { e.stopPropagation(); setVideoOpen(true); }} />
+              <div className="absolute inset-0 flex items-center justify-center cursor-pointer" onClick={(e) => { e.stopPropagation(); setVideoOpen(true); }}>
                 <motion.div
                   className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/25 flex items-center justify-center group-hover/video:scale-110 transition-all duration-300"
                   whileHover={{ scale: 1.15 }}
@@ -390,11 +385,11 @@ function ProjectCard({
             </>
           )}
 
-          {/* Status Badge — top right — compact */}
+          {/* Status Badge — top right */}
           <div className="absolute top-3 right-3 pointer-events-none">
             <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase ${
               project.status === 'Completado' ? 'bg-emerald-500/90 text-white' : 'bg-amber-500/90 text-white'
-            }`}>
+            }`} style={{ pointerEvents: 'none' }}>
               {project.status}
             </span>
           </div>

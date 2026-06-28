@@ -1,12 +1,12 @@
 const IMAGE_FIELDS = `asset->, alt, caption, hotspot, crop`;
 const FILE_FIELDS = `asset-> { _id, url, mimeType, path, originalFilename }`;
 
-export const ALL_SERVICE_CATEGORIES_QUERY = `*[_type == "serviceCategory"] | order(order asc) { _id, name, "slug": slug.current, description, icon, color, order }`;
-export const ALL_SERVICES_QUERY = `*[_type == "service"] | order(order asc) { _id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, description, category-> { _id, name, "slug": slug.current, icon, color }, subservices[] { title, description, image { ${IMAGE_FIELDS} } }, featured, order }`;
-export const FEATURED_SERVICES_QUERY = `*[_type == "service" && featured == true] | order(order asc) { _id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, description, category-> { _id, name, "slug": slug.current, icon, color }, subservices[] { title, description, image { ${IMAGE_FIELDS} } }, featured, order }[0..5]`;
-export function serviceBySlugQuery(slug: string) { return `*[_type == "service" && slug.current == "${slug}"][0] { _id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, description, category-> { _id, name, "slug": slug.current, icon, color }, subservices[] { title, description, image { ${IMAGE_FIELDS} } }, featured, order }`; }
+export const ALL_SERVICE_CATEGORIES_QUERY = `*[_type == "serviceCategory"] | order(order asc) { _id, name, "slug": slug.current, description, icon, color, flipTitle, flipServices[], flipCtaLabel, order }`;
+export const ALL_SERVICES_QUERY = `*[_type == "service"] | order(order asc) { _id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, description, category-> { _id, name, "slug": slug.current, icon, color, flipTitle, flipServices[], flipCtaLabel }, subservices[] { title, description, image { ${IMAGE_FIELDS} } }, featured, order }`;
+export const FEATURED_SERVICES_QUERY = `*[_type == "service" && featured == true] | order(order asc) { _id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, description, category-> { _id, name, "slug": slug.current, icon, color, flipTitle, flipServices[], flipCtaLabel }, subservices[] { title, description, image { ${IMAGE_FIELDS} } }, featured, order }[0..5]`;
+export function serviceBySlugQuery(slug: string) { return `*[_type == "service" && slug.current == "${slug}"][0] { _id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, description, category-> { _id, name, "slug": slug.current, icon, color, flipTitle, flipServices[], flipCtaLabel }, subservices[] { title, description, image { ${IMAGE_FIELDS} } }, featured, order }`; }
 
-const PROJECT_FIELDS = `_id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, gallery[] { ${IMAGE_FIELDS} }, description, excerpt, client, location, year, area, status, tags[], service-> { _id, title, "slug": slug.current }, featured, order`;
+const PROJECT_FIELDS = `_id, title, "slug": slug.current, coverImage { ${IMAGE_FIELDS} }, gallery[] { ${IMAGE_FIELDS} }, description, excerpt, client, location, year, area, status, tags[], videoMp4 { ${FILE_FIELDS} }, videoWebm { ${FILE_FIELDS} }, service-> { _id, title, "slug": slug.current }, featured, order`;
 export const ALL_PROJECTS_QUERY = `*[_type == "project"] | order(order asc) { ${PROJECT_FIELDS} }`;
 export const FEATURED_PROJECTS_QUERY = `*[_type == "project" && featured == true] | order(order asc) { ${PROJECT_FIELDS} }[0..8]`;
 export function projectBySlugQuery(slug: string) { return `*[_type == "project" && slug.current == "${slug}"][0] { ${PROJECT_FIELDS} }`; }
