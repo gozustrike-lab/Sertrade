@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { PencilRuler, Wrench, Zap } from 'lucide-react';
 import Link from 'next/link';
@@ -31,6 +31,13 @@ const fallbackCards = [
       'Modelado arquitectónico 3D.',
       'Optimización de flujos de trabajo.',
     ],
+    flipTitle: 'DISEÑO',
+    flipServices: [
+      'Ingeniería básica y de detalle.',
+      'Modelado arquitectónico 3D.',
+      'Optimización de flujos de trabajo.',
+    ],
+    flipCtaLabel: 'CONOCER MÁS',
   },
   {
     id: 2,
@@ -43,6 +50,13 @@ const fallbackCards = [
       'Estructuras metálicas.',
       'Ampliaciones y obras civiles.',
     ],
+    flipTitle: 'SERVICIOS GENERALES',
+    flipServices: [
+      'Drywall y acabados.',
+      'Estructuras metálicas.',
+      'Ampliaciones y obras civiles.',
+    ],
+    flipCtaLabel: 'CONOCER MÁS',
   },
   {
     id: 3,
@@ -55,6 +69,13 @@ const fallbackCards = [
       'Instalaciones eléctricas.',
       'Instalaciones sanitarias.',
     ],
+    flipTitle: 'IMPLEMENTACIÓN',
+    flipServices: [
+      'Sub-estaciones eléctricas.',
+      'Instalaciones eléctricas.',
+      'Instalaciones sanitarias.',
+    ],
+    flipCtaLabel: 'CONOCER MÁS',
   },
 ];
 
@@ -73,6 +94,12 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
           const sCatSlug = typeof s.category?.slug === 'string' ? s.category.slug : (s.category?.slug as unknown as { current?: string })?.current || '';
           return sCatSlug === catSlug;
         });
+        // Use flipServices from CMS if available, otherwise fall back to service titles, then fallback data
+        const flipServicesList = (cat.flipServices && cat.flipServices.length > 0)
+          ? cat.flipServices
+          : catServices.length > 0
+            ? catServices.map(s => s.title)
+            : fallbackCards[idx]?.flipServices || [];
         return {
           id: idx + 1,
           title: cat.name?.toUpperCase() || fallbackCards[idx]?.title || '',
@@ -82,6 +109,9 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
           services: catServices.length > 0
             ? catServices.map(s => s.title)
             : (cat.description ? [cat.description] : fallbackCards[idx]?.services || []),
+          flipTitle: cat.flipTitle?.toUpperCase() || cat.name?.toUpperCase() || fallbackCards[idx]?.flipTitle || '',
+          flipServices: flipServicesList,
+          flipCtaLabel: cat.flipCtaLabel || fallbackCards[idx]?.flipCtaLabel || 'CONOCER MÁS',
           _id: cat._id,
         };
       });
@@ -91,24 +121,39 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
 
   // Unified flip state: works for both hover (desktop) and tap (mobile)
   const [flippedId, setFlippedId] = useState<number | null>(null);
+  const hoverTimersRef = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
 
-  const isTouch = useState(false)[0];
+  // Cleanup timers on unmount
   useEffect(() => {
-    // We still need this for tap detection
+    return () => {
+      Object.values(hoverTimersRef.current).forEach(clearTimeout);
+    };
   }, []);
 
   const handleMouseEnter = useCallback((id: number) => {
-    // Only on non-touch devices — check if touch is available
-    if (!('ontouchstart' in window) && window.navigator.maxTouchPoints === 0) {
-      setFlippedId(id);
+    // Only on non-touch devices
+    if ('ontouchstart' in window || window.navigator.maxTouchPoints > 0) return;
+    // Clear any existing leave timer
+    if (hoverTimersRef.current[id]) {
+      clearTimeout(hoverTimersRef.current[id]);
+      delete hoverTimersRef.current[id];
     }
+    // Debounce: only flip after 400ms of sustained hover
+    hoverTimersRef.current[id] = setTimeout(() => {
+      setFlippedId(id);
+      delete hoverTimersRef.current[id];
+    }, 400);
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
-    // Only unflip on non-touch devices
-    if (!('ontouchstart' in window) && window.navigator.maxTouchPoints === 0) {
-      setFlippedId(null);
+  const handleMouseLeave = useCallback((id: number) => {
+    // Only on non-touch devices
+    if ('ontouchstart' in window || window.navigator.maxTouchPoints > 0) return;
+    // Clear the enter timer if still pending
+    if (hoverTimersRef.current[id]) {
+      clearTimeout(hoverTimersRef.current[id]);
+      delete hoverTimersRef.current[id];
     }
+    setFlippedId(prev => prev === id ? null : prev);
   }, []);
 
   const handleTap = useCallback((id: number) => {
@@ -139,15 +184,15 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
           {cards.map((card) => {
             const IconComp = card.icon;
             const isFlipped = flippedId === card.id;
+            const cardId = (card as { _id?: string })._id;
             return (
               <div
-                key={(card as { _id?: string })._id || card.id}
+                key={cardId || card.id}
                 className="w-full h-[480px] md:h-[530px] cursor-pointer"
                 style={{ perspective: '1200px', overflow: 'visible', transformStyle: 'preserve-3d' }}
                 onMouseEnter={() => handleMouseEnter(card.id)}
-                onMouseLeave={handleMouseLeave}
+                onMouseLeave={() => handleMouseLeave(card.id)}
                 onClick={() => handleTap(card.id)}
-                {...((card as { _id?: string })._id ? ve((card as { _id?: string })._id!, 'serviceCategory', 'name') : {})}
               >
                 <motion.div
                   className="relative w-full h-full"
@@ -166,6 +211,7 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                     }}
+                    {...(cardId ? ve(cardId, 'serviceCategory', 'name') : {})}
                   >
                     {/* Dark overlay */}
                     <div className="absolute inset-0 bg-[#004691]/60" />
@@ -202,11 +248,17 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
 
                     {/* Content: Title + Service List */}
                     <div className="relative z-10 w-full flex flex-col items-center">
-                      <h4 className="text-[#D4AF37] text-xl font-black mb-6 tracking-wider text-center uppercase drop-shadow-md">
-                        {card.title}
+                      <h4
+                        className="text-[#D4AF37] text-xl font-black mb-6 tracking-wider text-center uppercase drop-shadow-md"
+                        {...(cardId ? ve(cardId, 'serviceCategory', 'flipTitle') : {})}
+                      >
+                        {card.flipTitle || card.title}
                       </h4>
-                      <ul className="max-w-[240px] mx-auto space-y-2 text-sm font-medium text-white/95">
-                        {card.services.map((service, sIdx) => (
+                      <ul
+                        className="max-w-[240px] mx-auto space-y-2 text-sm font-medium text-white/95"
+                        {...(cardId ? ve(cardId, 'serviceCategory', 'flipServices') : {})}
+                      >
+                        {card.flipServices.map((service, sIdx) => (
                           <li key={sIdx} className="drop-shadow-sm">
                             {service}
                           </li>
@@ -215,13 +267,13 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
                     </div>
 
                     {/* CTA Button — Navigate to /servicios#slug */}
-                    <div className="relative z-10 w-full flex justify-center px-2">
+                    <div className="relative z-10 w-full flex justify-center px-2" {...(cardId ? ve(cardId, 'serviceCategory', 'flipCtaLabel') : {})}>
                       <Link
                         href={`/servicios#${card.slug}`}
                         onClick={(e) => e.stopPropagation()}
                         className="w-full py-3 bg-[#D4AF37] hover:bg-[#bfa032] text-[#004691] font-black text-sm uppercase tracking-widest transition-all duration-300 shadow-lg active:scale-[0.98] text-center block"
                       >
-                        CONOCER MÁS ↗
+                        {card.flipCtaLabel || 'CONOCER MÁS'} ↗
                       </Link>
                     </div>
                   </div>

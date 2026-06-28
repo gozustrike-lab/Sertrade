@@ -17,6 +17,8 @@ export default defineType({
     defineField({ name: "area", title: "Área", type: "string", description: 'Ej: "15,000 m²"' }),
     statusField(),
     defineField({ name: "tags", title: "Etiquetas", type: "array", of: [{ type: "string" }], description: "Tags para filtrado" }),
+    defineField({ name: "videoMp4", title: "Video MP4", type: "file", options: { accept: "video/mp4" }, description: "Archivo de video en formato MP4 para el portafolio." }),
+    defineField({ name: "videoWebm", title: "Video WebM", type: "file", options: { accept: "video/webm" }, description: "Archivo de video en formato WebM (opcional, para mejor compatibilidad)." }),
     defineField({ name: "service", title: "Servicio Relacionado", type: "reference", to: [{ type: "service" }] }),
     featuredField("Proyecto Destacado", "Activa para mostrarlo en la sección principal"),
     orderField(),

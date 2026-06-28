@@ -10,7 +10,7 @@ import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import ScrollReveal from '@/components/ScrollReveal';
 import Lightbox from '@/components/Lightbox';
 import type { SanityProject } from '@/lib/sanity.client';
-import { getImageUrl, plainText } from '@/lib/sanity.client';
+import { getImageUrl, plainText, getVideoUrl } from '@/lib/sanity.client';
 import { ve } from '@/lib/ve';
 
 /* ═══════════════════════════════════════════════════
@@ -287,6 +287,7 @@ function ProjectCard({
         <div
           className="relative overflow-hidden w-[30%] h-full bg-[#001C3D] cursor-pointer group/video rounded-none"
           onClick={() => setVideoOpen(true)}
+          {...(project._id ? ve(project._id, 'project', project.video ? 'videoMp4' : 'gallery') : {})}
         >
           {/* Video thumbnail — use second image as poster */}
           <img
@@ -457,7 +458,7 @@ export default function ProjectsPage({ projects: cmsProjects }: ProjectsPageProp
           commerce: p.service?.title || '',
           description: plainText(p.description) || '',
           images,
-          video: '',
+          video: getVideoUrl(p.videoMp4) || getVideoUrl(p.videoWebm) || '',
           _id: p._id,
         };
       });
