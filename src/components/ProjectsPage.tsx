@@ -111,23 +111,25 @@ const fallbackProjects = [
 
 const SWIPE_THRESHOLD = 50;
 
-/* ═══════════════════════════════════════════════════
+/* ═══════════════════════════════════════
    MERGED PROJECT TYPE (CMS or fallback)
-   ═══════════════════════════════════════════════════ */
-type MergedProject = Omit<typeof fallbackProjects[0], 'id'> & { id: number | string; _id?: string; };
+   ═══════════════════════════════════════ */
+type MergedProject = Omit<typeof fallbackProjects[0], 'id'> & { id: number | string; _id?: string; videoWebmUrl?: string };
 
-/* ═══════════════════════════════════════════════════
+/* ═══════════════════════════════════════
    VIDEO LIGHTBOX — Premium modal with Framer Motion
-   ═══════════════════════════════════════════════════ */
-function VideoLightbox({ isOpen, onClose, videoUrl }: { isOpen: boolean; onClose: () => void; videoUrl: string }) {
+   ═══════════════════════════════════════ */
+function VideoLightbox({ isOpen, onClose, videoUrl, videoWebmUrl }: { isOpen: boolean; onClose: () => void; videoUrl: string; videoWebmUrl?: string }) {
   useEffect(() => {
     if (!isOpen) return;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
+  const isDirectVideo = videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.endsWith('.webm') || videoUrl.includes('.mp4?') || videoUrl.includes('.webm?') || videoUrl.includes('/file-'));
+
   const embedUrl = videoUrl
-    .replace('youtube.com/watch?v=', 'youtube.com/embed/')
+    ?.replace('youtube.com/watch?v=', 'youtube.com/embed/')
     .replace('youtu.be/', 'youtube.com/embed/')
     .replace('vimeo.com/', 'player.vimeo.com/video/');
 
@@ -143,7 +145,6 @@ function VideoLightbox({ isOpen, onClose, videoUrl }: { isOpen: boolean; onClose
           onClick={onClose}
           style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}
         >
-          {/* Close X button — always accessible */}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 md:top-6 md:right-6 z-[160] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center transition-all duration-200 active:scale-90"
@@ -152,7 +153,6 @@ function VideoLightbox({ isOpen, onClose, videoUrl }: { isOpen: boolean; onClose
             <X size={22} strokeWidth={2} />
           </button>
 
-          {/* Video player — spring emergence */}
           <motion.div
             className="relative w-full max-w-5xl aspect-video bg-black shadow-2xl overflow-hidden"
             initial={{ scale: 0.9, opacity: 0 }}
@@ -160,13 +160,34 @@ function VideoLightbox({ isOpen, onClose, videoUrl }: { isOpen: boolean; onClose
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <iframe
-              src={`${embedUrl}?autoplay=1&rel=0`}
-              className="w-full h-full"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              allowFullScreen
-              title="Video del proyecto"
-            />
+            {isDirectVideo ? (
+              <video
+                key={videoUrl}
+                ref={(el) => {
+                  if (el) {
+                    const tryPlay = () => { if (el.paused) el.play().catch(() => {}); };
+                    tryPlay();
+                    el.addEventListener('canplay', tryPlay, { once: true });
+                    el.addEventListener('loadeddata', tryPlay, { once: true });
+                  }
+                }}
+                className="w-full h-full object-contain"
+                autoPlay muted loop playsInline
+                controls
+                preload="auto"
+              >
+                <source src={videoUrl} />
+                {videoWebmUrl && <source src={videoWebmUrl} />}
+              </video>
+            ) : (
+              <iframe
+                src={`${embedUrl}?autoplay=1&rel=0`}
+                className="w-full h-full"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                title="Video del proyecto"
+              />
+            )}
           </motion.div>
         </motion.div>
       )}
@@ -285,45 +306,92 @@ function ProjectCard({
 
         {/* RIGHT: Video Container — 30% — Same height */}
         <div
-          className="relative overflow-hidden w-[30%] h-full bg-[#001C3D] cursor-pointer group/video rounded-none"
-          onClick={() => setVideoOpen(true)}
+          className="relative overflow-hidden w-[30%] h-full bg-[#001C3D] rounded-none"
           {...(project._id ? ve(project._id, 'project', project.video ? 'videoMp4' : 'gallery') : {})}
         >
-          {/* Video thumbnail — use second image as poster */}
-          <img
-            src={project.images[1]}
-            alt={`${project.title} — Video`}
-            className="w-full h-full object-cover rounded-none opacity-60 group-hover/video:opacity-40 transition-opacity duration-500"
-            loading="lazy"
-            draggable={false}
-          />
+          {project.video ? (
+            <>
+              {/* Actual <video> element — autoplay on scroll via IntersectionObserver */}
+              <video
+                key={project.video}
+                ref={(el) => {
+                  if (!el) return;
+                  // Programmatic play fallback for Safari/iOS
+                  const tryPlay = () => { if (el.paused) el.play().catch(() => {}); };
+                  tryPlay();
+                  el.addEventListener('canplay', tryPlay, { once: true });
+                  el.addEventListener('loadeddata', tryPlay, { once: true });
+                  // IntersectionObserver: autoplay when scrolled into view, pause when out
+                  const observer = new IntersectionObserver(
+                    (entries) => {
+                      entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                          el.play().catch(() => {});
+                        } else {
+                          el.pause();
+                        }
+                      });
+                    },
+                    { threshold: 0.4 }
+                  );
+                  observer.observe(el);
+                  // Store observer for cleanup — stored as a property on the element
+                  (el as HTMLVideoElement & { _veObserver?: IntersectionObserver })._veObserver = observer;
+                }}
+                className="w-full h-full object-cover rounded-none"
+                autoPlay muted loop playsInline
+                poster={project.images[1]}
+                preload="auto"
+                onClick={() => setVideoOpen(true)}
+              >
+                <source src={project.video} />
+                {project.videoWebmUrl && <source src={project.videoWebmUrl} />}
+              </video>
 
-          {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10" />
+              {/* Semi-transparent overlay for status badge and label */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
 
-          {/* Play button — center */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <motion.div
-              className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/25 flex items-center justify-center group-hover/video:scale-110 transition-all duration-300"
-              whileHover={{ scale: 1.15 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg shadow-black/30">
-                <Play size={18} strokeWidth={2.5} className="text-[#004691] ml-0.5" fill="#004691" />
+              {/* Video label */}
+              <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4 pointer-events-none">
+                <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 backdrop-blur-md rounded-md border border-white/15 text-white text-[10px] font-medium">
+                  <Play size={10} fill="white" />
+                  Video
+                </span>
               </div>
-            </motion.div>
-          </div>
-
-          {/* Video label — scaled down for narrow container */}
-          <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4">
-            <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 backdrop-blur-md rounded-md border border-white/15 text-white text-[10px] font-medium">
-              <Play size={10} fill="white" />
-              Video
-            </span>
-          </div>
+            </>
+          ) : (
+            <>
+              {/* Fallback: no video — show poster image + play icon (for YouTube/Vimeo) */}
+              <img
+                src={project.images[1]}
+                alt={`${project.title} — Video`}
+                className="w-full h-full object-cover rounded-none opacity-60 group-hover/video:opacity-40 transition-opacity duration-500 cursor-pointer"
+                loading="lazy"
+                draggable={false}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10 cursor-pointer" onClick={() => setVideoOpen(true)} />
+              <div className="absolute inset-0 flex items-center justify-center cursor-pointer" onClick={() => setVideoOpen(true)}>
+                <motion.div
+                  className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/25 flex items-center justify-center group-hover/video:scale-110 transition-all duration-300"
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg shadow-black/30">
+                    <Play size={18} strokeWidth={2.5} className="text-[#004691] ml-0.5" fill="#004691" />
+                  </div>
+                </motion.div>
+              </div>
+              <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4">
+                <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 backdrop-blur-md rounded-md border border-white/15 text-white text-[10px] font-medium">
+                  <Play size={10} fill="white" />
+                  Video
+                </span>
+              </div>
+            </>
+          )}
 
           {/* Status Badge — top right — compact */}
-          <div className="absolute top-3 right-3">
+          <div className="absolute top-3 right-3 pointer-events-none">
             <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase ${
               project.status === 'Completado' ? 'bg-emerald-500/90 text-white' : 'bg-amber-500/90 text-white'
             }`}>
@@ -425,6 +493,7 @@ function ProjectCard({
         isOpen={videoOpen}
         onClose={() => setVideoOpen(false)}
         videoUrl={project.video}
+        videoWebmUrl={project.videoWebmUrl}
       />
     </article>
   );
@@ -459,6 +528,7 @@ export default function ProjectsPage({ projects: cmsProjects }: ProjectsPageProp
           description: plainText(p.description) || '',
           images,
           video: getVideoUrl(p.videoMp4) || getVideoUrl(p.videoWebm) || '',
+          videoWebmUrl: getVideoUrl(p.videoWebm) || undefined,
           _id: p._id,
         };
       });
