@@ -266,10 +266,10 @@ export default function ServiciosSection({ services: cmsServices, categories: cm
                       </ul>
                     </div>
 
-                    {/* CTA Button — Navigate to /servicios#slug */}
+                    {/* CTA Button — Navigate to /servicios/[slug] detail page */}
                     <div className="relative z-10 w-full flex justify-center px-2" {...(cardId ? ve(cardId, 'serviceCategory', 'flipCtaLabel') : {})}>
                       <Link
-                        href={`/servicios#${card.slug}`}
+                        href={`/servicios/${card.slug}`}
                         onClick={(e) => e.stopPropagation()}
                         className="w-full py-3 bg-[#D4AF37] hover:bg-[#bfa032] text-[#004691] font-black text-sm uppercase tracking-widest transition-all duration-300 shadow-lg active:scale-[0.98] text-center block"
                       >
