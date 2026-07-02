@@ -6,15 +6,12 @@ import ServiceDetailPage from '@/components/ServiceDetailPage';
 
 export const revalidate = 0;
 
-/* ═══════════════════════════════════════════════════
-   STATIC PARAMS — pre-generate all category slugs
-   ═══════════════════════════════════════════════════ */
 const FALLBACK_SLUGS = ['diseno', 'servicios-generales', 'implementacion'];
 
 const CATEGORY_LABELS: Record<string, string> = {
-  diseno: 'Diseño',
+  diseno: 'Diseno',
   'servicios-generales': 'Servicios Generales',
-  implementacion: 'Implementación',
+  implementacion: 'Implementacion',
 };
 
 export async function generateStaticParams() {
@@ -28,15 +25,10 @@ export async function generateStaticParams() {
         })
         .filter(Boolean) as { slug: string }[];
     }
-  } catch {
-    // CMS unavailable — use fallback slugs
-  }
+  } catch {}
   return FALLBACK_SLUGS.map(slug => ({ slug }));
 }
 
-/* ═══════════════════════════════════════════════════
-   DYNAMIC METADATA
-   ═══════════════════════════════════════════════════ */
 export async function generateMetadata({
   params,
 }: {
@@ -47,27 +39,22 @@ export async function generateMetadata({
   const title = category?.name || CATEGORY_LABELS[slug] || slug;
 
   return {
-    title: `${title} | Sertrade Design`,
-    description: `Servicio de ${title} — Soluciones integrales de arquitectura y diseño por Sertrade Design.`,
+    title: `${title} | Fast Page Pro`,
+    description: `Servicio de ${title} — Soluciones integrales por Fast Page Pro.`,
     openGraph: {
-      title: `${title} | Sertrade Design`,
-      description: `Servicio de ${title} — Soluciones integrales de arquitectura y diseño por Sertrade Design.`,
-      images: [{ url: '/og-servicios-final.png', width: 1200, height: 630, alt: `${title} - Sertrade Design` }],
+      title: `${title} | Fast Page Pro`,
+      description: `Servicio de ${title}.`,
+      images: [{ url: '/og-servicios.jpg', width: 1200, height: 630, alt: title }],
     },
   };
 }
 
-/* ═══════════════════════════════════════════════════
-   PAGE COMPONENT
-   ═══════════════════════════════════════════════════ */
 export default async function ServiceSlugPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
-  // Fetch the category and its services in parallel
   const [category, services] = await Promise.all([
     fetchCMS<SanityServiceCategory>(serviceCategoryBySlugQuery(slug)),
     fetchCMS<SanityService[]>(servicesByCategorySlugQuery(slug)),
