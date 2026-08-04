@@ -33,10 +33,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const services = await fetchCMS<SanityService[]>(ALL_SERVICES_QUERY);
     const servicePages: MetadataRoute.Sitemap = (services || []).map(
       (service) => ({
-        url: `${BASE_URL}/servicios/${service.slug?.current}`,
-        lastModified: service._updatedAt
-          ? new Date(service._updatedAt)
-          : new Date(),
+        url: `${BASE_URL}/servicios/${service.slug}`,
+        lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: 0.8,
       })
@@ -51,10 +49,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const projects = await fetchCMS<SanityProject[]>(ALL_PROJECTS_QUERY);
     const projectPages: MetadataRoute.Sitemap = (projects || []).map(
       (project) => ({
-        url: `${BASE_URL}/proyectos/${project.slug?.current}`,
-        lastModified: project._updatedAt
-          ? new Date(project._updatedAt)
-          : new Date(),
+        url: `${BASE_URL}/proyectos/${project.slug}`,
+        lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: 0.7,
       })
