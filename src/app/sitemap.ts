@@ -31,14 +31,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic service pages
   try {
     const services = await fetchCMS<SanityService[]>(ALL_SERVICES_QUERY);
-    const servicePages: MetadataRoute.Sitemap = (services || []).map(
-      (service) => ({
-        url: `${BASE_URL}/servicios/${service.slug}`,
+    const servicePages: MetadataRoute.Sitemap = (services || [])
+      .filter((service) => Boolean(service?.slug))
+      .map((service) => ({
+        url: `${BASE_URL}/servicios/${encodeURI(String(service.slug).trim())}`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: 0.8,
-      })
-    );
+      }));
     staticPages.push(...servicePages);
   } catch (e) {
     console.error("Sitemap: could not fetch services", e);
@@ -47,14 +47,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic project pages
   try {
     const projects = await fetchCMS<SanityProject[]>(ALL_PROJECTS_QUERY);
-    const projectPages: MetadataRoute.Sitemap = (projects || []).map(
-      (project) => ({
-        url: `${BASE_URL}/proyectos/${project.slug}`,
+    const projectPages: MetadataRoute.Sitemap = (projects || [])
+      .filter((project) => Boolean(project?.slug))
+      .map((project) => ({
+        url: `${BASE_URL}/proyectos/${encodeURI(String(project.slug).trim())}`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: 0.7,
-      })
-    );
+      }));
     staticPages.push(...projectPages);
   } catch (e) {
     console.error("Sitemap: could not fetch projects", e);

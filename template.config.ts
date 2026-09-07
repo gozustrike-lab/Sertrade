@@ -1,13 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════
- *  FASTPAGEPRO — PLANTILLA STARTER
- *  Configuración rápida para adaptar a cualquier negocio.
- *
- *  Instrucciones:
- *  1. Edita los valores de este archivo con los datos de tu cliente.
- *  2. Reemplaza los logos e imágenes en /public/ con los del nuevo negocio.
- *  3. Ejecuta: npm install && npm run dev
- *  4. Configura tu proyecto Sanity (ver SETUP.md).
+ *  SERTRADE PROYECTOS — CONFIGURACIÓN GENERAL
+ *  Soluciones integrales de arquitectura, diseño y construcción.
  * ═══════════════════════════════════════════════════════════
  */
 
@@ -46,7 +40,7 @@ export const TEMPLATE_CONFIG = {
   },
 
   /* ─── SEO ─── */
-  siteUrl: 'https://midominio.com',
+  siteUrl: 'https://www.sertradeproyectos.com',
   seoTitle: 'Sertrade Design — Arquitectura & Construcción',
   seoDescription: 'Soluciones integrales de arquitectura, diseño y construcción.',
 

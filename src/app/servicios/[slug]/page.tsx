@@ -39,12 +39,15 @@ export async function generateMetadata({
   const title = category?.name || CATEGORY_LABELS[slug] || slug;
 
   return {
-    title: `${title} | Fast Page Pro`,
-    description: `Servicio de ${title} — Soluciones integrales por Fast Page Pro.`,
+    title: `${title} | Sertrade Proyectos`,
+    description: `Servicio de ${title} — Soluciones integrales de arquitectura y construcción por Sertrade Proyectos.`,
+    alternates: {
+      canonical: `https://www.sertradeproyectos.com/servicios/${encodeURI(slug)}`,
+    },
     openGraph: {
-      title: `${title} | Fast Page Pro`,
-      description: `Servicio de ${title}.`,
-      images: [{ url: '/og-servicios.jpg', width: 1200, height: 630, alt: title }],
+      title: `${title} | Sertrade Proyectos`,
+      description: `Servicio de ${title} por Sertrade Proyectos.`,
+      images: [{ url: '/og-servicios-final.png', width: 1200, height: 630, alt: title }],
     },
   };
 }
